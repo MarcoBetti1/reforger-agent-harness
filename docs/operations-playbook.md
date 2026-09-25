@@ -32,6 +32,8 @@ The helper supplies the base-game addon directory and checks validation/pack out
 
 1. Build a small addon test world containing deterministic starting entities and an addon-owned probe. Have the probe issue bounded commands on authority and log unit IDs, target IDs, waypoint changes, states, positions, and failure reasons. Do not depend on a human navigating menus for every iteration.
 2. Open that world directly with `workbench:open --authorize-local-test-scripts --execute`; reacquire the actual World Editor window and press F5 once. `-run` launches the editor but does not by itself prove a gameplay preview began. A test component can print `AUTO_INIT` during editor entity initialization. Require a later GAME transition and gameplay-ready marker such as `AUTO_READY` in the current `.cache/workbench-gui-runs/<run>/script.log`, plus the live viewport, before interpreting the test.
+
+If an injected F5 leaves the loaded editor unchanged, reacquire a fresh screenshot of the World Editor and click its green **Play** toolbar control once. This worked in a local survey run where F5 did not. Require the later `GAME` marker; an editor-time component log remains insufficient. Toolbar coordinates can change with window placement and scaling.
 3. Watch a clearly scoped PASS/FAIL marker from the current run. Require physical movement, stable spacing, and an appropriate terminal state rather than acceptance of an order alone. Keep navigation diagnostics at a moderate interval so logs remain readable.
 4. Record the gameplay monitor with `screen:record` while the run executes. Inspect frames as well as logs. Stop F5 before editing scripts or repacking, then repeat from a fresh run.
 
