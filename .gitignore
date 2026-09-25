@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+.cache/
+.env
+.DS_Store
+Thumbs.db
+reforger-agent.config.json
+__pycache__/
+*.pyc
+*.log
+*.dmp
+*.pak
+/recordings/
+/CON

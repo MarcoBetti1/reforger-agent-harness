@@ -1,0 +1,8 @@
+{
+  "modRoots": [
+    "addons",
+    ".cache/workshop-fetch/profile/addons"
+  ],
+  "docRoots": [],
+  "sampleRoots": []
+}

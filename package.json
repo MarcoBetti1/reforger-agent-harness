@@ -1,0 +1,43 @@
+{
+  "name": "reforger-agent-harness",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reusable Arma Reforger agent harness for Workbench, isolated game tests, and evidence capture.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "cli": "tsx src/cli.ts",
+    "server:config": "tsx src/server-config-cli.ts",
+    "server:run": "tsx src/local-server-cli.ts",
+    "conflict:host": "tsx src/conflict-host-cli.ts",
+    "mod:fetch": "tsx src/mod-fetch-cli.ts",
+    "client:run": "tsx src/client-cli.ts",
+    "screen:record": "tsx src/screen-record-cli.ts",
+    "screen:clip": "tsx src/screen-clip-cli.ts",
+    "logs:summary": "tsx src/log-summary-cli.ts",
+    "workbench": "tsx src/workbench-cli.ts",
+    "workbench:open": "tsx src/workbench-open.ts",
+    "dev": "tsx watch src/index.ts",
+    "knowledge:prepare": "tsx src/cli.ts prepare-knowledge",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "fast-glob": "^3.3.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@emnapi/core": "^1.11.3",
+    "@emnapi/runtime": "^1.11.3",
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}
