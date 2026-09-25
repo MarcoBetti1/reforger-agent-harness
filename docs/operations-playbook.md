@@ -17,6 +17,8 @@ npm run workbench:open -- --editor world --project 'C:\Path\To\Addon\addon.gproj
 
 The first command prints a dry run. The second passes `-gproj`, the installed base-game addons directory, World Editor module, `-load`, and the explicit `-scriptAuthorizeAll` opt-in. Direct Script Editor and World Editor launches were tested; they avoid the Workbench Launcher project dropdown. `--authorize-local-test-scripts` prevented the F5 refresh authorization dialog in repeated local test previews. Use it only with source you are prepared to execute. Opening a different project creates or changes top-level windows; enumerate them again rather than using a stale window handle.
 
+If the World Editor opens off screen, first select the unique current editor window by title, then use the Windows system menu sequence **Alt+Space, X** to maximize it. In a live recovery, this changed its accessibility state from an off-screen window to a visible Maximized window; Restore then returned a visible usable window. Reinspect the window state after either transition before sending editor input. Avoid writing addon scripts while any Workbench editor has the project open: its live reload can occur even before F5 and can invalidate a concurrent preview.
+
 For headless checks:
 
 ```powershell
