@@ -35,6 +35,12 @@ The helper supplies the base-game addon directory and checks validation/pack out
 
 This harness supplies launch and capture commands; world probes and pass criteria belong with the addon. A recent addon test showed why: an accepted waypoint and a success-looking log could coexist with a vehicle that drifted off the road. The later probe measured road distance, following gaps, and a stable dwell before marking a road run successful. Gameplay video remained a separate check.
 
+### Player menu and input tests
+
+For a test that must open the native map menu, use the game's `MenuManager.OpenMenu(ChimeraMenuPreset.MapMenu)` from an addon-owned fixture after the local game has initialized its menu manager. A direct scripted `SCR_MapEntity.OpenMap` call produced a VM exception because `RootWidgetRef` was null in a live Workbench preview. The menu-manager path opened the map and displayed an addon panel; mouse-issued Hold and Resume orders reached authoritative completed states in that run. Opening the map with an injected **M** key was not established, and a subsequent **Escape** ended the F5 preview, so map closing and restored steering/throttle remain separate test gates. Keep the owner in a real driver seat for those input gates; a passenger-seat probe cannot prove driving controls are restored.
+
+Separate an order's stages in both UI and telemetry: request accepted, executing, physically completed, or unable to proceed. A button click, a waypoint insertion, and a server acknowledgement do not establish physical completion. A strict log parser should require the world and expected actors, the terminal success marker from the current run, real position/seat/target checks, and no new engine/world/resource/script/replication errors. If installed Workbench emits known base-world errors before the probe initializes, exempt only those exact pre-init messages and report their count. Preserve the raw recording; make proof clips with modest crops and captions limited to log-verified events. State explicitly when a fixed camera loses a truck outside its view.
+
 ## Screen recording
 
 ```powershell

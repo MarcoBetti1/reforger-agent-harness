@@ -26,7 +26,7 @@ npm run client:run -- --profile '.cache/client/profiles/clean' --world 'worlds/G
 
 `--authorize-local-test-scripts` opts a **single Workbench process** into its supported `-scriptAuthorizeAll` flag. This avoids the local script-refresh authorization dialog during unattended F5 previews; omit it for untrusted addon source. Reacquire the editor window after each launch or transition, press F5, inspect `script.log` and the actual view, then stop the preview before modifying scripts. A `GAME` log transition or a successful package alone does not prove an in-world feature works.
 
-For repeatable scenarios, put a deterministic test entity or probe in the addon test world. Log a start marker, accepted orders, unit IDs, assigned targets, state transitions, failure reasons, and a terminal PASS or FAIL. Pair the log with a screen recording and inspect both. The addon-specific probe and acceptance parser belong with the addon, not in this harness.
+For repeatable scenarios, put a deterministic test entity or probe in the addon test world. Log a start marker, accepted orders, unit IDs, assigned targets, state transitions, failure reasons, and a terminal PASS or FAIL backed by physical state. Pair the log with a screen recording and inspect both. The addon-specific probe and acceptance parser belong with the addon, not in this harness. For native map UI tests, open `ChimeraMenuPreset.MapMenu` through the game's `MenuManager`; direct `SCR_MapEntity.OpenMap` caused a null `RootWidgetRef` exception in a local F5 test. Map opening by injected **M**, closing, and restored driver controls must each be tested separately; see the [playbook](docs/operations-playbook.md).
 
 ## Evidence capture
 
