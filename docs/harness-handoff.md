@@ -5,7 +5,7 @@ This is the reusable control plane for Reforger addon work. Addon-specific code 
 ## Fast test loop
 
 1. Open a selected addon and test world with `npm run workbench:open -- --editor world --project '<addon.gproj>' --world '<world.ent>' --authorize-local-test-scripts --execute`.
-2. Select the current World Editor window and start its F5 preview. The explicit authorization flag maps to Workbench's `-scriptAuthorizeAll`, so the local refresh prompt is suppressed for this process.
+2. Select the current World Editor window and watch the fresh log and viewport. The helper includes `-run`, which may start the loaded world's preview automatically; press F5 only if no GAME/probe startup appears after editor startup settles. The authorization flag maps to Workbench's `-scriptAuthorizeAll`, so the local refresh prompt is suppressed for this process.
 3. Use an addon-owned deterministic probe to issue orders and report actual position/state evidence. Inspect the Workbench `script.log` and capture the view with `npm run screen:record -- --backend ddagrab --output-idx <monitor> --output '.cache/test-videos/run.mp4' --execute`.
 4. Stop F5, validate with `npm run workbench -- validate --project '<addon.gproj>' --execute`, and pack with `npm run workbench -- pack --project '<addon.gproj>' --output '<separate output directory>' --execute`.
 5. Preserve the world, exact inputs, before/after state, log path, recording, and observed result in the addon repo. Keep unknown behavior marked unverified.
