@@ -79,6 +79,18 @@ A fresh Reforger 1.8.0.13 client loaded only `core` and base `ArmaReforger` in `
 
 Normal close was corroborated by `Game destroyed`; the full console still contained nine startup/runtime and 62 shutdown error lines. Classify these separately rather than treating process exit 0 as a clean run. The recorder's plain-pipe stdin rejected `q`, then its existing 360-second bound finished normally at 5,399 frames, exit 0. Because the game had already closed, the private full-monitor original has a substantial desktop tail. Use PTY stdin when early stopping is needed, preserve private originals, and review/crop before publication. The completed file does not establish a gameplay or input pass.
 
+### Separate desktop activation from game input
+
+Later attempts failed before ordinary input could be calibrated: a fresh Notepad **Add New Tab** accessibility click returned `coordinate input geometry is unavailable`; after fresh window/screenshot selection, its native Ctrl+N shortcut returned `failed to activate captured window`. Earlier fresh captures and Raise/Alt+F4 attempts also failed activation. A successful screenshot does not prove that a target can receive input. Preserve the exact boundary and stop repeating the same keys or changing addon UI code without positive delivery evidence.
+
+The on-screen keyboard reported higher Windows integrity than the controller. A close click returned without an exception but the keyboard remained listed and visible; its removal and any causal effect were not established. Do not attribute the input failure to that overlay without a verified comparison, and do not alter security settings to work around the boundary. Existing unsaved editor content was left untouched. Once activation works, use a new empty document and a visible keypress/removal as a positive control before testing native game bindings; tool acknowledgement alone is insufficient.
+
+### Native shutdown for isolated standalone probes
+
+An addon-owned, default-off test option successfully called `Game.RequestClose()` 30 seconds after its final result in an offline standalone run. The request was followed by world cleanup, component deletion cleanup, `Game destroyed`, and natural launcher completion before its safety timeout. This provides a repeatable shutdown path when desktop activation fails. The request preserved the test's failed gameplay verdict; normal closure did not turn a driving failure into a pass or remove runtime/shutdown diagnostics.
+
+Keep this behavior in an isolated addon probe, not the generic launcher or shipped player workflow. Gate it on the original live component/world/resource, terminal completion, offline non-console play and no cleanup in progress; compile the close call out of Workbench and remove delayed callbacks on deletion. Leave a meaningful post-terminal observation interval. Inspect actual cleanup and process exit every time; a request log alone is insufficient, and changed-world/refusal branches need separate coverage. Existing client duration limits remain fallback termination, not normal lifecycle proof.
+
 ## Storage before execution
 
 `client:run --execute` and `screen:record --execute` refuse to start below **2 GiB available space** on an output filesystem, or when the space probe fails. Before any directory creation or process launch, the check resolves each nearest existing output ancestor through directory junctions, then queries its actual filesystem. Client checks include logs, profile and addon-download destinations. The recorder also rejects existing output entries, including dangling links. Dry runs do not probe or require free space.
