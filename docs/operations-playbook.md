@@ -1,5 +1,16 @@
 # Reforger operations playbook
 
+## Native supply-action setup — September 26
+
+For a supply scene inheriting Game Master, check the native game-mode resource setting before diagnosing a missing cargo action. The installed Editor game mode disables SUPPLIES by default. An explicit, one-time master `SCR_BaseGameMode.SetResourceTypeEnabled(true, EResourceType.SUPPLIES)` request made the native actions visible. Keep this scoped to an opted-in test/demo scene.
+
+Storage parents aggregate actual child containers. Author and verify the child's quantity/capacity. The live test moved source/truck counts 1800/0 → 1700/100 → 1800/0 through native actions without runtime count setters.
+
+Native `CanBePerformed` creates resource subscriptions; spatial queues update on later FixedFrame calls. The first unload check reported NoStorage with an empty external queue, then became eligible after 33.1 ms. A bounded readiness wait retained exact identities, stationary vehicle and conserved counts; it did not bypass native eligibility.
+
+This establishes static transfer/cancellation, not transport, desktop input, multiplayer or natural shutdown. A fresh activation attempt after confirmed editor closure still returned `failed to activate captured window`; capture worked and no click/key delivery was established.
+
+
 ## September 26: native Game Master play-mode setup
 
 A direct Game Master world can retain its editor overlay after a fixture spawns and assigns the local controlled character. `SetControlledEntity` alone did not make ordinary world interactions available. In a bounded standalone comparison, the installed `SCR_EditorManagerEntity.CanCloseInstance()` / `CloseInstance()` API closed the editor; later frames reported `IsOpenedInstance() == false`, `CanInteract() == true`, and no open menu, corroborated by the live player view.
