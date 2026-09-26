@@ -14,8 +14,8 @@ const USAGE = `Isolated Arma Reforger client launcher (dry run by default)
 
 The client receives a separate profile and log directory. Workshop downloads are cached under the profile root's addons subdirectory, so reusing --profile also reuses downloaded mods.
 The default test window is 1280 x 720 at a 60 FPS cap.
---addons-dir names a parent folder containing addon subfolders, each with addon.gproj and data.pak. Pass --addon <GUID> to activate each addon; discovery alone does not load it.
-For a frozen test pack, use an isolated layout such as .cache/test-addons/MyAddon/{addon.gproj,data.pak} and pass --addons-dir .cache/test-addons --addon <GUID>.
+--addons-dir names a parent folder containing addon subfolders. Packed addons need addon.gproj, data.pak and resourceDatabase.rdb from the same build. Pass --addon <GUID> to activate each addon; discovery alone does not load it.
+For a frozen test pack, copy all three files into .cache/test-addons/MyAddon/ and pass --addons-dir .cache/test-addons --addon <GUID>. Keep that entire copy unchanged until the client exits.
 --connect-local uses Bohemia's documented -client 127.0.0.1 syntax for the default server port.
 Client CLI syntax for a non-default server port and the in-game Direct Connect flow are unverified here.
 --expect-game requires the current console.log to record a transition to GAME before the bounded run succeeds. It checks startup, not addon behavior.
@@ -182,14 +182,21 @@ export function verifyInstalledAddons(addonIds: string[], addonsDirs: string[]):
         if (!isFile(gproj)) continue;
         const matchesFolder = entry.name.toUpperCase() === id || entry.name.toUpperCase().endsWith(`_${id}`);
         const matchesGproj = new RegExp(`\\bGUID\\s+"${id}"`, "i").test(readFileSync(gproj, "utf8"));
-        if ((matchesFolder || matchesGproj) && (isFile(path.join(folder, "data.pak")) || matchesGproj)) {
+        const packed = isFile(path.join(folder, "data.pak"));
+        if ((matchesFolder || matchesGproj) && (packed || matchesGproj)) {
+          // A source project can legitimately have no packaged database. A
+          // selected packed addon must carry its sibling resource identity map.
+          const database = path.join(folder, "resourceDatabase.rdb");
+          if (packed && (!isFile(database) || statSync(database).size === 0)) {
+            throw new Error(`Packed addon ${id} has a missing, empty or non-file resourceDatabase.rdb: ${database}. Copy addon.gproj, data.pak and resourceDatabase.rdb together from the same completed pack into a fresh addon subfolder before launching.`);
+          }
           found = true;
           break;
         }
       }
       if (found) break;
     }
-    if (!found) throw new Error(`Addon ${id} was not found in the specified --addons-dir roots. Each root must contain an addon subfolder with addon.gproj/data.pak; do not pass the pack folder itself. -addons does not download missing mods.`);
+    if (!found) throw new Error(`Addon ${id} was not found in the specified --addons-dir roots. Each root must contain an addon subfolder with addon.gproj (plus data.pak and resourceDatabase.rdb for a packed addon); do not pass the pack folder itself. -addons does not download missing mods.`);
   }
 }
 

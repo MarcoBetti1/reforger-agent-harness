@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { classifyFatalClientLog, clientTimeLimitReached, enteredGameState, makeClientPlan, parseClientArgs, requireGameState, verifyInstalledAddons } from "../src/client-cli.js";
+import { classifyFatalClientLog, clientTimeLimitReached, enteredGameState, makeClientPlan, parseClientArgs, requireGameState, runClientCli, verifyInstalledAddons } from "../src/client-cli.js";
 
 const ravenId = "6A3A112604EF7286";
 
@@ -106,9 +106,60 @@ describe("isolated client launcher", () => {
       mkdirSync(addon);
       writeFileSync(path.join(addon, "addon.gproj"), `GameProject {\n GUID "${ravenId}"\n}`);
       writeFileSync(path.join(addon, "data.pak"), "test fixture");
+      writeFileSync(path.join(addon, "resourceDatabase.rdb"), "test resource identities");
       expect(() => verifyInstalledAddons([ravenId], [root])).not.toThrow();
       expect(() => verifyInstalledAddons(["AAAAAAAAAAAAAAAA"], [root])).toThrow("was not found");
       expect(() => verifyInstalledAddons([ravenId], [path.join(root, "missing")])).toThrow("does not exist");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it.each(["missing", "empty", "directory"])("rejects a selected packed addon with a %s resource database", (kind) => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "reforger-client-pack-test-"));
+    try {
+      // Local pack folders can have an arbitrary name; their gproj selects the GUID.
+      const addon = path.join(root, "LocalPack");
+      mkdirSync(addon);
+      writeFileSync(path.join(addon, "addon.gproj"), `GameProject {\n GUID "${ravenId}"\n}`);
+      writeFileSync(path.join(addon, "data.pak"), "test fixture");
+      const database = path.join(addon, "resourceDatabase.rdb");
+      if (kind === "empty") writeFileSync(database, "");
+      if (kind === "directory") mkdirSync(database);
+      expect(() => verifyInstalledAddons([ravenId], [root])).toThrow(`resourceDatabase.rdb: ${database}`);
+      expect(() => verifyInstalledAddons([ravenId], [root])).toThrow("same completed pack");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("preserves source-only projects and ignores unselected incomplete packs", () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "reforger-client-source-test-"));
+    try {
+      const source = path.join(root, "SourceProject");
+      const unrelated = path.join(root, "UnselectedPack");
+      mkdirSync(source);
+      mkdirSync(unrelated);
+      writeFileSync(path.join(source, "addon.gproj"), `GameProject {\n GUID "${ravenId}"\n}`);
+      writeFileSync(path.join(unrelated, "addon.gproj"), 'GameProject { GUID "AAAAAAAAAAAAAAAA" }');
+      writeFileSync(path.join(unrelated, "data.pak"), "unselected fixture");
+      expect(() => verifyInstalledAddons([ravenId], [root])).not.toThrow();
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects an incomplete selected pack before executable discovery or launch", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "reforger-client-preflight-test-"));
+    try {
+      const addon = path.join(root, `Example_${ravenId}`);
+      mkdirSync(addon);
+      writeFileSync(path.join(addon, "addon.gproj"), `GameProject {\n GUID "${ravenId}"\n}`);
+      writeFileSync(path.join(addon, "data.pak"), "test fixture");
+      await expect(runClientCli([
+        "--addon", ravenId, "--addons-dir", root,
+        "--game", path.join(root, "does-not-exist.exe"), "--execute",
+      ])).rejects.toThrow("resourceDatabase.rdb");
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
