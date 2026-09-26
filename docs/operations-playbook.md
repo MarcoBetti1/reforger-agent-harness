@@ -1,5 +1,11 @@
 # Reforger operations playbook
 
+## September 26: native Game Master play-mode setup
+
+A direct Game Master world can retain its editor overlay after a fixture spawns and assigns the local controlled character. `SetControlledEntity` alone did not make ordinary world interactions available. In a bounded standalone comparison, the installed `SCR_EditorManagerEntity.CanCloseInstance()` / `CloseInstance()` API closed the editor; later frames reported `IsOpenedInstance() == false`, `CanInteract() == true`, and no open menu, corroborated by the live player view.
+
+Use this only as explicit test-scene preparation, after validating the local player/world binding. `CloseInstance()` returning true means an instance existed; observe the resulting state before acting. This is not keyboard delivery, reticle selection or normal UI proof. The separate cargo action remained ineligible and transferred zero supplies, so editor closure alone is not a cargo-transfer success. Keep those stages distinct when diagnosing test setup.
+
 This records procedures observed on the Windows test machine. Recheck versions, paths, window titles, and world resources after game updates. Keep one run's exact command, script log, visible result, and recording together; a startup message is not proof of gameplay behavior.
 
 ## Machine setup
