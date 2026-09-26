@@ -33,11 +33,21 @@ For repeatable scenarios, put a deterministic test entity or probe in the addon 
 ## Evidence capture
 
 ```powershell
-npm run screen:record -- --backend ddagrab --output-idx 1 --fps 8 --duration-seconds 300 --output '.cache/test-videos/raw.mp4' --execute
-npm run screen:clip -- --input '.cache/test-videos/raw.mp4' --output '.cache/test-videos/review.mp4' --left 1000 --top 120 --width 2060 --height 1060 --execute
+npm run screen:record -- --backend ddagrab --output-idx 0 --fps 8 --duration-seconds 300 --output '.cache/test-videos/raw.mp4' --execute
+npm run screen:clip -- --input '.cache/test-videos/raw.mp4' --output '.cache/test-videos/review.mp4' --left 0 --top 0 --width 2560 --height 1440 --execute
 ```
 
-The Desktop Duplication backend captures an entire monitor; choose the index and clear other windows from that display. On this machine it captured the Workbench preview reliably where the named-window `gdigrab` backend returned a stale frame. The clip helper's default crop matches the tested 3440×1440 monitor and can be overridden. Both helpers refuse to overwrite files. Recordings stay in `.cache` unless deliberately copied into an addon repository.
+The Desktop Duplication backend captures an entire monitor; choose the index and clear other windows from that display. On this machine it captured the Workbench preview reliably where the named-window `gdigrab` backend returned a stale frame. On September 26, output 0 was verified at 2560×1440; the earlier output 1 can be invalid after a display change. Freshly verify the selected output and its dimensions before each run. The clip helper's default crop matches an older 3440×1440 monitor and must be overridden for the current capture. Both helpers refuse to overwrite files. Recordings stay in `.cache` unless deliberately copied into an addon repository.
+
+The example clip bounds preserve the full latest verified display. Replace them with freshly measured game-only bounds and review the clip before publishing it; full-display bounds do not remove private desktop content.
+
+Start a log watcher before the scenario reaches its terminal marker, using a fresh run log and output path:
+
+```powershell
+npm run logs:snapshot -- --log '.cache/client/runs/test/logs/console.log' --marker 'TEST_RESULT:' --output '.cache/client/runs/test/first-result.log' --timeout-seconds 600 --poll-ms 250
+```
+
+This command reads with Node's normal Windows sharing while the game appends. It waits for a missing log or incomplete literal marker, then saves the **entire read that first contains the marker**, including any later bytes in that read. The sidecar `first-result.log.provenance.json` records UTC capture time, literal marker, byte offset, polling interval, sizes and SHA-256 hashes of the captured source bytes and output. This is a first-observed snapshot with polling/read latency, not an exact terminal prefix or atomic filesystem snapshot. Existing snapshot or provenance files are never overwritten. Timeout/read failures exit nonzero; the source log is unchanged. Timeout is bounded to 0.01–3600 seconds, polling to 10–5000 ms, and observed log size to 64 MiB. Keep the full final console separately for later behavior and shutdown errors; a marker's text alone does not prove gameplay passed.
 
 ## Other commands
 

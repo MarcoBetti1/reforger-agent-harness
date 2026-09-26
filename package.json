@@ -19,6 +19,7 @@
     "screen:record": "tsx src/screen-record-cli.ts",
     "screen:clip": "tsx src/screen-clip-cli.ts",
     "logs:summary": "tsx src/log-summary-cli.ts",
+    "logs:snapshot": "tsx src/log-snapshot-cli.ts",
     "workbench": "tsx src/workbench-cli.ts",
     "workbench:open": "tsx src/workbench-open.ts",
     "dev": "tsx watch src/index.ts",

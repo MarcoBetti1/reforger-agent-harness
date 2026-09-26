@@ -76,8 +76,8 @@ Separate an order's stages in both UI and telemetry: request accepted, executing
 ## Screen recording
 
 ```powershell
-npm run screen:record -- --backend ddagrab --output-idx 1 --fps 8 --duration-seconds 300 --output '.cache/test-videos/raw.mp4' --execute
-npm run screen:clip -- --input '.cache/test-videos/raw.mp4' --output '.cache/test-videos/cropped.mp4' --left 1000 --top 120 --width 2060 --height 1060 --execute
+npm run screen:record -- --backend ddagrab --output-idx 0 --fps 8 --duration-seconds 300 --output '.cache/test-videos/raw.mp4' --execute
+npm run screen:clip -- --input '.cache/test-videos/raw.mp4' --output '.cache/test-videos/cropped.mp4' --left 0 --top 0 --width 2560 --height 1440 --execute
 ```
 
 The tested FFmpeg `ddagrab` Desktop Duplication path captured the selected display including Workbench gameplay. `gdigrab` named-window capture produced a stale white or old frame on this machine in an earlier test. Confirm `--output-idx` for the current monitor setup, inspect several frames for actual movement, and state when a fixed camera loses an actor. The default clip crop is specific to a tested 3440×1440 display; set bounds for the current window. Both commands dry-run without `--execute`, and both refuse to overwrite an existing output. Finish the recorder before running `ffprobe` or `screen:clip`: an MP4 still being written lacks its final index. The tested `ddagrab` command records video without game audio. Keep private desktop content off the recorded monitor.
@@ -116,6 +116,20 @@ A private player-hosted Conflict Arland session reached GAME and its single loop
 ## Review evidence
 
 `npm run logs:summary -- --log '<console.log>'` reports the latest mission, loaded addons, join failures, and one Raven-specific adapter for its runtime/supply events. Its event count is read-only and point-in-time. A claimed supply run or even a logged transfer needs corroboration through visible vehicle movement and before/after resource counts. For any addon feature, record game version, addon IDs, scenario, command, timing, actions, before/after UI, log path, observed outcome, and a recovery note if it failed.
+
+### Live log snapshots
+
+```powershell
+npm run logs:snapshot -- --log '.cache/client/runs/test/logs/console.log' --marker 'TEST_RESULT:' --output '.cache/client/runs/test/first-result.log' --timeout-seconds 600 --poll-ms 250
+```
+
+A September 26 exclusive-read watcher failed because the game held its console open. Use this Node reader with normal Windows sharing instead of `.NET File.Open` defaults. It tolerates a missing file, a marker split across writes, and temporary sharing/access errors until its deadline. It captures the complete successful read and a `.provenance.json` sidecar, using exclusive output creation to protect existing evidence. The source/output hashes describe those exact captured bytes, not a later growing source file. A timeout exits nonzero without making a snapshot; a persistence failure leaves any partial evidence visible for inspection. Choose a fresh output path instead of overwriting it.
+
+The provenance method is `first observed marker; up to poll latency`. Capture can include output after the marker and a partial trailing line; it is not a reconstructed or exact terminal prefix. If the marker already exists when the watcher starts, the first read includes earlier history. Use a unique run log, start the watcher before the expected marker, and keep the full final console for post-result behavior and lifecycle classification. Timeouts are limited to one hour; polling is 10–5000 ms; observed logs over 64 MiB are rejected.
+
+### Display selection rechecked September 26
+
+The previous recording example's `--output-idx 1` can be invalid for the current display layout. Output **0** was verified at **2560×1440** in the latest local recording setup. This is an observation about that setup, not a permanent monitor assignment: freshly verify the current index, dimensions and visible game content before each recording. The old 3440×1440 crop is not appropriate for that capture without adjusted bounds. The current example preserves the full 2560×1440 display; use freshly measured game-only bounds before publication. Whole-monitor originals may contain private desktop content; keep them ignored until deliberately cropped and reviewed.
 
 ## Recorder shutdown verified September 26
 
