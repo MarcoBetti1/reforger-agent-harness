@@ -32,6 +32,8 @@ For repeatable scenarios, put a deterministic test entity or probe in the addon 
 
 ## Evidence capture
 
+Client and recorder execution require at least **2 GiB free** on their output filesystems before creating directories or starting a process. The check follows directory junctions and fails if space cannot be measured; dry runs remain available. This is a starting-space check, not a capacity reservation for a complete run. See the [storage notes](docs/operations-playbook.md#storage-before-execution).
+
 ```powershell
 npm run screen:record -- --backend ddagrab --output-idx 0 --fps 8 --duration-seconds 300 --output '.cache/test-videos/raw.mp4' --execute
 npm run screen:clip -- --input '.cache/test-videos/raw.mp4' --output '.cache/test-videos/review.mp4' --left 0 --top 0 --width 2560 --height 1440 --execute

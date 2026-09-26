@@ -7,6 +7,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import { pathToFileURL } from "node:url";
 
 import { discoverSteamLibraries } from "./doctor.js";
+import { requireStorageSpace } from "./storage-preflight.js";
 
 const USAGE = `Isolated Arma Reforger client launcher (dry run by default)
 
@@ -23,6 +24,7 @@ Client CLI syntax for a non-default server port and the in-game Direct Connect f
 --expect-game requires the current console.log to record a transition to GAME before the bounded run succeeds. It checks startup, not addon behavior.
 --keep-open removes the time limit for a player handoff; the launcher monitors logs until the game exits or you interrupt it with Ctrl+C.
 --run-dir pins the logs and default profile location for a repeatable test. Its console.log must not already exist.
+Execution requires at least 2 GiB free on each output filesystem; this preflight does not reserve space for the full run.
 `;
 
 export interface ClientOptions {
@@ -346,6 +348,7 @@ export function clientTimeLimitReached(keepOpen: boolean, deadline: number, now:
 }
 
 async function executeClient(plan: ClientPlan): Promise<number> {
+  await requireStorageSpace([plan.profile, path.join(plan.profile, "profile"), plan.logsDir, plan.downloadDir, path.join(plan.downloadDir, "addons")]);
   await Promise.all([
     mkdir(plan.profile, { recursive: true }),
     mkdir(plan.logsDir, { recursive: true }),

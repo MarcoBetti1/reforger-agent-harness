@@ -1,7 +1,8 @@
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync } from "node:fs";
+import { lstatSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { requireStorageSpace } from "./storage-preflight.js";
 
 const USAGE = `Record a named window or a selected monitor with ffmpeg (dry run by default)
 
@@ -9,6 +10,7 @@ const USAGE = `Record a named window or a selected monitor with ffmpeg (dry run 
   npm run screen:record -- --backend ddagrab --output-idx 1 --duration-seconds 60 --output .cache/test-videos/scene.mp4 [--fps 8] --execute
 
 gdigrab captures only the named window but has produced a stale frame with Workbench gameplay on this machine. ddagrab uses Desktop Duplication and captures the entire selected monitor. Confirm the monitor index and keep other windows off it. The helper refuses to overwrite an existing file.
+Execution requires at least 2 GiB free on the output filesystem; this preflight does not reserve space for the full recording.
 `;
 
 export interface RecordOptions {
@@ -87,10 +89,16 @@ export async function runRecordCli(argv = process.argv.slice(2)): Promise<number
     return 0;
   }
   const options = parseRecordArgs(argv);
-  if (existsSync(options.output)) throw new Error(`Refusing to overwrite existing recording: ${options.output}`);
+  try {
+    lstatSync(options.output);
+    throw new Error(`Refusing to overwrite existing recording or output link: ${options.output}`);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
   const command = recordCommand(options);
   process.stdout.write(`${options.ffmpeg} ${command.map((arg) => JSON.stringify(arg)).join(" ")}\n`);
   if (!options.execute) return 0;
+  await requireStorageSpace([path.dirname(options.output)]);
   mkdirSync(path.dirname(options.output), { recursive: true });
   return await new Promise<number>((resolve, reject) => {
     const child = spawn(options.ffmpeg, command, { stdio: "inherit", windowsHide: true });

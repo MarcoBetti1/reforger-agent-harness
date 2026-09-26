@@ -79,6 +79,12 @@ A fresh Reforger 1.8.0.13 client loaded only `core` and base `ArmaReforger` in `
 
 Normal close was corroborated by `Game destroyed`; the full console still contained nine startup/runtime and 62 shutdown error lines. Classify these separately rather than treating process exit 0 as a clean run. The recorder's plain-pipe stdin rejected `q`, then its existing 360-second bound finished normally at 5,399 frames, exit 0. Because the game had already closed, the private full-monitor original has a substantial desktop tail. Use PTY stdin when early stopping is needed, preserve private originals, and review/crop before publication. The completed file does not establish a gameplay or input pass.
 
+## Storage before execution
+
+`client:run --execute` and `screen:record --execute` refuse to start below **2 GiB available space** on an output filesystem, or when the space probe fails. Before any directory creation or process launch, the check resolves each nearest existing output ancestor through directory junctions, then queries its actual filesystem. Client checks include logs, profile and addon-download destinations. The recorder also rejects existing output entries, including dangling links. Dry runs do not probe or require free space.
+
+Focused tests cover low space, existing ancestors, junctions, probe failure, dangling output links and refusal before writes/spawn. This is a preflight snapshot, not a capacity reservation or a mid-run monitor; plan additional headroom for the recording duration, downloads and concurrent writers. These tests do not establish a live recording pass.
+
 ## Screen recording
 
 ```powershell
