@@ -116,3 +116,9 @@ A private player-hosted Conflict Arland session reached GAME and its single loop
 ## Review evidence
 
 `npm run logs:summary -- --log '<console.log>'` reports the latest mission, loaded addons, join failures, and one Raven-specific adapter for its runtime/supply events. Its event count is read-only and point-in-time. A claimed supply run or even a logged transfer needs corroboration through visible vehicle movement and before/after resource counts. For any addon feature, record game version, addon IDs, scenario, command, timing, actions, before/after UI, log path, observed outcome, and a recovery note if it failed.
+
+## Recorder shutdown verified September 26
+
+When launching the recording helper through Codex's command tool, use `tty: true` if the run may need to end before its configured duration. A plain-pipe session had closed stdin and rejected an attempted `q`; the recorder was still running and completed normally at its existing time limit. Do not restart or declare a recorder stopped from that stdin error. Poll the same handle or inspect its exact process.
+
+A later PTY recording accepted `q`, finalized its MP4, and exited 0. Stop recording after the required post-action observation and before closing the game when possible, then use the game's normal close path and inspect the final console separately. Keep a bounded duration as fallback. Whole-monitor `ddagrab` files can contain other applications; keep originals in private ignored storage and crop/review footage before publishing it. This workflow does not establish that a gameplay scenario passed.
