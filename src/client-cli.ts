@@ -16,7 +16,7 @@ The client receives a separate profile and log directory. Workshop downloads are
 The default test window is 1280 x 720 at a 60 FPS cap.
 --connect-local uses Bohemia's documented -client 127.0.0.1 syntax for the default server port.
 Client CLI syntax for a non-default server port and the in-game Direct Connect flow are unverified here.
---expect-game requires the current console.log to record a transition to GAME before the bounded run succeeds.
+--expect-game requires the current console.log to record a transition to GAME before the bounded run succeeds. It checks startup, not addon behavior.
 --keep-open removes the time limit for a player handoff; the launcher monitors logs until the game exits or you interrupt it with Ctrl+C.
 --run-dir pins the logs and default profile location for a repeatable test. Its console.log must not already exist.
 `;
@@ -357,7 +357,7 @@ async function executeClient(plan: ClientPlan): Promise<number> {
     }
     await checkClientLog();
     requireGameState(plan.expectGame, gameStateSeen, consolePath);
-    process.stdout.write(`Client reached its ${plan.durationSeconds}-second time limit; stopping game. ${plan.expectGame ? "GAME state was observed." : "Connection status is not inferred."} Log: ${consolePath}\n`);
+    process.stdout.write(`Client reached its ${plan.durationSeconds}-second time limit; stopping game. ${plan.expectGame ? "GAME state was observed; addon behavior was not checked." : "Connection status is not inferred."} Log: ${consolePath}\n`);
     return 0;
   } finally {
     process.off("SIGINT", onInterrupt);
@@ -388,7 +388,7 @@ export async function runClientCli(argv = process.argv.slice(2)): Promise<number
   if (existsSync(plan.profile) && !isDirectory(plan.profile)) throw new Error(`Profile path is not a directory: ${plan.profile}`);
   process.stdout.write(`Working directory: ${plan.cwd}\nProfile: ${plan.profile}\nLogs: ${plan.logsDir}\nDownloads: ${plan.downloadDir}\n`);
   process.stdout.write(`Command: ${formatPowerShellCommand(plan)}\n`);
-  if (plan.expectGame) process.stdout.write("Success requires a GAME state transition in this run's console.log.\n");
+  if (plan.expectGame) process.stdout.write("Startup success requires a GAME state transition in this run's console.log; addon behavior needs a separate test.\n");
   if (!options.execute) {
     process.stdout.write("Dry run only. Add --execute to start the client.\n");
     return 0;
