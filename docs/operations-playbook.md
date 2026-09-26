@@ -215,3 +215,9 @@ The recorded vanilla failures used the helper's raw `-client 127.0.0.1` path. In
 ## Enforce compile constraints verified September 26
 
 With installed Workbench 1.8.0.13, `bool owned;` produced a broken-expression error because `owned` is reserved. Rename that local variable. A long chained ownership/context predicate then produced `Formula too complex`, followed by unrelated-looking missing-class errors in base-game scripts. Splitting the same conditions into short ordered early-return guards passed all five configurations. Preserve null-check order and short-circuit behavior; investigate the first addon error before modifying base-game code in response to cascading diagnostics. Keep failed build logs separate from the repaired package.
+
+## Reuse complete fixture geometry before shortening it — September 26
+
+A feature course copied from an older scene failed before exercising its intended behavior: its starting vehicle alignment violated the current controller's entry requirements. Moving the vehicles to proven positions then conflicted with an inherited minimum-distance check for the shorter goal; source review caught that second mismatch before launch. These were distinct setup failures, not results for the intended stop/restart change.
+
+When extracting a focused course, first reuse the proven starting positions, native pilot and goal selection together, removing only unrelated phases such as cargo setup. Check inherited route-distance, alignment, ownership and phase prerequisites before introducing shorter geometry. Keep physical acceptance gates intact and label skipped capabilities explicitly. A new layout is worthwhile when it saves meaningful iteration time; avoid a sequence of new fixture repairs that delays testing the product.
