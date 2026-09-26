@@ -15,7 +15,7 @@ const USAGE = `Isolated Arma Reforger client launcher (dry run by default)
 The client receives a separate profile and log directory. Workshop downloads are cached under the profile root's addons subdirectory, so reusing --profile also reuses downloaded mods.
 The default test window is 1280 x 720 at a 60 FPS cap.
 --window-x and --window-y optionally set the initial window position with -posX/-posY. Coordinates are signed decimal safe integers; either axis may be supplied independently.
---force-update passes -forceUpdate to request rendering and updates while unfocused. These optional flags are documented by Bohemia but not yet live-verified here; see docs/client-window-options.md.
+--force-update passes -forceUpdate to request rendering and updates while unfocused. Initial placement has been observed live; unfocused timing remains unverified. See docs/client-window-options.md.
 --addons-dir names a parent folder containing addon subfolders. Packed addons need addon.gproj, data.pak and resourceDatabase.rdb from the same build. Pass --addon <GUID> to activate each addon; discovery alone does not load it.
 For a frozen test pack, copy all three files into .cache/test-addons/MyAddon/ and pass --addons-dir .cache/test-addons --addon <GUID>. Keep that entire copy unchanged until the client exits.
 --connect-local uses Bohemia's documented -client 127.0.0.1 syntax for the default server port.
