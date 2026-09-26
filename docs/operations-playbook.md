@@ -8,6 +8,8 @@ Storage parents aggregate actual child containers. Author and verify the child's
 
 Native `CanBePerformed` creates resource subscriptions; spatial queues update on later FixedFrame calls. The first unload check reported NoStorage with an empty external queue, then became eligible after 33.1 ms. A bounded readiness wait retained exact identities, stationary vehicle and conserved counts; it did not bypass native eligibility.
 
+The later loaded-trip check also completed native unloading with the M923's AI driver still seated and engine idling under a real Hold command. Require a physically stopped vehicle and the native eligibility/queue checks; engine-off was an unnecessary restriction in the earlier static fixture. Native cargo-seat occupancy restrictions still apply. Preserve Hold through the complete transfer and cancellation, then request Resume and measure actual departure. Automated action dispatch proves the engine action path; it does not prove keyboard/menu input.
+
 This establishes static transfer/cancellation, not transport, desktop input, multiplayer or natural shutdown. A fresh activation attempt after confirmed editor closure still returned `failed to activate captured window`; capture worked and no click/key delivery was established.
 
 
