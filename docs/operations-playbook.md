@@ -73,6 +73,12 @@ For a test that must open the native map menu, use the game's `MenuManager.OpenM
 
 Separate an order's stages in both UI and telemetry: request accepted, executing, physically completed, or unable to proceed. A button click, a waypoint insertion, and a server acknowledgement do not establish physical completion. A strict log parser should require the world and expected actors, the terminal success marker from the current run, real position/seat/target checks, and no new engine/world/resource/script/replication errors. A base-world asset warning can appear after `GAME` and a probe's initial marker while the world is still loading; if a known warning needs an exception, match its exact base asset, warning text, and loading context, then fail the same warning during gameplay. Count every exception. Preserve the raw recording; make proof clips with modest crops and captions limited to log-verified events. State explicitly when a fixed camera loses a vehicle outside its view.
 
+### Vanilla native UI control, September 26
+
+A fresh Reforger 1.8.0.13 client loaded only `core` and base `ArmaReforger` in `worlds/GameMaster/GM_Arland.ent`. It copied only engine/game settings from the preceding addon input run and used the same requested `1280 × 720` window at `(640,680)` with `-forceUpdate`. Escape and a native **Edit scenario properties** click produced no observed effect; the pause toolbar only hovered while displayed simulation time advanced. This is a native **GM toolbar** control, not an opened native MapMenu or a player-driving test. It reproduces a UI-delivery symptom without the addon, but does not identify an OS, tool, engine or focus cause. An OS Alt+F4 close succeeding and a widget hovering do not prove native game-action delivery. Observe raw input, focused/modal widgets and mapped actions before changing addon control logic; no OS/security change follows from this evidence.
+
+Normal close was corroborated by `Game destroyed`; the full console still contained nine startup/runtime and 62 shutdown error lines. Classify these separately rather than treating process exit 0 as a clean run. The recorder's plain-pipe stdin rejected `q`, then its existing 360-second bound finished normally at 5,399 frames, exit 0. Because the game had already closed, the private full-monitor original has a substantial desktop tail. Use PTY stdin when early stopping is needed, preserve private originals, and review/crop before publication. The completed file does not establish a gameplay or input pass.
+
 ## Screen recording
 
 ```powershell
