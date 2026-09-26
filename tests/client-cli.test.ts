@@ -45,6 +45,61 @@ describe("isolated client launcher", () => {
     expect(() => parseClientArgs(["--keep-open", "--keep-open"])).toThrow("provided twice");
   });
 
+  it("keeps window placement and unfocused updates opt-in", () => {
+    const options = parseClientArgs([]);
+    const plan = makeClientPlan(options, path.resolve("game", "ArmaReforgerSteam.exe"), path.resolve("run"));
+    expect(options.windowX).toBeUndefined();
+    expect(options.windowY).toBeUndefined();
+    expect(options.forceUpdate).toBe(false);
+    expect(plan.args).not.toContain("-posX");
+    expect(plan.args).not.toContain("-posY");
+    expect(plan.args).not.toContain("-forceUpdate");
+  });
+
+  it("passes signed window coordinates and forceUpdate as separate launch arguments", () => {
+    const options = parseClientArgs(["--window-x", "-1280", "--window-y", "0", "--force-update", "--world", "worlds/Test.ent"]);
+    const executable = path.resolve("game", "ArmaReforgerSteam.exe");
+    const baseline = makeClientPlan(parseClientArgs([]), executable, path.resolve("run"));
+    const plan = makeClientPlan(options, executable, path.resolve("run"));
+    expect(options).toMatchObject({ windowX: -1280, windowY: 0, forceUpdate: true, execute: false });
+    expect(plan.args).toEqual([...baseline.args, "-posX", "-1280", "-posY", "0", "-forceUpdate", "-world", "worlds/Test.ent"]);
+    expect(plan.cwd).toBe(baseline.cwd);
+    expect(plan.profile).toBe(baseline.profile);
+    expect(plan.durationSeconds).toBe(baseline.durationSeconds);
+  });
+
+  it.each([
+    ["--window-x", "windowX", "-posX", "-posY"],
+    ["--window-y", "windowY", "-posY", "-posX"],
+  ])("accepts %s independently and preserves safe-integer boundaries", (flag, field, engineFlag, absentFlag) => {
+    for (const value of [Number.MIN_SAFE_INTEGER, 0, Number.MAX_SAFE_INTEGER]) {
+      const options = parseClientArgs([flag, String(value)]);
+      const plan = makeClientPlan(options, path.resolve("game", "ArmaReforgerSteam.exe"), path.resolve("run"));
+      expect(options[field as "windowX" | "windowY"]).toBe(value);
+      expect(plan.args.slice(-2)).toEqual([engineFlag, String(value)]);
+      expect(plan.args).not.toContain(absentFlag);
+    }
+  });
+
+  it.each(["--window-x", "--window-y"])("rejects missing, duplicate and invalid %s coordinates", (flag) => {
+    for (const value of ["NaN", "Infinity", "-Infinity", "1.5", "-1.5", "9007199254740992", "-9007199254740992", "1e3", "0x10", " ", "1px"]) {
+      expect(() => parseClientArgs([flag, value])).toThrow("finite signed decimal safe integer");
+    }
+    expect(() => parseClientArgs([flag])).toThrow("Expected a value");
+    expect(() => parseClientArgs([flag, "--force-update"])).toThrow("Expected a value");
+    expect(() => parseClientArgs([flag, "1", flag, "2"])).toThrow("provided twice");
+  });
+
+  it("accepts forceUpdate without placement and rejects duplicate or assigned values", () => {
+    const options = parseClientArgs(["--force-update"]);
+    const plan = makeClientPlan(options, path.resolve("game", "ArmaReforgerSteam.exe"), path.resolve("run"));
+    expect(plan.args.at(-1)).toBe("-forceUpdate");
+    expect(plan.args).not.toContain("-posX");
+    expect(plan.args).not.toContain("-posY");
+    expect(() => parseClientArgs(["--force-update", "--force-update"])).toThrow("provided twice");
+    expect(() => parseClientArgs(["--force-update", "false"])).toThrow("Unknown option");
+  });
+
   it("reuses the same addon download cache across runs with a stable profile", () => {
     const options = parseClientArgs(["--profile", "isolated-profile"]);
     const executable = path.resolve("game", "ArmaReforgerSteam.exe");

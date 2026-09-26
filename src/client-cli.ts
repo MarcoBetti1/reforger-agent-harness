@@ -10,10 +10,12 @@ import { discoverSteamLibraries } from "./doctor.js";
 
 const USAGE = `Isolated Arma Reforger client launcher (dry run by default)
 
-  npm run client:run -- [--game <ArmaReforgerSteam.exe>] [--profile <directory>] [--run-dir <new-directory>] [--addon <16-hex-ID> ...] [--addons-dir <directory> ...] [--world <world.ent> | --connect-local] [--duration-seconds 600 | --keep-open] [--expect-game] [--execute]
+  npm run client:run -- [--game <ArmaReforgerSteam.exe>] [--profile <directory>] [--run-dir <new-directory>] [--addon <16-hex-ID> ...] [--addons-dir <directory> ...] [--world <world.ent> | --connect-local] [--window-x <integer>] [--window-y <integer>] [--force-update] [--duration-seconds 600 | --keep-open] [--expect-game] [--execute]
 
 The client receives a separate profile and log directory. Workshop downloads are cached under the profile root's addons subdirectory, so reusing --profile also reuses downloaded mods.
 The default test window is 1280 x 720 at a 60 FPS cap.
+--window-x and --window-y optionally set the initial window position with -posX/-posY. Coordinates are signed decimal safe integers; either axis may be supplied independently.
+--force-update passes -forceUpdate to request rendering and updates while unfocused. These optional flags are documented by Bohemia but not yet live-verified here; see docs/client-window-options.md.
 --addons-dir names a parent folder containing addon subfolders. Packed addons need addon.gproj, data.pak and resourceDatabase.rdb from the same build. Pass --addon <GUID> to activate each addon; discovery alone does not load it.
 For a frozen test pack, copy all three files into .cache/test-addons/MyAddon/ and pass --addons-dir .cache/test-addons --addon <GUID>. Keep that entire copy unchanged until the client exits.
 --connect-local uses Bohemia's documented -client 127.0.0.1 syntax for the default server port.
@@ -30,6 +32,9 @@ export interface ClientOptions {
   addonIds: string[];
   addonsDirs: string[];
   world?: string;
+  windowX?: number;
+  windowY?: number;
+  forceUpdate: boolean;
   connectLocal: boolean;
   expectGame: boolean;
   durationSeconds: number;
@@ -69,10 +74,11 @@ export function parseClientArgs(argv: string[]): ClientOptions {
   let connectLocal = false;
   let expectGame = false;
   let keepOpen = false;
+  let forceUpdate = false;
   let execute = false;
   for (let index = 0; index < argv.length; index += 1) {
     const flag = argv[index];
-    if (flag === "--execute" || flag === "--connect-local" || flag === "--expect-game" || flag === "--keep-open") {
+    if (flag === "--execute" || flag === "--connect-local" || flag === "--expect-game" || flag === "--keep-open" || flag === "--force-update") {
       if (flag === "--execute") {
         if (execute) throw new Error("--execute was provided twice.");
         execute = true;
@@ -82,13 +88,16 @@ export function parseClientArgs(argv: string[]): ClientOptions {
       } else if (flag === "--keep-open") {
         if (keepOpen) throw new Error("--keep-open was provided twice.");
         keepOpen = true;
+      } else if (flag === "--force-update") {
+        if (forceUpdate) throw new Error("--force-update was provided twice.");
+        forceUpdate = true;
       } else {
         if (expectGame) throw new Error("--expect-game was provided twice.");
         expectGame = true;
       }
       continue;
     }
-    if (!["--game", "--profile", "--run-dir", "--addon", "--addons-dir", "--world", "--duration-seconds"].includes(flag)) {
+    if (!["--game", "--profile", "--run-dir", "--addon", "--addons-dir", "--world", "--duration-seconds", "--window-x", "--window-y"].includes(flag)) {
       throw new Error(`Unknown option: ${flag}\n\n${USAGE}`);
     }
     const value = argv[++index];
@@ -118,6 +127,17 @@ export function parseClientArgs(argv: string[]): ClientOptions {
   if (keepOpen && values.has("--duration-seconds")) {
     throw new Error("--keep-open and --duration-seconds cannot be combined.");
   }
+  const coordinate = (flag: string): number | undefined => {
+    const raw = values.get(flag);
+    if (raw === undefined) return undefined;
+    const value = Number(raw);
+    if (!/^[+-]?\d+$/.test(raw) || !Number.isSafeInteger(value)) {
+      throw new Error(`${flag} must be a finite signed decimal safe integer.`);
+    }
+    return value;
+  };
+  const windowX = coordinate("--window-x");
+  const windowY = coordinate("--window-y");
   const profile = values.get("--profile") ? path.resolve(values.get("--profile")!) : undefined;
   if (profile) rejectPrimaryClientProfile(profile);
   if (addonIds.length > 0 && addonsDirs.length === 0 && !profile) {
@@ -130,6 +150,9 @@ export function parseClientArgs(argv: string[]): ClientOptions {
     addonIds,
     addonsDirs,
     world,
+    windowX,
+    windowY,
+    forceUpdate,
     connectLocal,
     expectGame,
     durationSeconds,
@@ -210,6 +233,9 @@ export function makeClientPlan(options: ClientOptions, executable: string, runDi
     "-addonDownloadDir", downloadDir,
     "-window", "-screenWidth", "1280", "-screenHeight", "720", "-maxFPS", "60", "-noSplash",
   ];
+  if (options.windowX !== undefined) args.push("-posX", String(options.windowX));
+  if (options.windowY !== undefined) args.push("-posY", String(options.windowY));
+  if (options.forceUpdate) args.push("-forceUpdate");
   if (options.addonsDirs.length > 0) args.push("-addonsDir", options.addonsDirs.join(","));
   if (options.addonIds.length > 0) args.push("-addons", options.addonIds.join(","));
   if (options.world) args.push("-world", options.world);
