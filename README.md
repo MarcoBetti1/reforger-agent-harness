@@ -42,6 +42,7 @@ The Desktop Duplication backend captures an entire monitor; choose the index and
 ## Other commands
 
 - `npm run cli -- project-info`, `scan-mod`, `search-text`, `list-packaged-resources`, or `search-packaged-data` for read-only inspection.
+- `npm run pak:source -- list|find|read|extract ...` for [bounded exact-path inspection of installed PAC1 text resources](docs/selective-pak-source.md), without unpacking complete archives.
 - `npm run mod:fetch -- --mod '<WorkshopID=Name>' --execute` to fetch into a reusable isolated server cache.
 - `npm run conflict:host -- --mod '<WorkshopID=Name>' --keep-open --execute` for a private loopback Conflict server.
 - `npm run server:config -- ...` and `npm run server:run -- ...` for explicit scenarios and local binding.

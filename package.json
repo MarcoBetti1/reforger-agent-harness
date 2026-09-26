@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "cli": "tsx src/cli.ts",
+    "pak:source": "tsx src/pak-source-cli.ts",
     "server:config": "tsx src/server-config-cli.ts",
     "server:run": "tsx src/local-server-cli.ts",
     "conflict:host": "tsx src/conflict-host-cli.ts",
