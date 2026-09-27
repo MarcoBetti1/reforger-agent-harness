@@ -227,3 +227,11 @@ With installed Workbench 1.8.0.13, `bool owned;` produced a broken-expression er
 A feature course copied from an older scene failed before exercising its intended behavior: its starting vehicle alignment violated the current controller's entry requirements. Moving the vehicles to proven positions then conflicted with an inherited minimum-distance check for the shorter goal; source review caught that second mismatch before launch. These were distinct setup failures, not results for the intended stop/restart change.
 
 When extracting a focused course, first reuse the proven starting positions, native pilot and goal selection together, removing only unrelated phases such as cargo setup. Check inherited route-distance, alignment, ownership and phase prerequisites before introducing shorter geometry. Keep physical acceptance gates intact and label skipped capabilities explicitly. A new layout is worthwhile when it saves meaningful iteration time; avoid a sequence of new fixture repairs that delays testing the product.
+
+## Preserve independently completed stages — September 26
+
+A multi-vehicle restart reached each vehicle's required fresh powered segment, but the test timed out because the first vehicle had already stopped when the second qualified. Requiring simultaneous motion measured a different condition from successful restart of each member. Preserve the original failed result and independently measured segments when correcting that observer.
+
+Record completion per original actor and command generation only after its full continuous movement requirement is met. Continue checking identity, ownership, activity changes, failures and the current valid moving or stopped state. Never pool progress from replacement activities or clear a separate spacing failure. Retaining completed evidence is different from keeping the largest value ever seen.
+
+For timing comparisons, measure the changed mechanism's own start and end as well as the whole run. One earlier route-entry offer coincided with an earlier movement-order creation; most of the apparent join-time gain preceded the changed code. Keep that distinction visible before attributing an improvement or adding more tuning.
