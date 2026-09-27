@@ -180,6 +180,8 @@ A private player-hosted Conflict Arland session reached GAME and its single loop
 
 `npm run logs:summary -- --log '<console.log>'` reports the latest mission, loaded addons, join failures, and one Raven-specific adapter for its runtime/supply events. Its event count is read-only and point-in-time. A claimed supply run or even a logged transfer needs corroboration through visible vehicle movement and before/after resource counts. For any addon feature, record game version, addon IDs, scenario, command, timing, actions, before/after UI, log path, observed outcome, and a recovery note if it failed.
 
+Do not infer floating-point equality from rounded logs. A native distance printed as `0.5` while its comparison against a `0.5` minimum was true for “below minimum,” causing intended threshold samples to be omitted. Log the native comparison as well as the value, and construct ordinary fixture samples with a small margin from the threshold; reserve exact-boundary inputs for deliberate boundary tests. Do not change the production threshold merely to make a fixture pass.
+
 ### Live log snapshots
 
 ```powershell
