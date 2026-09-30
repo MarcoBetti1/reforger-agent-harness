@@ -1,5 +1,9 @@
 # Reforger operations playbook
 
+## Direct Game Master player deployment — September 30
+
+A direct `client:run --world ... --keep-open` world reached GAME but the deployment UI initially reported no available factions. The verified native recovery was **Game Master → Scenario properties → Playable factions → US Army → Save and close**, then **Respawn menu → choose faction → join group → Continue → select the authored spawn → Deploy**. The final view was an on-foot player with Game Master closed. Current Computer Use26.928.21956 `@oai/sky` mouse actions were corroborated by fresh native screenshots after each step; key requests had no immediate observed screen change. This proves the deployment path, not normal driving/key delivery. Keep the human session untimed, leave it player-owned, and do not infer a gameplay pass from GAME. Scene-specific coordinates/build/log evidence belong in the mod repository's September30 player-session record.
+
 ## Validate world component attributes as well as scripts — September 30
 
 A private native-driving fixture passed five script configurations and packaging, then logged an unknown world component attribute and crashed at component creation before GAME. The field belonged to a different inherited test class. Removing that unsupported field in a separate frozen build allowed gameplay startup; the exact native crash internals remain unproved. Script compilation does not validate every authored world attribute. Preserve the failed package, full console, crash log and dump, and separate startup failure from driving evidence. Check the actual component inheritance when copying a fixture.
