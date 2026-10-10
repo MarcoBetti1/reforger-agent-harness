@@ -18,6 +18,7 @@ export const captureSchema = z.object({
   useBounds: z.boolean().default(false),
   state: z.enum(["stopped", "occupied", "running"]).default("stopped"),
   seats: z.array(z.string().regex(/^[\w -]{1,64}$/u)).max(8).default([]),
+  setupActions: z.array(z.string().regex(/^[A-Za-z][A-Za-z0-9_]{0,95}$/u)).max(8).default([]),
   minRPM: z.number().min(1).max(1000).default(100),
   resolution: z.tuple([z.number().int().min(320).max(3840), z.number().int().min(240).max(2160)]).default([1280,720]),
   settleSeconds: z.number().min(1).max(20).default(2),
@@ -37,6 +38,7 @@ export const captureSchema = z.object({
 }).strict().superRefine((job, ctx) => {
   if (new Set(job.views.map(v => v.label)).size !== job.views.length) ctx.addIssue({code:"custom", message:"View labels must be unique"});
   if (job.state === "occupied" && job.seats.length === 0) ctx.addIssue({code:"custom", message:"Occupied state requires actual seats"});
+  if(job.setupActions.length && !job.seats.length) ctx.addIssue({code:"custom",message:"Setup actions require a genuine occupied actor"});
   for(const view of job.views)if((view.purpose==="native-crew")!==Boolean(view.nativeSeat) || (view.nativeSeat && !job.seats.includes(view.nativeSeat)))ctx.addIssue({code:"custom",message:"Native crew view requires a declared occupied seat and native-crew purpose"});
 });
 export type CaptureJob = z.infer<typeof captureSchema>;
@@ -48,7 +50,7 @@ export function engineJob(job: CaptureJob): Record<string,unknown> {
     return [Math.sin(a)*Math.cos(e)*view.distance, Math.sin(e)*view.distance, Math.cos(a)*Math.cos(e)*view.distance].join(" ");
   });
   return {id:job.id,prefab:job.prefab,position:job.position.join(" "),center:job.center.join(" "),state:job.state,
-    seats:job.seats,minRPM:job.minRPM,useBounds:job.useBounds,settleSeconds:job.settleSeconds,initialSettleSeconds:job.initialSettleSeconds,
+    seats:job.seats,setupActions:job.setupActions,minRPM:job.minRPM,useBounds:job.useBounds,settleSeconds:job.settleSeconds,initialSettleSeconds:job.initialSettleSeconds,
     labels:job.views.map(v=>v.label),offsets,lookOffsets:job.views.map(v=>v.lookOffset.join(" ")),fovs:job.views.map(v=>v.fov),nativeSeats:job.views.map(v=>v.nativeSeat)};
 }
 async function absent(p:string):Promise<boolean> { try {await lstat(p);return false;} catch(e) {if((e as NodeJS.ErrnoException).code==="ENOENT")return true;throw e;} }
@@ -128,7 +130,7 @@ export async function runNativeCapture(argv=process.argv.slice(2)):Promise<numbe
       if(done) {await delay(500);if(child.exitCode!==null)break;} else await delay(500);
     }
     manifest.engineVersionLines=consoleText.split(/\r?\n/u).filter(line=>/Initializing engine, version|Game version|Enfusion shader version/u.test(line));
-    manifest.nativeTelemetry=consoleText.split(/\r?\n/u).filter(line=>/NVC_(JOB|SUBJECT|FRAME|STATE|CREW|VIEW|DONE|FAIL|ENGINE)/u.test(line));
+    manifest.nativeTelemetry=consoleText.split(/\r?\n/u).filter(line=>/NVC_(JOB|SUBJECT|FRAME|STATE|CREW|VIEW|DONE|FAIL|ENGINE|SETUP_ACTION)/u.test(line));
     manifest.exitCode=child.exitCode;manifest.naturalExit=child.exitCode!==null;
     if(!done)throw new Error("No run-specific native completion marker before exit/timeout");
     const after=await Promise.all(sources.map(source=>identity(source.path)));
