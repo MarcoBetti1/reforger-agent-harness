@@ -21,7 +21,7 @@ export const captureSchema = z.object({
   setupActions: z.array(z.string().regex(/^[A-Za-z][A-Za-z0-9_]{0,95}$/u)).max(8).default([]),
   minRPM: z.number().min(1).max(1000).default(100),
   resolution: z.tuple([z.number().int().min(320).max(3840), z.number().int().min(240).max(2160)]).default([1280,720]),
-  settleSeconds: z.number().min(1).max(20).default(2),
+  settleSeconds: z.number().min(0.1).max(20).default(2),
   initialSettleSeconds: z.number().min(5).max(60).default(12),
   views: z.array(z.object({
     label,
@@ -33,12 +33,15 @@ export const captureSchema = z.object({
     fov: z.number().min(15).max(110).default(55),
     purpose: z.enum(["exterior", "inspection", "native-crew"]).default("exterior"),
     nativeSeat: z.string().regex(/^[\w -]{0,64}$/u).default(""),
-  })).min(1).max(24),
+    action: z.string().regex(/^(?:[A-Za-z][A-Za-z0-9_]{0,95})?$/u).default(""),
+  })).min(1).max(120),
   buildFiles: z.array(z.string()).max(32).default([]),
 }).strict().superRefine((job, ctx) => {
   if (new Set(job.views.map(v => v.label)).size !== job.views.length) ctx.addIssue({code:"custom", message:"View labels must be unique"});
+  if(job.views.length * job.resolution[0] * job.resolution[1] * 3 > 512 * 1024 ** 2)ctx.addIssue({code:"custom",message:"Native captures exceed bounded 512 MiB raw image budget"});
   if (job.state === "occupied" && job.seats.length === 0) ctx.addIssue({code:"custom", message:"Occupied state requires actual seats"});
   if(job.setupActions.length && !job.seats.length) ctx.addIssue({code:"custom",message:"Setup actions require a genuine occupied actor"});
+  if(job.views.some(v=>v.action) && !job.seats.length) ctx.addIssue({code:"custom",message:"View actions require a genuine occupied actor"});
   for(const view of job.views)if((view.purpose==="native-crew")!==Boolean(view.nativeSeat) || (view.nativeSeat && !job.seats.includes(view.nativeSeat)))ctx.addIssue({code:"custom",message:"Native crew view requires a declared occupied seat and native-crew purpose"});
 });
 export type CaptureJob = z.infer<typeof captureSchema>;
@@ -51,7 +54,7 @@ export function engineJob(job: CaptureJob): Record<string,unknown> {
   });
   return {id:job.id,prefab:job.prefab,position:job.position.join(" "),center:job.center.join(" "),state:job.state,
     seats:job.seats,setupActions:job.setupActions,minRPM:job.minRPM,useBounds:job.useBounds,settleSeconds:job.settleSeconds,initialSettleSeconds:job.initialSettleSeconds,
-    labels:job.views.map(v=>v.label),offsets,lookOffsets:job.views.map(v=>v.lookOffset.join(" ")),fovs:job.views.map(v=>v.fov),nativeSeats:job.views.map(v=>v.nativeSeat)};
+    labels:job.views.map(v=>v.label),offsets,lookOffsets:job.views.map(v=>v.lookOffset.join(" ")),fovs:job.views.map(v=>v.fov),nativeSeats:job.views.map(v=>v.nativeSeat),viewActions:job.views.map(v=>v.action)};
 }
 async function absent(p:string):Promise<boolean> { try {await lstat(p);return false;} catch(e) {if((e as NodeJS.ErrnoException).code==="ENOENT")return true;throw e;} }
 async function identity(p:string) {const data=await readFile(p);return {path:p,bytes:data.length,sha256:createHash("sha256").update(data).digest("hex")};}
@@ -130,7 +133,7 @@ export async function runNativeCapture(argv=process.argv.slice(2)):Promise<numbe
       if(done) {await delay(500);if(child.exitCode!==null)break;} else await delay(500);
     }
     manifest.engineVersionLines=consoleText.split(/\r?\n/u).filter(line=>/Initializing engine, version|Game version|Enfusion shader version/u.test(line));
-    manifest.nativeTelemetry=consoleText.split(/\r?\n/u).filter(line=>/NVC_(JOB|SUBJECT|FRAME|STATE|CREW|VIEW|DONE|FAIL|ENGINE|SETUP_ACTION)/u.test(line));
+    manifest.nativeTelemetry=consoleText.split(/\r?\n/u).filter(line=>/NVC_(JOB|SUBJECT|FRAME|STATE|CREW|VIEW|DONE|FAIL|ENGINE|SETUP_ACTION|VIEW_ACTION)/u.test(line));
     manifest.exitCode=child.exitCode;manifest.naturalExit=child.exitCode!==null;
     if(!done)throw new Error("No run-specific native completion marker before exit/timeout");
     const after=await Promise.all(sources.map(source=>identity(source.path)));

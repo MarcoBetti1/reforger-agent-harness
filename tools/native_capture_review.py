@@ -15,7 +15,9 @@ def review(run_dir):
     started = datetime.fromisoformat(manifest['startedUtc'].replace('Z', '+00:00')).timestamp()
     output = root / 'review'
     output.mkdir(exist_ok=False)
-    images, records, hashes = [], [], set()
+    images, records, hashes = [], [], {}
+    motion_sequence = job['settleSeconds'] < 1
+    previous_time = -1
     for view in job['views']:
         name = f"NativeCapture-{job['id']}-{view['label']}"
         candidates = list(Path(manifest['plan']['profile']).rglob(name + '.bmp'))
@@ -34,13 +36,18 @@ def review(run_dir):
         if black > .97 or deviation < 2:
             raise ValueError(f"Black/blank capture: {name}")
         digest = hashlib.sha256(src.read_bytes()).hexdigest()
-        if digest in hashes:
+        if digest in hashes and not motion_sequence:
             raise ValueError(f"Duplicated pixels across different views: {name}")
-        hashes.add(digest)
+        duplicate_of = hashes.get(digest)
+        hashes[digest] = view['label']
         frame = [line for line in telemetry if f"NVC_FRAME|{job['id']}|{view['label']}|1|" in line]
         state = [line for line in telemetry if f"NVC_STATE|{job['id']}|{view['label']}|" in line]
         if len(frame) != 1 or len(state) != 1 or 'selected=1' not in state[0]:
             raise ValueError(f"Missing successful pose/state telemetry: {name}")
+        world_time = float(frame[0].split('|')[4])
+        if world_time <= previous_time:
+            raise ValueError(f"Non-increasing native capture time: {name}")
+        previous_time = world_time
         values = dict(part.split('=', 1) for part in state[0].split('|')[3:] if '=' in part)
         if int(values['crew']) != len(job['seats']):
             raise ValueError(f"Crew count mismatch: {name}")
@@ -65,7 +72,7 @@ def review(run_dir):
         thumb = labeled.copy()
         thumb.thumbnail((640, 420))
         images.append(thumb)
-        records.append({'label':view['label'], 'source':str(src), 'bytes':src.stat().st_size, 'sha256':digest, 'decodedResolution':list(im.size), 'blackFraction':black, 'pixelStd':deviation, 'poseTelemetry':frame[0], 'observedState':values})
+        records.append({'label':view['label'], 'source':str(src), 'bytes':src.stat().st_size, 'sha256':digest, 'duplicateOf':duplicate_of,'nativeWorldTimeMs':world_time,'decodedResolution':list(im.size), 'blackFraction':black, 'pixelStd':deviation, 'poseTelemetry':frame[0], 'observedState':values})
     sheet = Image.new('RGB', (1280, 420 * ((len(images)+1)//2)), '#202830')
     for i, im in enumerate(images): sheet.paste(im, ((i%2)*640, (i//2)*420))
     sheet.save(output / 'contact-sheet.png')
