@@ -13,3 +13,11 @@ __pycache__/
 *.pak
 /recordings/
 /CON
+/tools/windows-runtime-leases/fixtures/
+/tools/windows-runtime-leases/state/
+/tools/windows-runtime-leases/OFFLINE_FIXTURES607*.json
+/tools/windows-runtime-leases/runtime_config.local.json
+**/owner-lease-private.json
+**/runs-v2/
+**/runtime-registry-v2.json
+**/RUNTIME_SLOT.json

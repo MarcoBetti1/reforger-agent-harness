@@ -16,6 +16,8 @@ An optional read-only MCP server is available through `npm start` after building
 
 ## Workbench and gameplay loop
 
+For source handoff recovery, use [explicit hash-verified text checkpoints](docs/source-recovery-checkpoints.md). The separate [Windows concurrent runtime lease prototype](docs/concurrent-runtime-leases.md) remains opt-in with migration disabled; it does not change the existing launchers.
+
 ```powershell
 npm run workbench:open -- --editor world --project 'C:\Path\To\MyAddon\addon.gproj' --world 'Worlds/Tests/MyScene.ent'
 npm run workbench:open -- --editor world --project 'C:\Path\To\MyAddon\addon.gproj' --world 'Worlds/Tests/MyScene.ent' --authorize-local-test-scripts --execute

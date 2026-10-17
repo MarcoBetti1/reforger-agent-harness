@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "label": "Independent frozen addon review",
+  "parallelApproved": true,
+  "buildRoot": "C:/REPLACE_WITH_INDEPENDENT_BUILD_ROOT",
+  "addonPath": "addons/your_addon",
+  "manifestPath": "frozen-next-manifest.json",
+  "manifestSHA256": "REPLACE_WITH_PINNED_MANIFEST_SHA256",
+  "fileCount": 0,
+  "gameExe": "C:/REPLACE_WITH_INSTALLED_GAME/ArmaReforgerSteamDiag.exe",
+  "pythonExe": "C:/REPLACE_WITH_INSTALLED_PYTHON/python.exe",
+  "addonId": "REPLACE_WITH_ADDON_ID",
+  "world": "worlds/GameMaster/GM_Arland.ent",
+  "worldSystemsConfig": "{C50579A2EC48E8EF}Configs/Systems/MissionSystems.conf"
+}

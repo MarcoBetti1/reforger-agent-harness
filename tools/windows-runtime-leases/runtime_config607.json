@@ -1,0 +1,9 @@
+{
+  "schema": 2,
+  "registryId": "b3d3a8ce-d693-4561-9b4c-4973a83d7e22",
+  "migrationEnabled": false,
+  "registryPath": "state/runtime-registry-v2.json",
+  "legacySlotPath": "../RUNTIME_SLOT.json",
+  "maxBackground": 2,
+  "lockTimeoutSeconds": 10
+}

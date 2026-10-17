@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "label": "Independent source batch",
+  "qualification": "Source prepared; native import and public-input acceptance pending",
+  "files": [{"path": "scripts/original_builder.py", "provenance": "original"}],
+  "references": []
+}
