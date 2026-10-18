@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "world": "Worlds/GVR_Review.ent",
+  "date": "1989-06-21",
+  "stageOrigin": [600, 200, 2600],
+  "FOV_degrees": 55,
+  "HDR_brightness": 0.00456415,
+  "resolution": [1280, 720],
+  "stage": {
+    "parentWorld": "{A9806AF617972E97}worlds/Arland/Arland.ent",
+    "radiusMetres": 140,
+    "heightMetres": 32,
+    "material": {"BCR_RGBA": [128,128,128,255], "NMO_RGBA": [128,128,0,255], "roughnessScale": 1, "metalness": 0},
+    "outdoorControl": "Move the entire elevated stage away before moving the subject to the ordinary apron."
+  },
+  "presets": {
+    "soft": {"weather":"Overcast", "hour":12, "HDR_brightness":0.04},
+    "daylight": {"weather":"Clear", "hour":12, "HDR_brightness":0.00456415},
+    "raking-east": {"weather":"Clear", "hour":8, "HDR_brightness":0.008},
+    "raking-west": {"weather":"Clear", "hour":17, "HDR_brightness":0.008},
+    "outdoor": {"weather":"Clear", "hour":12, "HDR_brightness":0.00456415}
+  },
+  "stations": [
+    {"name":"front-right", "eye":[6,3.2,7], "target":[0,1.8,0]},
+    {"name":"front-left", "eye":[-6,3.2,7], "target":[0,1.8,0]},
+    {"name":"rear-right", "eye":[6,3.2,-7], "target":[0,1.8,0]},
+    {"name":"rear-left", "eye":[-6,3.2,-7], "target":[0,1.8,0]},
+    {"name":"profile-right", "eye":[10,2.8,0], "target":[0,1.8,0]},
+    {"name":"profile-left", "eye":[-10,2.8,0], "target":[0,1.8,0]},
+    {"name":"front", "eye":[0,3.2,11], "target":[0,1.8,0]},
+    {"name":"rear", "eye":[0,3.2,-11], "target":[0,1.8,0]},
+    {"name":"roof", "eye":[5,9,-5], "target":[0,1.8,0]},
+    {"name":"medium-right", "eye":[7,3.3,-1.4], "target":[0,1.8,0]},
+    {"name":"medium-left", "eye":[-7,3.3,-1.4], "target":[0,1.8,0]},
+    {"name":"hull-detail", "eye":[3.7,2.7,5.8], "target":[0,1.25,2.7]},
+    {"name":"running-right", "eye":[3.1,1.3,0.65], "target":[1.5,0.8,0.65]},
+    {"name":"running-left", "eye":[-3.1,1.3,-0.65], "target":[-1.5,0.8,-0.65]},
+    {"name":"running-grazing", "eye":[2.25,1.25,2], "target":[1.6,1,0.65]},
+    {"name":"rear-storage", "eye":[4.2,2.5,-4], "target":[1.4,1.65,-2.9]}
+  ],
+  "representative": [
+    ["soft","front-right"], ["soft","profile-left"],
+    ["daylight","rear-right"], ["raking-east","hull-detail"],
+    ["raking-west","running-left"], ["soft","roof"],
+    ["outdoor","front-right"]
+  ]
+}

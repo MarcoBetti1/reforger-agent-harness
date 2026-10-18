@@ -2,6 +2,8 @@
 
 This is the reusable control plane for Reforger addon work. Addon-specific code and evidence belong in their own repositories. Begin with `npm ci`, a private `reforger-agent.config.json` copied from the example, and `npm run cli -- doctor`.
 
+For uncluttered model before/after evidence, see [clean native visual review](clean-visual-review.md). Its capture client attaches to an already coordinated, verified owner receipt; it never launches or closes a renderer. Addon worlds/adapters and generated evidence remain in the project.
+
 ## Fast test loop
 
 1. Open a selected addon and test world with `npm run workbench:open -- --editor world --project '<addon.gproj>' --world '<world.ent>' --authorize-local-test-scripts --execute`.
