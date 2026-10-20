@@ -16,6 +16,7 @@
     "conflict:host": "tsx src/conflict-host-cli.ts",
     "mod:fetch": "tsx src/mod-fetch-cli.ts",
     "client:run": "tsx src/client-cli.ts",
+    "visual:capture": "tsx src/native-capture-cli.ts",
     "screen:record": "tsx src/screen-record-cli.ts",
     "screen:clip": "tsx src/screen-clip-cli.ts",
     "logs:summary": "tsx src/log-summary-cli.ts",
