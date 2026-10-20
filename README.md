@@ -70,4 +70,11 @@ See each command's `--help` for arguments. The [Raven field notes](docs/raven-fi
 
 GitHub Actions runs TypeScript typechecking, unit tests, and compilation. Workbench validation, game startup, graphics capture, and player behavior require a local Windows installation and are not covered by that CI check. A vanilla local dedicated-server join previously timed out during authentication; direct `--world` launch and Workbench F5 are the verified local gameplay paths. The detailed observations and recovery steps are in the [playbook](docs/operations-playbook.md).
 
-The source is public for version control. No reuse license has been selected yet.
+## License and credit
+The covered generic harness material in this repository is licensed under [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for project attribution. Third-party dependencies retain their own terms; externally referenced game/addon assets are not included or relicensed.
+
+Credit in the description or documentation of an independent mod built with these tools is appreciated, **not required**. Suggested wording:
+
+> Built with Reforger Agent Harness: https://github.com/MarcoBetti1/reforger-agent-harness
+
+Independent output mods do not automatically inherit this license merely because the tools were used. Redistribution of harness code or derivatives remains subject to the applicable Apache-2.0 license and notice obligations; the voluntary credit suggestion adds no condition to LICENSE. Vehicle/addon assets require their own rights and licensing decisions.

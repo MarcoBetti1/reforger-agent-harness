@@ -1,0 +1,12 @@
+Reforger Agent Harness
+https://github.com/MarcoBetti1/reforger-agent-harness
+
+Project maintained by MarcoBetti1; contributions are recorded in the Git history.
+
+The covered generic harness source, documentation, tests and configuration
+examples are licensed under Apache License 2.0 as provided in LICENSE.
+Third-party dependencies retain their own applicable terms and notices.
+Externally referenced game/addon assets and independent output mods are not
+included in this license grant.
+
+This NOTICE supplies project attribution only and does not modify LICENSE.
