@@ -1,7 +1,7 @@
 import path from "node:path";
 import { realpath } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
-import fg from "fast-glob";
+import { globFiles } from "./fs-utils.js";
 import { cachePakText, findExactResource, normalizeResource, readPakIndex, readPakText, sourceProvenance } from "./pak-source.js";
 import type { PakEntry, PakIndex } from "./pak-source.js";
 
@@ -54,7 +54,12 @@ export async function runPakSource(args: string[], cwd = process.cwd()): Promise
   if (!args.length || args.includes("--help")) { process.stdout.write(HELP); return; }
   const options = parsePakSourceArgs(args);
   const candidates = [...options.packs];
-  for (const root of options.roots) candidates.push(...await fg("**/*.pak", { cwd: path.resolve(cwd, root), absolute: true, onlyFiles: true, followSymbolicLinks: false }));
+  for (const root of options.roots) {
+    for await (const file of globFiles(path.resolve(cwd, root), "**/*.pak")) {
+      candidates.push(file);
+      if (candidates.length > 512) throw new Error("More than 512 packages selected; narrow --root.");
+    }
+  }
   if (candidates.length > 512) throw new Error("More than 512 packages selected; narrow --root.");
   const packs = [...new Set(await Promise.all(candidates.map((candidate) => realpath(path.resolve(cwd, candidate)))))].sort();
   if (!packs.length) throw new Error("No packages found.");

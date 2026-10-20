@@ -1,6 +1,5 @@
-import { access, readFile } from "node:fs/promises";
+import { access, glob, readFile } from "node:fs/promises";
 import path from "node:path";
-import fg from "fast-glob";
 
 import type { ReforgerAgentConfig } from "./config.js";
 
@@ -49,6 +48,16 @@ const DEFAULT_IGNORES = [
   "**/coverage/**",
 ];
 
+/** Node 24's native iterator avoids the obsolete fast-glob/braces dependency. */
+export async function* globFiles(root: string, pattern: string, excludes = DEFAULT_IGNORES): AsyncGenerator<string> {
+  if (pattern.length > 512 || path.isAbsolute(pattern) || pattern.split(/[\\/]/u).includes("..")) {
+    throw new Error("Use a bounded relative glob within the selected root.");
+  }
+  for await (const entry of glob(pattern, { cwd: root, withFileTypes: true, exclude: excludes })) {
+    if (entry.isFile()) yield path.resolve(entry.parentPath, entry.name);
+  }
+}
+
 export function getRoots(config: ReforgerAgentConfig, rootType: RootFilter): RootEntry[] {
   const roots: RootEntry[] = [
     ...config.modRoots.map((root) => ({ kind: "mod" as const, root })),
@@ -75,15 +84,7 @@ export async function listFiles(
       break;
     }
 
-    const matches = await fg(pattern, {
-      cwd: root.root,
-      absolute: true,
-      onlyFiles: true,
-      ignore: DEFAULT_IGNORES,
-      unique: true,
-    });
-
-    for (const match of matches) {
+    for await (const match of globFiles(root.root, pattern)) {
       results.push({ kind: root.kind, path: path.resolve(match) });
       if (results.length >= limit) {
         break;
