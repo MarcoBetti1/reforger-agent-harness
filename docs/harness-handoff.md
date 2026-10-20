@@ -2,6 +2,8 @@
 
 This is the reusable control plane for Reforger addon work. Addon-specific code and evidence belong in their own repositories. Begin with `npm ci`, a private `reforger-agent.config.json` copied from the example, and `npm run cli -- doctor`.
 
+For a fresh change request, first use the [task-to-template map](workflows.md), then plan a pinned job and run a sequential matrix through the qualified addon adapter. See [adapter contract](workflow-adapters.md) and [recovery](workflow-recovery.md). Compilation, behavior and owned normal closure have distinct verdicts. The new coordinator does not replace existing native launchers or claim their leases.
+
 For uncluttered model before/after evidence, see [clean native visual review](clean-visual-review.md). Its capture client attaches to an already coordinated, verified owner receipt; it never launches or closes a renderer. Addon worlds/adapters and generated evidence remain in the project.
 
 ## Fast test loop

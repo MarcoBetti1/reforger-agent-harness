@@ -41,4 +41,4 @@ jobs:
       - name: Test visual review tools
         run: |
           python -m pip install -r tools/requirements-visual-review.txt
-          python -m unittest discover -s tools -p test_visual_review.py
+          python -m unittest discover -s tools

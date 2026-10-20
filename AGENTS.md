@@ -2,6 +2,8 @@
 
 This repository contains reusable local test tools and research notes, not an addon. Read `docs/harness-handoff.md` and `docs/operations-playbook.md` before operating Workbench or Reforger. Keep observations separate from Workshop descriptions, and update the playbook after verifying or failing a UI step.
 
+Begin a new task with `docs/workflows.md` and `python tools/workflow.py templates`. Select a template and explicit required measurements before running. Use the addon-owned adapter contract and shared ownership mechanism; the coordinator never controls a game process. Keep incomplete functional assertions NOT_TESTED, and report blocking questions/uncertain ownership to the coordinating task immediately. Preserve frozen releases and manual publication ownership.
+
 - Keep addon scripts, worlds, audio, recordings, and addon-specific probes in their own repositories.
 - Use explicit `--project` and `--world` when opening Workbench. The default project may be an older local sample.
 - Launchers dry-run by default; opt into each real run with `--execute`.

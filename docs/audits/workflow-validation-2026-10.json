@@ -1,0 +1,454 @@
+{
+  "schema": 1,
+  "method": "Sanitized receipt from retained local artifacts; raw logs, profiles, chat and machine paths excluded",
+  "coverage": {
+    "metadataEntries": 37462,
+    "contentScanned": 794,
+    "byRoot": {
+      "gepard-task": 193,
+      "native-projects": 217,
+      "convoy-main-docs": 102,
+      "convoy-newer-docs": 120,
+      "convoy-native-runs": 132,
+      "harness": 14,
+      "capture-lab": 16
+    },
+    "supportedRecentTurns": 22,
+    "memoryFiles": 0,
+    "allHistoryClaimed": false
+  },
+  "sourceFingerprints": [
+    {
+      "source": "Gepard-ScreenshotCatalog-697/runs/compile-01/logs/console.log",
+      "sha256": "3a473a87031bdf3006802803d2ff3321ac673520d8c9259d385f88eeb0856736",
+      "bytes": 3804
+    },
+    {
+      "source": "Gepard-ScreenshotCatalog-697/runs/compile-02/logs/console.log",
+      "sha256": "faa69659006473780e425c783d6d1d156e9af13aac707ba2edbcc3ebc718517a",
+      "bytes": 17443
+    },
+    {
+      "source": "Gepard-ScreenshotCatalog-697/runs/compile-03/logs/console.log",
+      "sha256": "1c9a38b623b61b55513845fe26526e3a5cc93b702e76fedc990626f7f8203a87",
+      "bytes": 20710
+    },
+    {
+      "source": "convoy-lifecycle-review.md",
+      "sha256": "eb095981e32f62a070a39bb1b07bbc1385f3ee3ec72fd119f6aeb534ea024403",
+      "bytes": 5137
+    },
+    {
+      "source": "convoy-takeover-2026-09-30.md",
+      "sha256": "67dc69154c2fbeaafc4d30faf0e41c5bbd5dd38cb30cc9caadbf77c40769e6b6",
+      "bytes": 11050
+    },
+    {
+      "source": "Gepard-Acceptance-688/OUTCOME688.md",
+      "sha256": "7a00e6fbb359cca0fb92d0e6b2f3346659998df7e132f1392bb32bb901d22db0",
+      "bytes": 5660
+    },
+    {
+      "source": "Gepard-ReleasePrep-692/HANDOFF692.md",
+      "sha256": "83b21dae7fbd1890009fb0172b9a4fe127bd3e8d1390c67476c7f1cb97c5829f",
+      "bytes": 4986
+    },
+    {
+      "source": "Gepard-RuntimeHarness-607/INDEPENDENT_REVIEW607.md",
+      "sha256": "350c471736d5c3031f1b94dc3540ab8826add0d30d57d84555165abb55572092",
+      "bytes": 3712
+    }
+  ],
+  "baseline": {
+    "selectedCommands": 2,
+    "nativeCases": 2,
+    "seconds": [
+      32.0926484,
+      28.3710816
+    ],
+    "manualInterventions": 0,
+    "automaticRetries": 0,
+    "collectorStatuses": [
+      "PASS",
+      "PASS"
+    ]
+  },
+  "genericBatch": {
+    "selectedCommands": 1,
+    "nativeCases": 2,
+    "seconds": 60.531,
+    "caseSeconds": [
+      31.765,
+      28.75
+    ],
+    "automaticRetries": 0,
+    "initialInterpreterFailureBeforeNativeLaunch": true,
+    "correctedFreshAttempt": 2,
+    "broaderFunctionalStatus": "NOT_TESTED",
+    "noSpeedOrTokenSavingsClaimed": true
+  },
+  "cancellation": {
+    "seconds": 25.016,
+    "status": "NOT_TESTED",
+    "notStarted": [
+      "own-frag-right-2m-r1"
+    ],
+    "normalExit": true,
+    "leaseReleased": true
+  },
+  "healthyInput": {
+    "status": "FAIL",
+    "input": {
+      "status": "PASS",
+      "reason": "Healthy same-build native action calibration before attributing damaged-function failures",
+      "actual": {
+        "healthyControl": true,
+        "qualified": true
+      }
+    },
+    "traverse": {
+      "status": "PASS",
+      "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+      "actual": {
+        "rightDegrees": 102.83701324,
+        "leftDegrees": 53.14484786
+      }
+    },
+    "fire": {
+      "status": "PASS",
+      "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+      "actual": [
+        5,
+        5
+      ]
+    },
+    "reentry": {
+      "status": "FAIL",
+      "reason": "Same original crew/seat; public get-in action and completed compartment state",
+      "actual": {
+        "requested": true,
+        "completed": false
+      }
+    }
+  },
+  "functionalDamage": [
+    {
+      "case": "m855-12-right",
+      "status": "FAIL",
+      "infrastructure": "PASS",
+      "lifecycle": "PASS",
+      "elapsedSeconds": 63.234,
+      "assertions": {
+        "fixture.ready": {
+          "status": "PASS",
+          "reason": "Original collector requires GAME, nonce ready/done, frozen-source hashes and closure"
+        },
+        "world.loaded": {
+          "status": "PASS",
+          "reason": "Original native gameplay marker and enteredPlay result"
+        },
+        "stimulus.native": {
+          "status": "PASS",
+          "reason": "Authored native pathway, issued count and callbacks required",
+          "actual": {
+            "stimulus": "native-projectile",
+            "issued": 12
+          }
+        },
+        "damage.observed": {
+          "status": "PASS",
+          "reason": "Actual damage subscriptions, without health setters",
+          "actual": 12
+        },
+        "crew.exit": {
+          "status": "PASS",
+          "reason": "Actual scripted compartment completion; ordinary input acceptance separate",
+          "actual": true
+        },
+        "post-hit.traverse": {
+          "status": "PASS",
+          "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+          "actual": {
+            "rightDegrees": 102.8176651,
+            "leftDegrees": 48.44010925
+          }
+        },
+        "post-hit.fire": {
+          "status": "PASS",
+          "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+          "actual": [
+            4,
+            4
+          ]
+        },
+        "crew.reentry": {
+          "status": "FAIL",
+          "reason": "Same original crew/seat; public get-in action and completed compartment state",
+          "actual": {
+            "requested": true,
+            "completed": false
+          }
+        },
+        "post-hit.drive": {
+          "status": "NOT_TESTED",
+          "reason": "Existing health/loaded-muzzle fixture does not measure this function"
+        },
+        "post-reentry.fire": {
+          "status": "NOT_TESTED",
+          "reason": "Actual native ammunition use after completed reentry",
+          "actual": [
+            0,
+            0
+          ]
+        }
+      },
+      "normalizedResultSha256": "e50c6a556e33e729ada0bf3bf18b6db495bba4d3bc4939f79fb831349a3b4c75",
+      "originalEvidenceHashes": [
+        {
+          "name": "legacy.stdout.json",
+          "sha256": "e96beceaf86098d0223a526b1267bc6cdd2e889f7abe345912fa74edd46530cd",
+          "bytes": 567
+        },
+        {
+          "name": "legacy.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "name": "result.json",
+          "sha256": "e10d501fd3165d7f83ec22a409e7b068ee5bdee7509a225c971b691b1c3de9d4",
+          "bytes": 57441
+        },
+        {
+          "name": "console.log",
+          "sha256": "8dad6f4da757bcabe0016a47df6655d881967bf92a6b276ea6d30e61c438fff0",
+          "bytes": 54393
+        },
+        {
+          "name": "plan.json",
+          "sha256": "8a7ad24ca68983286cc2a314e6e37502b84e6b497d8cf6b6b5a53f632813338f",
+          "bytes": 196858
+        },
+        {
+          "name": "exit.json",
+          "sha256": "7d5dde70db89fed303dab46f5c6348b6c9dbe71b04755a04ce5eae000e038579",
+          "bytes": 209
+        }
+      ]
+    },
+    {
+      "case": "own-frag-right-2m-r1",
+      "status": "FAIL",
+      "infrastructure": "PASS",
+      "lifecycle": "PASS",
+      "elapsedSeconds": 60.61,
+      "assertions": {
+        "fixture.ready": {
+          "status": "PASS",
+          "reason": "Original collector requires GAME, nonce ready/done, frozen-source hashes and closure"
+        },
+        "world.loaded": {
+          "status": "PASS",
+          "reason": "Original native gameplay marker and enteredPlay result"
+        },
+        "stimulus.native": {
+          "status": "PASS",
+          "reason": "Authored native pathway, issued count and callbacks required",
+          "actual": {
+            "stimulus": "native-blast",
+            "issued": 1
+          }
+        },
+        "damage.observed": {
+          "status": "PASS",
+          "reason": "Actual damage subscriptions, without health setters",
+          "actual": 6
+        },
+        "crew.exit": {
+          "status": "PASS",
+          "reason": "Actual scripted compartment completion; ordinary input acceptance separate",
+          "actual": true
+        },
+        "post-hit.traverse": {
+          "status": "PASS",
+          "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+          "actual": {
+            "rightDegrees": 105.45674133,
+            "leftDegrees": 45.82630157
+          }
+        },
+        "post-hit.fire": {
+          "status": "PASS",
+          "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+          "actual": [
+            4,
+            4
+          ]
+        },
+        "crew.reentry": {
+          "status": "FAIL",
+          "reason": "Same original crew/seat; public get-in action and completed compartment state",
+          "actual": {
+            "requested": true,
+            "completed": false
+          }
+        },
+        "post-hit.drive": {
+          "status": "NOT_TESTED",
+          "reason": "Existing health/loaded-muzzle fixture does not measure this function"
+        },
+        "post-reentry.fire": {
+          "status": "NOT_TESTED",
+          "reason": "Actual native ammunition use after completed reentry",
+          "actual": [
+            0,
+            0
+          ]
+        }
+      },
+      "normalizedResultSha256": "f188be6d6e9fa1f58401ddf385dc37661c37caca0a3c43de3fa45294f09a8800",
+      "originalEvidenceHashes": [
+        {
+          "name": "legacy.stdout.json",
+          "sha256": "9c4cb3c1e5e1b0d215c8ad4f64c6c0e73fe23ff6dd641206ce771bcd4194c60a",
+          "bytes": 588
+        },
+        {
+          "name": "legacy.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "name": "result.json",
+          "sha256": "4c12c5a754c238fa46209b73d25d82e64e2bf64720ba309bda2c57b3c49540c7",
+          "bytes": 38492
+        },
+        {
+          "name": "console.log",
+          "sha256": "fcb1e57ede92b4b60e31948f38e11cd1388965b2c0238c4b39a4a513c928f04b",
+          "bytes": 44886
+        },
+        {
+          "name": "plan.json",
+          "sha256": "846fa39b252bb0b428411885afeb825825bc7ba87eed03d0000f1fd42215a9ae",
+          "bytes": 196947
+        },
+        {
+          "name": "exit.json",
+          "sha256": "2c87bd8ddf39ff514cf26e3075df2fa105490d2fefd78b36a03c9adca3d15094",
+          "bytes": 209
+        }
+      ]
+    }
+  ],
+  "preflight": [
+    {
+      "case": "actual-catalog-project-with-base-root-omitted",
+      "result": "PRELAUNCH_REFUSAL",
+      "reason": "Missing mounted dependency GUID 58D0FB3206B6F859; include installed base-game/addon roots explicitly",
+      "seconds": 0.004176999966148287,
+      "nativeLaunches": 0
+    },
+    {
+      "case": "known-required-spawn-class-omitted-from-private-mini-addon",
+      "result": "PRELAUNCH_REFUSAL",
+      "reason": "Required fixture class missing: GEP_ManualSpawnLogic",
+      "seconds": 0.008560099988244474,
+      "nativeLaunches": 0
+    },
+    {
+      "case": "complete-sealed-native-damage-fixture",
+      "result": "PLAN_ONLY_NOT_TESTED",
+      "seconds": 0.03846499999053776,
+      "dependencies": [
+        "D561AD08932E7B40",
+        "58D0FB3206B6F859",
+        "5614BBCCBB55ED1C"
+      ],
+      "nativeLaunches": 0
+    }
+  ],
+  "images": {
+    "schema": 1,
+    "selected": [
+      6,
+      26,
+      28,
+      30,
+      35
+    ],
+    "originalBytes": [
+      5523832,
+      5116742,
+      7327216,
+      6575237,
+      6290498
+    ],
+    "originalsExceed5MillionBytes": 5,
+    "exportBytes": [
+      4242587,
+      4142140,
+      4699030,
+      4241800,
+      3992359
+    ],
+    "exportsMatchPreviouslyReviewedJPEGBytes": true,
+    "dimensionsPreserved": true,
+    "sourceHashesPreserved": true,
+    "newScriptRequiredForSelection": false,
+    "seconds": 2.80137930001365,
+    "historicalExportTime": "not recorded; no speedup claimed"
+  },
+  "freshContext": {
+    "schema": 1,
+    "method": "Public CLI from unrelated working directory on actual sealed project; inert scaffold intentionally starts no renderer",
+    "commands": [
+      {
+        "stage": "init",
+        "exitCode": 0,
+        "seconds": 0.09913710004184395
+      },
+      {
+        "stage": "plan",
+        "exitCode": 0,
+        "seconds": 0.12909189995843917
+      },
+      {
+        "stage": "inert-adapter-run",
+        "exitCode": 2,
+        "seconds": 0.2500387000036426
+      }
+    ],
+    "nativeStarted": false,
+    "inputsFoundWithoutPrivateHarnessConfig": true,
+    "explicitMissingAdapterReason": true,
+    "indexGenerated": true
+  },
+  "runtimeDiagnostics": [
+    {
+      "status": "NOT_TESTED",
+      "reason": "Reserved/starting or malformed lease; age alone cannot release it",
+      "name": "reserved-old",
+      "fileUnchanged": true
+    },
+    {
+      "status": "NOT_TESTED",
+      "reason": "Lease PID absent in successful fresh query; stale candidate requires owner reconciliation, never automatic release",
+      "name": "missing-pid",
+      "fileUnchanged": true
+    },
+    {
+      "status": "NOT_TESTED",
+      "reason": "Coordinated parallel owners present; preserve all sessions",
+      "name": "parallel",
+      "fileUnchanged": true
+    }
+  ],
+  "limits": [
+    "Scripted native actions are separate from physical input",
+    "Healthy reentry failure prevents attribution to incoming damage",
+    "No new gameplay/release tuning",
+    "No universal/native qualification of every workflow template",
+    "No publication or agreement acceptance"
+  ]
+}

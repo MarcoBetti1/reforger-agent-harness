@@ -1,0 +1,58 @@
+{
+  "startup": {
+    "task": "Discover, compile, package and load a private QA world",
+    "capabilities": ["isolated-reset", "owned-lifecycle", "native-load"],
+    "requiredAssertions": ["fixture.ready", "world.loaded"],
+    "recommendedAssertions": ["scripts.compiled", "package.trio", "native.errors"],
+    "limits": "GAME or compile alone proves startup only. Validate serialized classes and attributes in a native load."
+  },
+  "damage": {
+    "task": "Batch native projectile, blast, fragment and component/crew regressions",
+    "capabilities": ["isolated-reset", "owned-lifecycle", "native-damage"],
+    "requiredAssertions": ["fixture.ready", "stimulus.native", "damage.observed"],
+    "recommendedAssertions": ["zones.topology", "crew.conscious", "input.positive-control", "post-hit.traverse", "post-hit.fire", "crew.exit", "crew.reentry", "post-reentry.fire", "post-hit.drive"],
+    "limits": "Preserve authored ammunition and native contacts/callbacks; no health setters. Expected outcomes are engine regression contracts, not real-world armor claims. Repeated identical outcomes do not prove independent probabilities or a controllable RNG seed."
+  },
+  "mobility": {
+    "task": "Tracked driving, reverse, slope, turning and traction comparisons",
+    "capabilities": ["isolated-reset", "owned-lifecycle", "native-driving"],
+    "requiredAssertions": ["fixture.ready", "drive.powered", "drive.signed-progress"],
+    "recommendedAssertions": ["drive.speed", "drive.reverse", "drive.slope", "drive.turn-radius", "drive.slip", "drive.stop-dwell", "crew.input-restored"],
+    "limits": "Use world time, controls before physics, actual facing, RPM/gear and signed progress. Drift, setter readback and cumulative travel cannot establish powered movement. Pin terrain/contact material for traction claims."
+  },
+  "crew-input": {
+    "task": "Crew, hatch, optics, entry/exit and restored controls",
+    "capabilities": ["isolated-reset", "owned-lifecycle", "native-crew"],
+    "requiredAssertions": ["fixture.ready", "crew.occupied"],
+    "recommendedAssertions": ["crew.exit", "crew.reentry", "hatch.clearance", "optics.native-view", "input.positive-control", "crew.input-restored"],
+    "limits": "Scripted seat/action success is distinct from ordinary keyboard/menu behavior. Require visible delivery and a positive control before diagnosing input. Health and loaded muzzles do not prove use."
+  },
+  "visual": {
+    "task": "Native clean-camera/reference, geometry/material and lighting review",
+    "capabilities": ["isolated-reset", "owned-lifecycle", "native-camera"],
+    "requiredAssertions": ["fixture.ready", "camera.readback", "image.native"],
+    "recommendedAssertions": ["ui.clean", "light.readback", "geometry.clearance", "materials.channels", "composition.reviewed"],
+    "limits": "Use visual:capture and tools/native_capture_review.py for existing adapters. Record map/world IDs, pose, camera, weather/time and actual exposure; inspect full images for stale/loading frames, clipping and occlusion. Pixel samples are not lux."
+  },
+  "audio": {
+    "task": "Audition provenance, single/twin event scheduling and native sound integration",
+    "capabilities": ["isolated-reset", "owned-lifecycle", "native-audio"],
+    "requiredAssertions": ["fixture.ready", "audio.provenance", "audio.native-event"],
+    "recommendedAssertions": ["audio.cadence", "audio.distance", "audio.tail", "audio.crew-view", "audio.audition-accepted"],
+    "limits": "Keep reference-only audio separate from distributable sources. A waveform/preview is not native integration or human listening acceptance. Use one common preview gain and explicit event ledgers; do not bake twin bursts into one-shot samples."
+  },
+  "release": {
+    "task": "Frozen manifest, notices/dependencies, image size and manual publisher handoff",
+    "capabilities": ["isolated-reset", "owned-lifecycle", "release-audit"],
+    "requiredAssertions": ["release.manifest", "release.notices", "release.dependencies", "release.images"],
+    "recommendedAssertions": ["release.package-smoke", "release.git-sync", "release.human-acceptance"],
+    "limits": "Prepare a reviewable manual handoff; no publish adapter or agreement acceptance. Pin all package trio bytes. Title/size validation can fail independently. STOP/cancellation precedes any next action."
+  },
+  "convoy": {
+    "task": "Native supply transfer, powered following, Hold/Resume and arrival workflows",
+    "capabilities": ["isolated-reset", "owned-lifecycle", "native-driving", "native-supply"],
+    "requiredAssertions": ["fixture.ready", "drive.powered", "drive.signed-progress", "cargo.conserved"],
+    "recommendedAssertions": ["convoy.spacing", "arrival.dwell", "hold.stationary", "resume.fresh-progress", "cargo.native-transfer", "input.restored"],
+    "limits": "Retain original driver/truck/container identities and failed attempt history. Require per-link gaps, stable world-time dwell, actual native quantity changes and fresh powered departure. A useful delivery can coexist with a strict scenario FAIL."
+  }
+}
