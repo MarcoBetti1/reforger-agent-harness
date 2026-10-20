@@ -51,6 +51,8 @@ Both final incoming-damage cases then passed measured traverse, actual firing an
 
 Automated coordinator tests cover missing classes/worlds/dependencies, duplicate GUIDs, pinned-file drift, duplicate/nonfinite JSON, missing/stale/malformed results, missing assertions, measured FAIL continuation, infrastructure/lifecycle stop, cancellation, deadline, low storage, excessive adapter output, unresponsive adapter preservation and fresh reruns. Node tests cover discovery and a real Windows junction. Image tests cover dimensions, hashes, limits, transparency and overwrite. Local checks pass **123 Node and 42 Python tests**, typecheck and build; npm audit reports zero advisories. CI runs all Python tools tests alongside typecheck, Node tests and build. Native results are local validation, not GitHub Actions coverage.
 
+Enabling the previously omitted native-image tests on a clean Linux runner exposed an undeclared existing NumPy import. The visual requirements now include NumPy; the initial failed CI run is retained rather than described as a test failure in vehicle behavior.
+
 ## Reuse and remaining limits
 
 Start from [workflows.md](workflows.md), review the [adapter contract](workflow-adapters.md), and use [recovery](workflow-recovery.md) for errors and takeover. [Damage case recipes](../examples/workflows/damage-cases.example.json) show stimulus/reset/functional contracts; the [inert scaffold](../examples/workflows/adapter_scaffold.py) emits NOT_TESTED until an addon-owned native implementation exists.
