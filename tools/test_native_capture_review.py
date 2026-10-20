@@ -27,7 +27,7 @@ class NativeReviewGates(unittest.TestCase):
             im.save(p)
             if stale: os.utime(p, (1,1))
             telemetry += [f'NVC_FRAME|unit|{label}|1|100|pose', f'NVC_STATE|unit|{label}|engine=0|rpm=0|crew=0|selected=1|adapter=rotorcraft']
-        manifest = {'job':{'id':'unit','views':views,'resolution':[320,240],'state':'stopped','seats':[]},'nativeTelemetry':telemetry,'startedUtc':datetime.now(timezone.utc).isoformat(),'plan':{'profile':str(profile)}}
+        manifest = {'job':{'id':'unit','views':views,'resolution':[320,240],'state':'stopped','seats':[],'settleSeconds':2},'nativeTelemetry':telemetry,'startedUtc':datetime.now(timezone.utc).isoformat(),'plan':{'profile':str(profile)}}
         (root/'manifest.json').write_text(json.dumps(manifest))
 
     def test_rejects_black_pixels(self):
