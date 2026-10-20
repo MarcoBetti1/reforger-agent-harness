@@ -1,0 +1,22 @@
+{
+  "adapterContract": "Illustrative case parameters; align names/resources with the addon adapter. These are game regression expectations, not armor specifications.",
+  "reset": "New native process, original fresh subject and crew per case, exact fixture/build/world/nonce; no health setters",
+  "cases": [
+    {
+      "id": "rifle-right",
+      "parameters": {"stimulus": "native-projectile", "resource": "<authored-rifle-projectile.et>", "rangeMeters": 100, "shotCount": 12, "target": "<measured-local-turret-panel>", "seedRequest": -1},
+      "assertions": ["fixture.ready", "stimulus.native", "damage.observed", "zones.topology", "crew.conscious", "post-hit.traverse", "post-hit.fire", "crew.exit", "crew.reentry", "post-reentry.fire"]
+    },
+    {
+      "id": "fragments-front",
+      "parameters": {"stimulus": "native-blast", "resource": "<authored-native-warhead.et>", "standoffMeters": 5, "warheadCount": 1, "target": "<measured-local-turret-front>", "seedRequest": -1},
+      "assertions": ["fixture.ready", "stimulus.native", "damage.observed", "fragments.callbacks", "crew.conscious", "post-hit.traverse", "post-hit.fire", "crew.exit", "crew.reentry", "post-reentry.fire"]
+    },
+    {
+      "id": "strong-hit-control",
+      "parameters": {"stimulus": "native-projectile", "resource": "<authored-cannon-projectile.et>", "rangeMeters": 25, "shotCount": 8, "expectedOutcome": "<predeclare-the-game-component-failure-and-which-functions-should-remain-usable>"},
+      "assertions": ["fixture.ready", "stimulus.native", "damage.observed", "zones.topology", "component.expected-failure", "crew.exit"]
+    }
+  ],
+  "limits": "Use an independent healthy/no-stimulus startup control. Separate contact from damage and dropped telemetry. Select explicit HP/functional thresholds before a run; do not weaken them afterward. Repeats do not imply independent random trials."
+}

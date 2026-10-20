@@ -6,6 +6,7 @@ coverage/
 .DS_Store
 Thumbs.db
 reforger-agent.config.json
+reforger-workflows.local.json
 __pycache__/
 *.pyc
 *.log

@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "bindings": {
+    "addon-functional": {
+      "job": "../MyAddon/qa/functional-job.json",
+      "description": "Local addon-owned fixture; inspect its measured qualification and limits before running",
+      "outputRoot": ".cache/workflow-evidence"
+    }
+  }
+}
