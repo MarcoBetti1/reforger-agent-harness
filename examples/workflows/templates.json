@@ -31,7 +31,7 @@
     "task": "Native clean-camera/reference, geometry/material and lighting review",
     "capabilities": ["isolated-reset", "owned-lifecycle", "native-camera"],
     "requiredAssertions": ["fixture.ready", "camera.readback", "image.native"],
-    "recommendedAssertions": ["ui.clean", "light.readback", "geometry.clearance", "materials.channels", "composition.reviewed"],
+    "recommendedAssertions": ["ui.clean", "light.readback", "geometry.clearance", "materials.channels", "composition.reviewed", "geometry.semantic-preserved", "uv.valid", "materials.binding-scope", "geometry.native-topology", "lod.native-transition"],
     "limits": "Use visual:capture and tools/native_capture_review.py for existing adapters. Record map/world IDs, pose, camera, weather/time and actual exposure; inspect full images for stale/loading frames, clipping and occlusion. Pixel samples are not lux."
   },
   "audio": {

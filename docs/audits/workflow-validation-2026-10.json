@@ -15,7 +15,11 @@
     },
     "supportedRecentTurns": 22,
     "memoryFiles": 0,
-    "allHistoryClaimed": false
+    "allHistoryClaimed": false,
+    "supportedInitialDetailedTurns": 22,
+    "supportedAccessibleTurnsIndexed": 169,
+    "supportedPaginationComplete": true,
+    "supportedIndexMethod": "Bounded final-message excerpts and failed-command counts via read_thread; selected failure clauses inspected. Not every raw tool call/output reviewed; no raw transcript filesystem access."
   },
   "sourceFingerprints": [
     {
@@ -57,6 +61,30 @@
       "source": "Gepard-RuntimeHarness-607/INDEPENDENT_REVIEW607.md",
       "sha256": "350c471736d5c3031f1b94dc3540ab8826add0d30d57d84555165abb55572092",
       "bytes": 3712
+    },
+    {
+      "source": "Gepard-JointNative-585/RESULT585.md",
+      "sha256": "d77dc432d258c67bbb53b30c58203cc339bffd2fb745867268c9edf116d05d28",
+      "bytes": 7149,
+      "purpose": "historical powered reverse remained failed, actual physical/native evidence"
+    },
+    {
+      "source": "Gepard-FrontNative-587/RESULT587.md",
+      "sha256": "b34de00a9e1e0134d3586995e3da6f0db6d14e58962057586ec693729cf741e5",
+      "bytes": 6220,
+      "purpose": "source/FBX passed but seven native colliders omitted"
+    },
+    {
+      "source": "Gepard-Fidelity-640/ROOT_HANDOFF640.md",
+      "sha256": "0c4323cba53a58695d1cea82b2c8dc3df528a922b55dc62cc63b2d8e4b77a68d",
+      "bytes": 4649,
+      "purpose": "numeric settings semantics and held strict material controls"
+    },
+    {
+      "source": "Gepard-RoadwheelFixture-632/checks/ACTUAL_NATIVE_ROAD215632.json",
+      "sha256": "ce002e3c19ee638c9b967115ada1e08fc780aa56820c2aac0c7687ddfa7f4e3c",
+      "bytes": 1327454,
+      "purpose": "retained strict normal-limit measurements"
     }
   ],
   "baseline": {
@@ -1297,5 +1325,21 @@
     "sourceManifestSha256": "79cc350dd99fe2d41ce30e051776633ad36287466749fb1ff4b66bd771d792dc",
     "gameplayAssetChanges": 0,
     "limits": "Private successor over sealed historical fixture; frozen release and publisher unchanged."
+  },
+  "historicalFollowup": {
+    "assetReviewGates": [
+      "geometry.semantic-preserved",
+      "uv.valid",
+      "materials.binding-scope",
+      "geometry.native-topology",
+      "lod.native-transition"
+    ],
+    "reverseCorroboration": "Retained historical native acceptance recorded -0.190858 m/s without sustained load, also FAIL; no current frozen-release defect claim.",
+    "nativeColliderExample": {
+      "expected": 200,
+      "observed": 193,
+      "sourceAndFBXPassed": true,
+      "nativeAcceptanceHeld": true
+    }
   }
 }
