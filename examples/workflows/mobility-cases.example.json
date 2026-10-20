@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "kind": "recipe-only-not-an-executable-native-adapter",
+  "fixture": "Addon-owned fresh driver and tracked vehicle, explicit native world/project and complete source/build manifest",
+  "courseWorldSeconds": {"idle": 4, "forward": 6, "stop-forward": 6, "reverse": 6, "stop-reverse": 6, "left": 5, "right": 5, "final-stop": 5},
+  "samples": "Five QA_DRIVE lines per half-second world-time sample; see docs/driving-review.md",
+  "requiredAssertions": ["fixture.ready", "drive.powered", "drive.signed-progress", "drive.reverse", "drive.turn-radius", "drive.stop-dwell"],
+  "additionalDomains": {"drive.slope": "Needs measured qualified terrain/course", "drive.slip": "Needs track/contact-material calibration", "crew.input-restored": "Needs public exit/reentry and actual restored use"},
+  "acceptance": "Thresholds are regression contracts. Preserve observed FAIL and NOT_TESTED; do not tune frozen gameplay or substitute velocity/gear/health setters."
+}

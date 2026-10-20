@@ -449,6 +449,853 @@
     "Healthy reentry failure prevents attribution to incoming damage",
     "No new gameplay/release tuning",
     "No universal/native qualification of every workflow template",
-    "No publication or agreement acceptance"
-  ]
+    "No publication or agreement acceptance",
+    "Fresh native driving qualifies the reviewed private flat-course adapter; reverse remains a measured failure, slope/traction/solver getter semantics remain unqualified. No new visual renderer campaign or audio audition."
+  ],
+  "functionalFollowupV7": {
+    "healthy": {
+      "sha256": "4207b28d65c305179fe1c515357adaf0f9a5aadf1a8ce0f8b36993f22b414802",
+      "status": "PASS",
+      "case": "healthy-input-control",
+      "assertions": {
+        "fixture.ready": {
+          "status": "PASS",
+          "reason": "Original collector requires GAME, nonce ready/done, frozen-source hashes and closure"
+        },
+        "world.loaded": {
+          "status": "PASS",
+          "reason": "Original native gameplay marker and enteredPlay result"
+        },
+        "stimulus.native": {
+          "status": "NOT_TESTED",
+          "reason": "Authored native pathway, issued count and callbacks required",
+          "actual": {
+            "stimulus": "none",
+            "issued": 0
+          }
+        },
+        "damage.observed": {
+          "status": "NOT_TESTED",
+          "reason": "Actual damage subscriptions, without health setters",
+          "actual": 0
+        },
+        "crew.exit": {
+          "status": "PASS",
+          "reason": "Actual scripted compartment completion; ordinary input acceptance separate",
+          "actual": true
+        },
+        "post-hit.traverse": {
+          "status": "PASS",
+          "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+          "actual": {
+            "rightDegrees": 102.8561325,
+            "leftDegrees": 48.49922561
+          }
+        },
+        "post-hit.fire": {
+          "status": "PASS",
+          "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+          "actual": [
+            4,
+            4
+          ]
+        },
+        "crew.reentry": {
+          "status": "PASS",
+          "reason": "Same original crew/seat; public get-in action and completed compartment state",
+          "actual": {
+            "requested": true,
+            "completed": true
+          }
+        },
+        "post-hit.drive": {
+          "status": "NOT_TESTED",
+          "reason": "Existing health/loaded-muzzle fixture does not measure this function"
+        },
+        "post-reentry.fire": {
+          "status": "PASS",
+          "reason": "Actual native ammunition use after completed reentry",
+          "actual": [
+            11,
+            11
+          ]
+        },
+        "input.positive-control": {
+          "status": "PASS",
+          "reason": "Healthy same-build native action calibration before attributing damaged-function failures",
+          "actual": {
+            "healthyControl": true,
+            "qualified": true
+          }
+        }
+      },
+      "elapsedSeconds": 41.156
+    },
+    "cases": [
+      {
+        "sha256": "1a507255830eb5b5e902caa070cd48ad7041241b67a4bdd930c24fc0fa7e4863",
+        "status": "PASS",
+        "case": "m855-12-right",
+        "assertions": {
+          "fixture.ready": {
+            "status": "PASS",
+            "reason": "Original collector requires GAME, nonce ready/done, frozen-source hashes and closure"
+          },
+          "world.loaded": {
+            "status": "PASS",
+            "reason": "Original native gameplay marker and enteredPlay result"
+          },
+          "stimulus.native": {
+            "status": "PASS",
+            "reason": "Authored native pathway, issued count and callbacks required",
+            "actual": {
+              "stimulus": "native-projectile",
+              "issued": 12
+            }
+          },
+          "damage.observed": {
+            "status": "PASS",
+            "reason": "Actual damage subscriptions, without health setters",
+            "actual": 12
+          },
+          "crew.exit": {
+            "status": "PASS",
+            "reason": "Actual scripted compartment completion; ordinary input acceptance separate",
+            "actual": true
+          },
+          "post-hit.traverse": {
+            "status": "PASS",
+            "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+            "actual": {
+              "rightDegrees": 105.4756546,
+              "leftDegrees": 45.87424468
+            }
+          },
+          "post-hit.fire": {
+            "status": "PASS",
+            "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+            "actual": [
+              4,
+              4
+            ]
+          },
+          "crew.reentry": {
+            "status": "PASS",
+            "reason": "Same original crew/seat; public get-in action and completed compartment state",
+            "actual": {
+              "requested": true,
+              "completed": true
+            }
+          },
+          "post-hit.drive": {
+            "status": "NOT_TESTED",
+            "reason": "Existing health/loaded-muzzle fixture does not measure this function"
+          },
+          "post-reentry.fire": {
+            "status": "PASS",
+            "reason": "Actual native ammunition use after completed reentry",
+            "actual": [
+              11,
+              11
+            ]
+          }
+        },
+        "elapsedSeconds": 44.375
+      },
+      {
+        "sha256": "f8835f2c8e1da2914cb583e5118388b2d3941812097a314738cc487a626e26a3",
+        "status": "PASS",
+        "case": "own-frag-right-2m-r1",
+        "assertions": {
+          "fixture.ready": {
+            "status": "PASS",
+            "reason": "Original collector requires GAME, nonce ready/done, frozen-source hashes and closure"
+          },
+          "world.loaded": {
+            "status": "PASS",
+            "reason": "Original native gameplay marker and enteredPlay result"
+          },
+          "stimulus.native": {
+            "status": "PASS",
+            "reason": "Authored native pathway, issued count and callbacks required",
+            "actual": {
+              "stimulus": "native-blast",
+              "issued": 1
+            }
+          },
+          "damage.observed": {
+            "status": "PASS",
+            "reason": "Actual damage subscriptions, without health setters",
+            "actual": 6
+          },
+          "crew.exit": {
+            "status": "PASS",
+            "reason": "Actual scripted compartment completion; ordinary input acceptance separate",
+            "actual": true
+          },
+          "post-hit.traverse": {
+            "status": "PASS",
+            "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+            "actual": {
+              "rightDegrees": 105.47480773,
+              "leftDegrees": 45.70732879
+            }
+          },
+          "post-hit.fire": {
+            "status": "PASS",
+            "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+            "actual": [
+              4,
+              4
+            ]
+          },
+          "crew.reentry": {
+            "status": "PASS",
+            "reason": "Same original crew/seat; public get-in action and completed compartment state",
+            "actual": {
+              "requested": true,
+              "completed": true
+            }
+          },
+          "post-hit.drive": {
+            "status": "NOT_TESTED",
+            "reason": "Existing health/loaded-muzzle fixture does not measure this function"
+          },
+          "post-reentry.fire": {
+            "status": "PASS",
+            "reason": "Actual native ammunition use after completed reentry",
+            "actual": [
+              11,
+              11
+            ]
+          }
+        },
+        "elapsedSeconds": 42.265
+      }
+    ],
+    "correction": "Private test director only: completed-exit settling and observed restored ADS/context before firing. Vehicle/hatch/gameplay assets unchanged. Historical first failures retained.",
+    "limits": "Completed seat/public-action and restored firing do not establish closed hatch, ordinary human input or current frozen release qualification."
+  },
+  "freshNativeDriving": {
+    "setupSeconds": 0.25,
+    "setupSteps": [
+      "public mobility init",
+      "parameterize cases and pin existing qualified addon adapter/fixture/tool inputs",
+      "public plan",
+      "public run --execute"
+    ],
+    "unrelatedWorkingDirectory": true,
+    "elapsedSeconds": 147.172,
+    "manualInterventionsDuringMeasuredBatch": 0,
+    "automaticRetries": 0,
+    "cases": [
+      {
+        "case": "course-a",
+        "status": "FAIL",
+        "assertions": {
+          "drive.signed-progress": "PASS",
+          "drive.reverse": "FAIL",
+          "drive.powered": "PASS",
+          "drive.turn-radius": "PASS",
+          "drive.stop-dwell": "PASS",
+          "drive.slope": "NOT_TESTED",
+          "drive.slip": "NOT_TESTED",
+          "drive.control-readback": "NOT_TESTED"
+        },
+        "forward": {
+          "samples": 12,
+          "worldSeconds": 5.732900000000004,
+          "signedProgressMetres": 18.199999999999417,
+          "integratedFacingProjectedPathMetres": 18.199951589180618,
+          "maxHeadingChangeDegrees": 0.3713195082701483,
+          "maxSpeedMps": 5.82389,
+          "max3DSpeedMps": 5.823890150639703,
+          "maxPositionDriftMetres": 18.200000000274542,
+          "minSignedSpeedMps": 4.1935017986e-13,
+          "maxSignedSpeedMps": 5.823826504796946,
+          "meanGradeDegrees": 0.0,
+          "maxAbsGradeDegrees": 0.0,
+          "yawRadians": 8.749127552870459e-10,
+          "medianMovingTurnRadiusMetres": null,
+          "poweredSampleFraction": 0.8333333333333334,
+          "continuousPoweredMovement": [
+            {
+              "worldSeconds": 2.099700000000002,
+              "netProgressMetres": 4.5900000000013454,
+              "pathMetres": 4.590000026266936,
+              "yawRadians": 4.658991643649972e-10
+            },
+            {
+              "worldSeconds": 2.099800000000002,
+              "netProgressMetres": 9.949999999999418,
+              "pathMetres": 9.950000009470536,
+              "yawRadians": -2.7066680182499902e-11
+            }
+          ],
+          "groundedSampleFraction": 1,
+          "solverControlsInDocumentedRange": false,
+          "meanWheel4SlipProxy": 0.010020234201035547
+        },
+        "reverse": {
+          "samples": 11,
+          "worldSeconds": 5.199799999999996,
+          "signedProgressMetres": -0.819999999999709,
+          "integratedFacingProjectedPathMetres": -0.8200000336348789,
+          "maxHeadingChangeDegrees": 0.0817667356906836,
+          "maxSpeedMps": 0.192593,
+          "max3DSpeedMps": 0.1925935053795472,
+          "maxPositionDriftMetres": 0.819999999999709,
+          "minSignedSpeedMps": -0.19259339017349555,
+          "maxSignedSpeedMps": 1.5383817700601024e-09,
+          "meanGradeDegrees": 0.0,
+          "maxAbsGradeDegrees": 0.0,
+          "yawRadians": -5.644059277779846e-11,
+          "medianMovingTurnRadiusMetres": null,
+          "poweredSampleFraction": 0.09090909090909091,
+          "continuousPoweredMovement": [],
+          "groundedSampleFraction": 1,
+          "solverControlsInDocumentedRange": false,
+          "meanWheel4SlipProxy": -0.00019718463527766428
+        },
+        "left": {
+          "samples": 10,
+          "worldSeconds": 4.666100000000007,
+          "signedProgressMetres": 5.2712092592197815,
+          "integratedFacingProjectedPathMetres": 7.171453633739977,
+          "maxHeadingChangeDegrees": 140.18412174703602,
+          "maxSpeedMps": 2.7974762062632457,
+          "max3DSpeedMps": 2.7974762137195475,
+          "maxPositionDriftMetres": 7.227591853445879,
+          "minSignedSpeedMps": 1.744288599968413e-05,
+          "maxSignedSpeedMps": 1.877987580333845,
+          "meanGradeDegrees": 0.0,
+          "maxAbsGradeDegrees": 0.0,
+          "yawRadians": -2.4420399978250016,
+          "medianMovingTurnRadiusMetres": 3.3196886889425254,
+          "poweredSampleFraction": 0.9,
+          "continuousPoweredMovement": [
+            {
+              "worldSeconds": 0.5328999999999979,
+              "netProgressMetres": 0.7008603781098182,
+              "pathMetres": 0.7136672894281677,
+              "yawRadians": -0.19572910744999922
+            },
+            {
+              "worldSeconds": 2.066600000000001,
+              "netProgressMetres": 2.5655514942999633,
+              "pathMetres": 4.983678610346885,
+              "yawRadians": -1.502386656550001
+            }
+          ],
+          "groundedSampleFraction": 1,
+          "solverControlsInDocumentedRange": false,
+          "meanWheel4SlipProxy": -0.021314418629570012
+        },
+        "right": {
+          "samples": 9,
+          "worldSeconds": 4.133899999999997,
+          "signedProgressMetres": 3.1457622165559673,
+          "integratedFacingProjectedPathMetres": 7.692640088556106,
+          "maxHeadingChangeDegrees": 155.54276783209937,
+          "maxSpeedMps": 2.617228823469587,
+          "max3DSpeedMps": 2.6172288401719563,
+          "maxPositionDriftMetres": 8.638165837722731,
+          "minSignedSpeedMps": 0.8388700838137433,
+          "maxSignedSpeedMps": 1.977933743202933,
+          "meanGradeDegrees": 0.0,
+          "maxAbsGradeDegrees": 0.0,
+          "yawRadians": 2.698865044669999,
+          "medianMovingTurnRadiusMetres": 3.1315263879038864,
+          "poweredSampleFraction": 0.8888888888888888,
+          "continuousPoweredMovement": [
+            {
+              "worldSeconds": 2.0671999999999997,
+              "netProgressMetres": 2.549010090556032,
+              "pathMetres": 4.409942651091985,
+              "yawRadians": 1.1928866418700008
+            },
+            {
+              "worldSeconds": 1.033699999999996,
+              "netProgressMetres": -0.1366382570001039,
+              "pathMetres": 2.508022979970744,
+              "yawRadians": 0.778694287799997
+            }
+          ],
+          "groundedSampleFraction": 1,
+          "solverControlsInDocumentedRange": true,
+          "meanWheel4SlipProxy": -0.1704424056477267
+        },
+        "terminal": {
+          "seconds": 1.5338999999999956,
+          "max3DSpeedMps": 0.0,
+          "maxPositionDriftMetres": 0.0,
+          "grounded": true
+        },
+        "reviewSha256": "538a34757ab2da38115fa5d0305fad3c3544c7b2851b7e18d466b114562bbd3d"
+      },
+      {
+        "case": "course-b",
+        "status": "FAIL",
+        "assertions": {
+          "drive.signed-progress": "PASS",
+          "drive.reverse": "FAIL",
+          "drive.powered": "PASS",
+          "drive.turn-radius": "PASS",
+          "drive.stop-dwell": "PASS",
+          "drive.slope": "NOT_TESTED",
+          "drive.slip": "NOT_TESTED",
+          "drive.control-readback": "NOT_TESTED"
+        },
+        "forward": {
+          "samples": 12,
+          "worldSeconds": 5.666999999999998,
+          "signedProgressMetres": 17.719999999999,
+          "integratedFacingProjectedPathMetres": 17.7199497323991,
+          "maxHeadingChangeDegrees": 0.31382207355726155,
+          "maxSpeedMps": 5.67264,
+          "max3DSpeedMps": 5.67264001199245,
+          "maxPositionDriftMetres": 17.72000000112847,
+          "minSignedSpeedMps": 4.0433259706999994e-13,
+          "maxSignedSpeedMps": 5.672584917280735,
+          "meanGradeDegrees": 0.0,
+          "maxAbsGradeDegrees": 0.0,
+          "yawRadians": -8.505070145189247e-11,
+          "medianMovingTurnRadiusMetres": null,
+          "poweredSampleFraction": 0.8333333333333334,
+          "continuousPoweredMovement": [
+            {
+              "worldSeconds": 2.099300000000003,
+              "netProgressMetres": 4.560000000000744,
+              "pathMetres": 4.560000051062036,
+              "yawRadians": -2.729294444700002e-10
+            },
+            {
+              "worldSeconds": 1.0335,
+              "netProgressMetres": 4.359999999999673,
+              "pathMetres": 4.360000004663772,
+              "yawRadians": 1.1281890090599995e-10
+            }
+          ],
+          "groundedSampleFraction": 1,
+          "solverControlsInDocumentedRange": false,
+          "meanWheel4SlipProxy": 0.015775208261696462
+        },
+        "reverse": {
+          "samples": 12,
+          "worldSeconds": 5.766900000000007,
+          "signedProgressMetres": -0.8500000000003638,
+          "integratedFacingProjectedPathMetres": -0.8500000000003638,
+          "maxHeadingChangeDegrees": 0.010317508492196916,
+          "maxSpeedMps": 0.1830000000000001,
+          "max3DSpeedMps": 0.18300049737530485,
+          "maxPositionDriftMetres": 0.8500000000003638,
+          "minSignedSpeedMps": -0.1829997716271398,
+          "maxSignedSpeedMps": 0.0,
+          "meanGradeDegrees": 0.0,
+          "maxAbsGradeDegrees": 0.0,
+          "yawRadians": -1.1572894060224506e-10,
+          "medianMovingTurnRadiusMetres": null,
+          "poweredSampleFraction": 0.08333333333333333,
+          "continuousPoweredMovement": [],
+          "groundedSampleFraction": 1,
+          "solverControlsInDocumentedRange": false,
+          "meanWheel4SlipProxy": 0.018965153726618878
+        },
+        "left": {
+          "samples": 10,
+          "worldSeconds": 4.633400000000002,
+          "signedProgressMetres": 5.308490402687681,
+          "integratedFacingProjectedPathMetres": 6.852794858337108,
+          "maxHeadingChangeDegrees": 136.79237583963337,
+          "maxSpeedMps": 2.611904225833137,
+          "max3DSpeedMps": 2.6119042567256456,
+          "maxPositionDriftMetres": 6.9925981587675565,
+          "minSignedSpeedMps": 1.3789229606044189e-05,
+          "maxSignedSpeedMps": 1.8478425348314746,
+          "meanGradeDegrees": 0.0,
+          "maxAbsGradeDegrees": 0.0,
+          "yawRadians": -2.3626572226499976,
+          "medianMovingTurnRadiusMetres": 3.259388121994554,
+          "poweredSampleFraction": 0.9,
+          "continuousPoweredMovement": [
+            {
+              "worldSeconds": 0.5331000000000046,
+              "netProgressMetres": 0.650477064192373,
+              "pathMetres": 0.6608033065898845,
+              "yawRadians": -0.17260685145000149
+            },
+            {
+              "worldSeconds": 2.0337999999999923,
+              "netProgressMetres": 2.7151514841279907,
+              "pathMetres": 4.75991816955152,
+              "yawRadians": -1.4781238440999944
+            }
+          ],
+          "groundedSampleFraction": 1,
+          "solverControlsInDocumentedRange": false,
+          "meanWheel4SlipProxy": 0.0011440560640316687
+        },
+        "right": {
+          "samples": 9,
+          "worldSeconds": 4.199399999999997,
+          "signedProgressMetres": 3.4949400612637285,
+          "integratedFacingProjectedPathMetres": 7.557738435105043,
+          "maxHeadingChangeDegrees": 149.13604419944753,
+          "maxSpeedMps": 2.478719260424625,
+          "max3DSpeedMps": 2.47871949215681,
+          "maxPositionDriftMetres": 8.696670004087798,
+          "minSignedSpeedMps": 0.6262340229322075,
+          "maxSignedSpeedMps": 1.9678445323069365,
+          "meanGradeDegrees": 0.0,
+          "maxAbsGradeDegrees": 0.0,
+          "yawRadians": 2.594106280649998,
+          "medianMovingTurnRadiusMetres": 3.059990286839747,
+          "poweredSampleFraction": 1,
+          "continuousPoweredMovement": [
+            {
+              "worldSeconds": 4.199399999999997,
+              "netProgressMetres": 3.4949400612637285,
+              "pathMetres": 9.029497972391002,
+              "yawRadians": 2.594106280649998
+            }
+          ],
+          "groundedSampleFraction": 1,
+          "solverControlsInDocumentedRange": true,
+          "meanWheel4SlipProxy": -0.1549241875310486
+        },
+        "terminal": {
+          "seconds": 1.5339000000000027,
+          "max3DSpeedMps": 0.0,
+          "maxPositionDriftMetres": 0.0,
+          "grounded": true
+        },
+        "reviewSha256": "b2e756d5fd24af45f1d22c279baa3264793dfd2bd8409be73ff9881bd53c2070"
+      }
+    ],
+    "limits": "Private adapter adaptation and two earlier native NOT_TESTED attempts are retained; no engine speed or token saving claimed. Reverse FAIL is a regression result, not a diagnosed current-release defect.",
+    "earlierNativeAttempts": [
+      {
+        "name": "driving-v1",
+        "status": "NOT_TESTED",
+        "elapsedSeconds": 73.688
+      },
+      {
+        "name": "driving-v2",
+        "status": "NOT_TESTED",
+        "elapsedSeconds": 73.453
+      }
+    ],
+    "cancellation": {
+      "requestedAfterSeconds": 7,
+      "elapsedSeconds": 25.063,
+      "status": "NOT_TESTED",
+      "notStarted": [
+        "course-b"
+      ],
+      "infrastructure": {
+        "status": "NOT_TESTED",
+        "reason": "cancelled"
+      },
+      "lifecycle": {
+        "status": "PASS",
+        "reason": "Original verified process exit and lease receipt; run-specific fixture command close sent; original runner still owns lifecycle",
+        "verifiedExited": true,
+        "leaseReleased": true
+      },
+      "summarySha256": "e24c0a5258edd31f83b7fd41f68e67d9ffbfcd127af38c7e0d2f21ff00fbb6fb"
+    }
+  },
+  "visualMatchedPairs": {
+    "source": "Authoritative 28-frame retained clean review set; offline schema adaptation, not new capture",
+    "frames": 28,
+    "identityStatus": "PASS",
+    "injectedEyeDeltaMetres": 0.0005,
+    "individualRecipeStatus": "PASS",
+    "strictPairStatus": "NOT_TESTED",
+    "manualVisualAcceptance": "pending",
+    "identityReceiptSha256": "585e929d526e9433ac43832ef46f88666f67ab5d46e070dc4ba3c0ba0c6147a5",
+    "driftReceiptSha256": "b4e3d67aa3f41adf8c6819c47347c4e961ba59fda5bc4013869c93a450fe3f7b"
+  },
+  "independentReview": {
+    "reviewer": "Fresh GPT-6.1 Sol High, read-only, no native/GitHub mutation",
+    "initialHead": "0ed250e7d08a2ae61739d34f780841d2243e7b00",
+    "fixedCoordinatorCommit": "2de7b75",
+    "pythonTests": 67,
+    "fixed": [
+      "automatic unique world pins",
+      "malformed status normalization and attempted truth",
+      "exponent overflow JSON",
+      "post-GUID source-root containment",
+      "frozen-heading net driving progress",
+      "per-maneuver power/action/contact",
+      "contiguous phase order and terminal stop",
+      "same-interval power and motion",
+      "3D grounded stable stop",
+      "single-buffer source hashing and structured CLI errors"
+    ],
+    "limits": "Bounded contract review, not independent native execution or release acceptance.",
+    "reviewedToolHashes": {
+      "tools/workflow.py": "ef101dc01110d4244dc663b6224e8b74e152b7b31c1960b9dd1f261e77fef9c4",
+      "tools/driving_review.py": "0b8565a5579b960775628f40f192a774a9f35ed2c2b2e0b6b3c4f21b5cde79e6",
+      "tools/compare_visual_reviews.py": "7edf0dfb838daede127984b24ad0b37c4c8d5bef85013c6b6935c444de0978e2"
+    }
+  },
+  "finalCombinedFixture": {
+    "healthy": {
+      "case": "healthy-input-control",
+      "status": "PASS",
+      "infrastructure": {
+        "status": "PASS",
+        "reason": "Original native collector qualified"
+      },
+      "lifecycle": {
+        "status": "PASS",
+        "reason": "Original verified process exit and lease receipt; not requested",
+        "verifiedExited": true,
+        "leaseReleased": true
+      },
+      "assertions": {
+        "fixture.ready": {
+          "status": "PASS",
+          "reason": "Original collector requires GAME, nonce ready/done, frozen-source hashes and closure"
+        },
+        "world.loaded": {
+          "status": "PASS",
+          "reason": "Original native gameplay marker and enteredPlay result"
+        },
+        "stimulus.native": {
+          "status": "NOT_TESTED",
+          "reason": "Authored native pathway, issued count and callbacks required",
+          "actual": {
+            "stimulus": "none",
+            "issued": 0
+          }
+        },
+        "damage.observed": {
+          "status": "NOT_TESTED",
+          "reason": "Actual damage subscriptions, without health setters",
+          "actual": 0
+        },
+        "crew.exit": {
+          "status": "PASS",
+          "reason": "Actual scripted compartment completion; ordinary input acceptance separate",
+          "actual": true
+        },
+        "post-hit.traverse": {
+          "status": "PASS",
+          "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+          "actual": {
+            "rightDegrees": 102.77679443,
+            "leftDegrees": 48.26450729
+          }
+        },
+        "post-hit.fire": {
+          "status": "PASS",
+          "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+          "actual": [
+            5,
+            5
+          ]
+        },
+        "crew.reentry": {
+          "status": "PASS",
+          "reason": "Same original crew/seat; public get-in action and completed compartment state",
+          "actual": {
+            "requested": true,
+            "completed": true
+          }
+        },
+        "post-hit.drive": {
+          "status": "NOT_TESTED",
+          "reason": "Existing health/loaded-muzzle fixture does not measure this function"
+        },
+        "post-reentry.fire": {
+          "status": "PASS",
+          "reason": "Actual native ammunition use after completed reentry",
+          "actual": [
+            11,
+            11
+          ]
+        },
+        "input.positive-control": {
+          "status": "PASS",
+          "reason": "Healthy same-build native action calibration before attributing damaged-function failures",
+          "actual": {
+            "healthyControl": true,
+            "qualified": true
+          }
+        }
+      },
+      "elapsedSeconds": 41.281,
+      "receiptSha256": "bea0fd4c575b3514962c296c134e6814e515b9a5e01f6f4ef8203c08e5f57077"
+    },
+    "damage": {
+      "elapsedSeconds": 86.578,
+      "cases": [
+        {
+          "case": "m855-12-right",
+          "status": "PASS",
+          "infrastructure": {
+            "status": "PASS",
+            "reason": "Original native collector qualified"
+          },
+          "lifecycle": {
+            "status": "PASS",
+            "reason": "Original verified process exit and lease receipt; not requested",
+            "verifiedExited": true,
+            "leaseReleased": true
+          },
+          "assertions": {
+            "fixture.ready": {
+              "status": "PASS",
+              "reason": "Original collector requires GAME, nonce ready/done, frozen-source hashes and closure"
+            },
+            "world.loaded": {
+              "status": "PASS",
+              "reason": "Original native gameplay marker and enteredPlay result"
+            },
+            "stimulus.native": {
+              "status": "PASS",
+              "reason": "Authored native pathway, issued count and callbacks required",
+              "actual": {
+                "stimulus": "native-projectile",
+                "issued": 12
+              }
+            },
+            "damage.observed": {
+              "status": "PASS",
+              "reason": "Actual damage subscriptions, without health setters",
+              "actual": 12
+            },
+            "crew.exit": {
+              "status": "PASS",
+              "reason": "Actual scripted compartment completion; ordinary input acceptance separate",
+              "actual": true
+            },
+            "post-hit.traverse": {
+              "status": "PASS",
+              "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+              "actual": {
+                "rightDegrees": 105.46395111,
+                "leftDegrees": 46.05569839
+              }
+            },
+            "post-hit.fire": {
+              "status": "PASS",
+              "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+              "actual": [
+                4,
+                4
+              ]
+            },
+            "crew.reentry": {
+              "status": "PASS",
+              "reason": "Same original crew/seat; public get-in action and completed compartment state",
+              "actual": {
+                "requested": true,
+                "completed": true
+              }
+            },
+            "post-hit.drive": {
+              "status": "NOT_TESTED",
+              "reason": "Existing health/loaded-muzzle fixture does not measure this function"
+            },
+            "post-reentry.fire": {
+              "status": "PASS",
+              "reason": "Actual native ammunition use after completed reentry",
+              "actual": [
+                11,
+                11
+              ]
+            }
+          },
+          "elapsedSeconds": 44.672,
+          "receiptSha256": "866344a8e796c8fbf298a90814be29e35d48614321b55644fca9c556ac04cc9f"
+        },
+        {
+          "case": "own-frag-right-2m-r1",
+          "status": "PASS",
+          "infrastructure": {
+            "status": "PASS",
+            "reason": "Original native collector qualified"
+          },
+          "lifecycle": {
+            "status": "PASS",
+            "reason": "Original verified process exit and lease receipt; not requested",
+            "verifiedExited": true,
+            "leaseReleased": true
+          },
+          "assertions": {
+            "fixture.ready": {
+              "status": "PASS",
+              "reason": "Original collector requires GAME, nonce ready/done, frozen-source hashes and closure"
+            },
+            "world.loaded": {
+              "status": "PASS",
+              "reason": "Original native gameplay marker and enteredPlay result"
+            },
+            "stimulus.native": {
+              "status": "PASS",
+              "reason": "Authored native pathway, issued count and callbacks required",
+              "actual": {
+                "stimulus": "native-blast",
+                "issued": 1
+              }
+            },
+            "damage.observed": {
+              "status": "PASS",
+              "reason": "Actual damage subscriptions, without health setters",
+              "actual": 6
+            },
+            "crew.exit": {
+              "status": "PASS",
+              "reason": "Actual scripted compartment completion; ordinary input acceptance separate",
+              "actual": true
+            },
+            "post-hit.traverse": {
+              "status": "PASS",
+              "reason": "Measured native sights direction after right/left action input; no post-hit angle setter",
+              "actual": {
+                "rightDegrees": 102.83449554,
+                "leftDegrees": 45.74221038
+              }
+            },
+            "post-hit.fire": {
+              "status": "PASS",
+              "reason": "Both native muzzle ammunition counts decrease after native TurretFire action",
+              "actual": [
+                5,
+                5
+              ]
+            },
+            "crew.reentry": {
+              "status": "PASS",
+              "reason": "Same original crew/seat; public get-in action and completed compartment state",
+              "actual": {
+                "requested": true,
+                "completed": true
+              }
+            },
+            "post-hit.drive": {
+              "status": "NOT_TESTED",
+              "reason": "Existing health/loaded-muzzle fixture does not measure this function"
+            },
+            "post-reentry.fire": {
+              "status": "PASS",
+              "reason": "Actual native ammunition use after completed reentry",
+              "actual": [
+                11,
+                11
+              ]
+            }
+          },
+          "elapsedSeconds": 41.875,
+          "receiptSha256": "f0a5d74b1a3c252c0f6cd0191ea864c5aeb6e9630986dbdc26cd6fb0f8cf59a2"
+        }
+      ]
+    },
+    "sourceManifestSha256": "79cc350dd99fe2d41ce30e051776633ad36287466749fb1ff4b66bd771d792dc",
+    "gameplayAssetChanges": 0,
+    "limits": "Private successor over sealed historical fixture; frozen release and publisher unchanged."
+  }
 }

@@ -61,6 +61,24 @@ starts a game, closes a process or changes user settings.
 
 ## Fixed camera and lighting recipe
 
+Before calling retained captures a matched before/after pair, run:
+
+```powershell
+python tools/compare_visual_reviews.py --baseline '<before>/review-manifest.json' --candidate '<after>/review-manifest.json' --output '<fresh>/comparison.json'
+```
+
+This offline check revalidates both runs, verifies native BMP/PNG and decoded
+pixel hashes, matches by preset/station independently of label prefixes, and
+compares renderer settings, recipe world/date/stage/resolution, actual camera
+bases/eye/FOV/exposure, environment, body pose and required articulation. Each
+manifest needs adjacent `graphics-settings.json` and its original image paths.
+Default matched-pair tolerances are 1e-6 per numeric component and 1e-7 for
+exposure. Two runs can individually pass yet be unsuitable for strict comparison.
+Different conditions or invalid evidence return NOT_TESTED (CLI exit2) with an
+exclusive JSON receipt. Manual visual acceptance stays pending even on PASS;
+inspect geometry/materials, clipping and references separately. Cloud/wind phase
+and GPU state remain unpinned. This command launches no renderer.
+
 Copy [visual-review.recipe.json](../examples/visual-review.recipe.json) into the
 project and adjust its generic camera offsets to the target's actual bounds.
 Eyes and targets are **subject-local metres** with root yaw/pitch/roll fixed to

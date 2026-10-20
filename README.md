@@ -6,6 +6,8 @@ The harness opens Workbench directly on a chosen project and world, validates an
 
 **Starting a new mod task?** Use the [task-to-template entrypoint](docs/workflows.md) for startup, damage, mobility, crew/input, visual, audio, convoy or release work. The small batch coordinator pins inputs, checks dependencies/fixture classes, preserves per-case evidence and distinguishes behavior, infrastructure and lifecycle. [Adapter contract](docs/workflow-adapters.md) · [Recovery/runbooks](docs/workflow-recovery.md) · [Evidence-based audit](docs/workflow-audit.md).
 
+See [native driving review](docs/driving-review.md), [matched visual comparisons](docs/clean-visual-review.md#fixed-camera-and-lighting-recipe) and the [acceptance/limits matrix](docs/workflow-acceptance.md) for the qualified scope.
+
 ## Setup
 
 1. Install Node.js 24+, Arma Reforger, and Arma Reforger Tools. A dedicated server is optional for local hosting and Workshop fetches. Install FFmpeg if you want recordings.
