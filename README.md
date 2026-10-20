@@ -32,6 +32,8 @@ For repeatable scenarios, put a deterministic test entity or probe in the addon 
 
 ## Evidence capture
 
+For clean model comparisons, use the [neutral native visual-review workflow](docs/clean-visual-review.md): an original matte-stage generator, fixed camera/lighting recipe, and dry-run-first capture client for an explicitly owned addon fixture. Actual camera/weather/exposure readbacks and pixel-preserving PNGs stay with the project.
+
 For game sound, use the separate [WASAPI loopback recorder](docs/loopback-audio.md) alongside video capture. It produces a bounded, locally saved WAV with UTC timing and an optional stop file for early clean closure.
 
 Client and recorder execution require at least **2 GiB free** on their output filesystems before creating directories or starting a process. The check follows directory junctions and fails if space cannot be measured; dry runs remain available. This is a starting-space check, not a capacity reservation for a complete run. See the [storage notes](docs/operations-playbook.md#storage-before-execution).
