@@ -29,7 +29,12 @@ if mode=='stale': out['runId']='prior-run'
 if mode=='missing': del out['assertions']['world.loaded']
 if mode=='lease': out['lifecycle']['leaseReleased']=False
 if mode=='malformed': out['assertions']['fixture.ready']['reason']=''
-result.write_text(json.dumps(out))
+if mode=='status-list': out['infrastructure']['status']=[]
+if mode=='status-map': out['lifecycle']['status']={}
+if mode=='checks-list': out['assertions']=[]
+if mode=='check-list': out['assertions']['fixture.ready']=[]
+if mode=='overflow': out['assertions']['fixture.ready']['actual']='OVERFLOW'
+result.write_text(json.dumps(out).replace('"OVERFLOW"','1e309'))
 '''
 
 
@@ -157,14 +162,56 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(len(out['cases']),1)
 
     def test_pin_change_stops_before_next_case(self):
+        self.job['requiredFiles']=[];self.write_job()
         planned=w.plan(self.path)
         (self.root/'Scene.ent').write_text('changed')
         with self.assertRaisesRegex(w.WorkflowError,'Input changed'):w.verify_pins(planned)
+
+    def test_ambiguous_world_rejected_before_launch(self):
+        other=self.root/'other';other.mkdir();(other/'Scene.ent').write_text('other world')
+        self.job['sourceRoots'].append('other');self.write_job()
+        with self.assertRaisesRegex(w.WorkflowError,'Ambiguous world'):w.plan(self.path)
+
+    def test_malformed_types_leave_attempt_evidence_and_stop(self):
+        for mode in ('status-list','status-map','checks-list','check-list','overflow'):
+            with self.subTest(mode=mode):
+                self.job['cases'][0]=self.case('first',mode);self.write_job()
+                output=self.root/mode
+                out=w.run(self.path,output,True)
+                self.assertEqual(out['status'],'NOT_TESTED')
+                self.assertEqual(out['attempted'],['first'])
+                self.assertEqual(out['notStarted'],['second'])
+                self.assertEqual(out['incomplete'],[])
+                self.assertTrue(out['stopReason'])
+                result=json.loads((output/'first/result.json').read_text())
+                self.assertEqual(result['infrastructure']['status'],'NOT_TESTED')
+                self.assertFalse(result['lifecycle']['verifiedExited'])
+                self.assertFalse(result['lifecycle']['leaseReleased'])
+                self.assertTrue((output/'first/adapter-result.json').exists())
+
+    def test_unexpected_protocol_error_preserves_attempt(self):
+        with patch('workflow.validate_result',side_effect=TypeError('unexpected protocol error')):
+            out=self.run_job()
+        self.assertEqual(out['attempted'],['first'])
+        self.assertEqual(out['notStarted'],['second'])
+        self.assertIn('TypeError',out['cases'][0]['infrastructure']['reason'])
+
+    def test_invalid_template_container_rejected(self):
+        self.job['template']=[];self.write_job()
+        with self.assertRaisesRegex(w.WorkflowError,'Unknown template'):w.plan(self.path)
+
+    def test_world_cannot_escape_declared_source_roots(self):
+        for world in (str(self.root/'Scene.ent'),'{0123456789ABCDEF}../Scene.ent','../Scene.ent','/Scene.ent'):
+            with self.subTest(world=world):
+                self.job['world']=world;self.write_job()
+                with self.assertRaises(w.WorkflowError):w.plan(self.path)
 
     def test_duplicate_json_and_nonfinite_values_rejected(self):
         self.path.write_text('{"schema":1,"schema":1}')
         with self.assertRaisesRegex(w.WorkflowError,'Duplicate'):w.read_json(self.path)
         self.path.write_text('{"number":NaN}')
+        with self.assertRaisesRegex(w.WorkflowError,'Nonfinite'):w.read_json(self.path)
+        self.path.write_text('{"number":1e309}')
         with self.assertRaisesRegex(w.WorkflowError,'Nonfinite'):w.read_json(self.path)
 
     def test_low_space_refuses_before_writes_or_launch(self):

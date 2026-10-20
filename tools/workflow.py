@@ -9,6 +9,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -43,9 +44,13 @@ def read_json(file):
         return out
     def reject(value):
         raise WorkflowError('Nonfinite JSON value: ' + value)
+    def finite_float(value):
+        parsed = float(value)
+        require(math.isfinite(parsed), 'Nonfinite JSON number: ' + value)
+        return parsed
     data = Path(file).read_bytes()
     require(len(data) <= 4 * 1024**2, 'JSON exceeds 4 MiB: ' + str(file))
-    return json.loads(data.decode('utf-8-sig'), object_pairs_hook=unique, parse_constant=reject)
+    return json.loads(data.decode('utf-8-sig'), object_pairs_hook=unique, parse_constant=reject, parse_float=finite_float)
 
 
 def sha(file):
@@ -137,7 +142,7 @@ def plan(job_path):
                      'capabilities', 'adapter', 'cases', 'timeoutSeconds', 'closeGraceSeconds'])
     require(job['schema'] == 1, 'Unsupported job schema')
     templates = read_json(TEMPLATES)
-    require(job['template'] in templates, 'Unknown template; use workflow.py templates')
+    require(isinstance(job['template'], str) and job['template'] in templates, 'Unknown template; use workflow.py templates')
     template = templates[job['template']]
     strings(job['capabilities'], 'capabilities')
     require(set(template['capabilities']) <= set(job['capabilities']), 'Adapter lacks template capabilities: ' + ', '.join(sorted(set(template['capabilities']) - set(job['capabilities']))))
@@ -158,8 +163,14 @@ def plan(job_path):
     # Check text resources with an exact local path. GUID resolution and binary
     # dependencies still require native compile/load evidence from the adapter.
     world_path = re.sub(r'^\{[0-9a-fA-F]{16}\}', '', job['world'])
-    require(any((p / world_path).is_file() for p in roots), 'World not found in supplied source roots: ' + world_path)
-    pins = {project_pin['path']: project_pin}
+    require(re.fullmatch(r'[A-Za-z0-9_./-]+\.ent', world_path) and not world_path.startswith('/')
+            and '..' not in Path(world_path).parts, 'World must be a relative resource inside source roots')
+    worlds = {(p / world_path).resolve() for p in roots if (p / world_path).is_file()}
+    require(all(any(world.is_relative_to(root) for root in roots) for world in worlds), 'World resolves outside source roots')
+    require(worlds, 'World not found in supplied source roots: ' + world_path)
+    require(len(worlds) == 1, 'Ambiguous world in supplied source roots: ' + world_path)
+    world_pin = file_identity(next(iter(worlds)))
+    pins = {project_pin['path']: project_pin, world_pin['path']: world_pin}
     for row in dependencies.values():
         pins[row['path']] = file_identity(row['path'])
     require(isinstance(job['requiredFiles'], list) and len(job['requiredFiles']) <= 256, 'requiredFiles must be bounded array')
@@ -236,7 +247,7 @@ def validate_result(result, request):
     require(result['schema'] == 1 and result['runId'] == request['runId'] and result['caseId'] == request['caseId'], 'Stale or wrong native result identity')
     def check(row):
         exact_keys(row, ['status', 'reason', 'actual'], ['status', 'reason'])
-        require(row['status'] in STATUSES and isinstance(row['reason'], str) and row['reason'].strip(), 'Each check needs status and reason')
+        require(isinstance(row['status'], str) and row['status'] in STATUSES and isinstance(row['reason'], str) and row['reason'].strip(), 'Each check needs string status and nonempty reason')
     check(result['infrastructure'])
     lifecycle = result['lifecycle']
     exact_keys(lifecycle, ['status', 'reason', 'verifiedExited', 'leaseReleased'], ['status', 'reason', 'verifiedExited', 'leaseReleased'])
@@ -298,7 +309,7 @@ def run(job, output, execute=False, stop_file=None, only=None):
     stop_file = Path(stop_file).resolve() if stop_file else output / 'STOP'
     started = time.monotonic()
     summary = {'schema': 1, 'startedUtc': utc(), 'jobSha256': planned['jobSha256'], 'template': planned['template'],
-               'status': 'NOT_TESTED', 'cases': [], 'stopReason': None, 'automaticRetries': 0}
+               'status': 'NOT_TESTED', 'cases': [], 'attempted': [], 'stopReason': None, 'automaticRetries': 0}
     interrupted = False
     def on_signal(*_):
         nonlocal interrupted
@@ -330,6 +341,7 @@ def run(job, output, execute=False, stop_file=None, only=None):
             case_started = time.monotonic()
             result = None
             boundary = None
+            summary['attempted'].append(case['id'])
             try:
                 with (attempt / 'adapter.stdout.log').open('xb') as stdout, (attempt / 'adapter.stderr.log').open('xb') as stderr:
                     # Adapter is trusted local code. No shell, focus, kill, game or lease operation here.
@@ -362,8 +374,10 @@ def run(job, output, execute=False, stop_file=None, only=None):
                 elif exit_code not in (0, 1, 2):
                     result['infrastructure'] = not_tested('Adapter exit code: ' + str(exit_code))
                 verify_pins(planned)
-            except (OSError, ValueError, WorkflowError) as error:
-                result = {'schema': 1, 'runId': run_id, 'caseId': case['id'], 'infrastructure': not_tested(str(error)),
+            except Exception as error:
+                # Adapter/protocol failures must leave a truthful attempted case,
+                # even for an unexpected exception. Never infer native closure.
+                result = {'schema': 1, 'runId': run_id, 'caseId': case['id'], 'infrastructure': not_tested(type(error).__name__ + ': ' + str(error)),
                           'assertions': {name: not_tested('No qualified measurement') for name in case['assertions']},
                           'lifecycle': {**not_tested('Ownership/closure requires inspection'), 'verifiedExited': False, 'leaseReleased': False}, 'evidence': []}
             status = verdict(result, case['assertions'])
@@ -379,9 +393,12 @@ def run(job, output, execute=False, stop_file=None, only=None):
         for sig, previous in old.items():
             signal.signal(sig, previous)
         completed = {row['id'] for row in summary['cases']}
-        summary['notStarted'] = sorted(selected - completed)
+        summary['notStarted'] = sorted(selected - set(summary['attempted']))
+        summary['incomplete'] = sorted(set(summary['attempted']) - completed)
+        if summary['incomplete']:
+            summary['stopReason'] = summary['stopReason'] or 'Attempt interrupted before durable normalized result; inspect ownership'
         statuses = [r['status'] for r in summary['cases']]
-        summary['status'] = ('FAIL' if 'FAIL' in statuses else 'NOT_TESTED' if summary['stopReason'] or summary['notStarted'] or 'NOT_TESTED' in statuses else 'PASS')
+        summary['status'] = ('FAIL' if 'FAIL' in statuses else 'NOT_TESTED' if not statuses or summary['stopReason'] or summary['notStarted'] or 'NOT_TESTED' in statuses else 'PASS')
         summary['completedUtc'] = utc()
         summary['elapsedSeconds'] = round(time.monotonic() - started, 3)
         save(output / 'summary.json', summary)
@@ -390,6 +407,7 @@ def run(job, output, execute=False, stop_file=None, only=None):
         for row in summary['cases']:
             lines.append(f"| {row['id']} | {row['status']} | {row['infrastructure']['status']} | {row['lifecycle']['status']} | [result]({row['result']}) |")
         lines += ['', 'Stop reason: ' + str(summary['stopReason']), '', 'Not started: ' + ', '.join(summary['notStarted']), '',
+                  'Incomplete attempts: ' + ', '.join(summary['incomplete']), '',
                   'A behavior PASS does not erase a lifecycle failure. Review required measurements and hashed evidence in each result.']
         (output / 'index.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
     return summary
