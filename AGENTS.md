@@ -4,6 +4,8 @@ This repository contains reusable local test tools and research notes, not an ad
 
 Begin a new task with `docs/workflows.md` and `python tools/workflow.py templates`. Select a template and explicit required measurements before running. Use the addon-owned adapter contract and shared ownership mechanism; the coordinator never controls a game process. Keep incomplete functional assertions NOT_TESTED, and report blocking questions/uncertain ownership to the coordinating task immediately. Preserve frozen releases and manual publication ownership.
 
+Discover already configured private workflows with `python tools/workflow.py bindings`. The ignored `reforger-workflows.local.json` beside this file binds names to addon-owned jobs and evidence roots; it works independently of shell cwd. Use `plan --binding <name>` before `run --binding <name> --execute`. Missing bindings require explicit local setup, not guessed project paths. Never commit the local registry or private fixtures.
+
 - Keep addon scripts, worlds, audio, recordings, and addon-specific probes in their own repositories.
 - Use explicit `--project` and `--world` when opening Workbench. The default project may be an older local sample.
 - Launchers dry-run by default; opt into each real run with `--execute`.

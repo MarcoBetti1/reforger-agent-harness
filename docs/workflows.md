@@ -23,6 +23,30 @@ Qualify native input on a healthy control before attributing a damaged-function 
 
 ## Create and parameterize one job
 
+First check for an existing qualified local adapter:
+
+```powershell
+python tools/workflow.py bindings
+python tools/workflow.py plan --binding addon-functional
+python tools/workflow.py run --binding addon-functional --execute
+```
+
+The default registry is the ignored `reforger-workflows.local.json` beside the
+harness AGENTS.md, resolved from the tool location rather than the shell cwd.
+Install it from [bindings.example.json](../examples/workflows/bindings.example.json)
+with machine-local job paths, descriptions and output roots. `--registry` selects
+another explicit registry. Relative registry paths resolve beside that registry.
+Registration is an alias, not native qualification or process authority: planning
+and all existing adapter, source, lifecycle and measurement gates still apply.
+The saved plan records the actual resolved job and its pins. A named run without
+`--output` creates a UTC/UUID directory below its registered output root and saves
+the resolved output path in `summary.json`. Explicit `--output`, case selection,
+dry runs and cancellation retain the same behavior. Direct `--job` runs still
+require an explicit output path. Keep private adapters/fixtures/evidence in a
+persistent addon workspace; preserve archival evidence independently.
+
+When no suitable binding exists, initialize a new addon-owned job:
+
 ```powershell
 python tools/workflow.py init --template damage --project '<private-QA>/addon.gproj' --world 'Worlds/Tests/Damage.ent' --adapter '<addon>/qa/adapter.py' --executable '<python.exe>' --addons-root '<private-QA-parent>' --addons-root '<installed-game>/addons' --required-class 'MyDamageFixture' --case rifle-right --case fragments-front --output '<addon>/qa/damage-job.json'
 python tools/workflow.py plan --job '<addon>/qa/damage-job.json'

@@ -1,4 +1,6 @@
 from pathlib import Path
+import contextlib
+import io
 import json
 import sys
 import tempfile
@@ -199,6 +201,51 @@ class WorkflowTests(unittest.TestCase):
     def test_invalid_template_container_rejected(self):
         self.job['template']=[];self.write_job()
         with self.assertRaisesRegex(w.WorkflowError,'Unknown template'):w.plan(self.path)
+
+    def registry(self):
+        folder=self.root/'local';folder.mkdir(exist_ok=True)
+        path=folder/'bindings.json'
+        path.write_text(json.dumps({'schema':1,'bindings':{'qualified-fixture':{'job':'../job.json','description':'Synthetic qualified CLI integration fixture; not engine evidence','outputRoot':'../evidence'}}}))
+        return path
+
+    def test_binding_paths_resolve_from_registry_and_plan_never_launches(self):
+        registry=self.registry()
+        self.assertEqual(w.bindings(registry)['bindings']['qualified-fixture']['job'],str(self.path))
+        with patch('workflow.subprocess.Popen',side_effect=AssertionError('launch')),contextlib.redirect_stdout(io.StringIO()) as stream:
+            self.assertEqual(w.main(['plan','--binding','qualified-fixture','--registry',str(registry)]),0)
+        self.assertEqual(json.loads(stream.getvalue())['job'],str(self.path))
+        self.assertFalse((self.root/'evidence').exists())
+
+    def test_binding_runs_real_adapter_with_fresh_output_and_case_selection(self):
+        registry=self.registry()
+        for _ in range(2):
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(w.main(['run','--binding','qualified-fixture','--registry',str(registry),'--case','second','--execute']),0)
+        outputs=list((self.root/'evidence/qualified-fixture').iterdir())
+        self.assertEqual(len(outputs),2)
+        for output in outputs:
+            summary=json.loads((output/'summary.json').read_text())
+            self.assertEqual(summary['output'],str(output))
+            self.assertEqual([row['id'] for row in summary['cases']],['second'])
+            self.assertTrue((output/'second/adapter-result.json').exists())
+
+    def test_unknown_binding_or_missing_registry_cannot_create_evidence(self):
+        registry=self.registry()
+        with contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(w.main(['run','--binding','absent','--registry',str(registry),'--execute']),2)
+        self.assertFalse((self.root/'evidence').exists())
+        with self.assertRaisesRegex(w.WorkflowError,'registry absent'):w.bindings(self.root/'absent.json')
+
+    def test_binding_registry_rejects_malformed_or_command_fields(self):
+        registry=self.registry();valid=json.loads(registry.read_text())
+        for mutate in (lambda j:j.update(schema=True),lambda j:j.update(bindings=[]),lambda j:j['bindings']['qualified-fixture'].update(outputRoot=False),lambda j:j['bindings']['qualified-fixture'].update(command='run anything')):
+            data=json.loads(json.dumps(valid));mutate(data);registry.write_text(json.dumps(data))
+            with self.assertRaises(w.WorkflowError):w.bindings(registry)
+
+    def test_direct_job_still_requires_explicit_output(self):
+        with contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(w.main(['run','--job',str(self.path),'--execute']),2)
+        self.assertFalse((self.root/'batch').exists())
 
     def test_world_cannot_escape_declared_source_roots(self):
         for world in (str(self.root/'Scene.ent'),'{0123456789ABCDEF}../Scene.ent','../Scene.ent','/Scene.ent'):

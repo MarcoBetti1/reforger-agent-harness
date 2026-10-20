@@ -31,3 +31,10 @@ comparator verifies original/decoded pixels and recorded conditions, matching
 stations independently of label prefixes. Manual visual acceptance remains
 pending. A template catalog is a routing/measurement contract, not an executable
 native adapter for every addon; this limitation remains explicit.
+
+Integration follow-up reviewed the minimal local binding registry and five CLI
+regressions: registry-relative resolution, named adapter invocation/fresh output,
+case selection, malformed/missing bindings and preserved explicit direct-job
+outputs. **72 Python tests pass**. No unresolved correctness or public-data
+hygiene blocker was found; readiness/merge remains gated on green CI and local
+persistent-binding validation.

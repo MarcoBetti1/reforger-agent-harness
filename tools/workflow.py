@@ -21,6 +21,7 @@ import time
 import uuid
 
 TEMPLATES = Path(__file__).resolve().parents[1] / 'examples/workflows/templates.json'
+REGISTRY = Path(__file__).resolve().parents[1] / 'reforger-workflows.local.json'
 STATUSES = {'PASS', 'FAIL', 'NOT_TESTED'}
 LABEL = re.compile(r'^[a-z0-9][a-z0-9-]{0,63}$')
 MAX_ADAPTER_LOG_BYTES = 64 * 1024**2
@@ -94,6 +95,32 @@ def file_identity(file):
 def resolve(base, value):
     require(isinstance(value, str) and value, 'Expected path string')
     return (base / value).resolve()
+
+
+def bindings(registry):
+    registry = Path(registry).resolve()
+    require(registry.is_file(), 'Local workflow registry absent; copy examples/workflows/bindings.example.json to ' + str(registry))
+    data = read_json(registry)
+    exact_keys(data, ['schema', 'bindings'], ['schema', 'bindings'])
+    require(type(data['schema']) is int and data['schema'] == 1, 'Unsupported binding registry schema')
+    require(isinstance(data['bindings'], dict) and 1 <= len(data['bindings']) <= 32, 'Registry needs 1..32 named bindings')
+    rows = {}
+    for name, row in data['bindings'].items():
+        require(LABEL.fullmatch(name), 'Safe binding name required')
+        exact_keys(row, ['job', 'description', 'outputRoot'], ['job', 'description', 'outputRoot'])
+        require(isinstance(row['description'], str) and 1 <= len(row['description']) <= 2048, 'Binding description required')
+        rows[name] = {'job': str(resolve(registry.parent, row['job'])), 'description': row['description'],
+                      'outputRoot': str(resolve(registry.parent, row['outputRoot']))}
+    return {'schema': 1, 'status': 'NOT_TESTED', 'reason': 'Local aliases only; plan and qualify the addon-owned adapter before execution',
+            'registry': str(registry), 'bindings': rows}
+
+
+def selected_job(args):
+    if args.job:
+        return args.job, None
+    rows = bindings(args.registry)['bindings']
+    require(args.binding in rows, 'Unknown local binding; use workflow.py bindings')
+    return rows[args.binding]['job'], rows[args.binding]['outputRoot']
 
 
 def dependency_preflight(project, roots):
@@ -308,7 +335,7 @@ def run(job, output, execute=False, stop_file=None, only=None):
     save(output / 'plan.json', planned)
     stop_file = Path(stop_file).resolve() if stop_file else output / 'STOP'
     started = time.monotonic()
-    summary = {'schema': 1, 'startedUtc': utc(), 'jobSha256': planned['jobSha256'], 'template': planned['template'],
+    summary = {'schema': 1, 'output': str(output), 'startedUtc': utc(), 'jobSha256': planned['jobSha256'], 'template': planned['template'],
                'status': 'NOT_TESTED', 'cases': [], 'attempted': [], 'stopReason': None, 'automaticRetries': 0}
     interrupted = False
     def on_signal(*_):
@@ -413,10 +440,12 @@ def run(job, output, execute=False, stop_file=None, only=None):
     return summary
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('templates', help='Task-to-template catalog')
+    p = sub.add_parser('bindings', help='Discover machine-local addon workflow bindings; never launch')
+    p.add_argument('--registry', type=Path, default=REGISTRY)
     p = sub.add_parser('init', help='Create a local job; adapter remains addon-owned')
     p.add_argument('--template', required=True, choices=list(read_json(TEMPLATES)))
     p.add_argument('--project', required=True)
@@ -428,17 +457,25 @@ def main():
     p.add_argument('--case', action='append', default=[])
     p.add_argument('--output', required=True)
     p = sub.add_parser('plan', help='Check inputs and adapter capabilities; never launch')
-    p.add_argument('--job', required=True)
+    choice = p.add_mutually_exclusive_group(required=True)
+    choice.add_argument('--job')
+    choice.add_argument('--binding')
+    p.add_argument('--registry', type=Path, default=REGISTRY)
     p = sub.add_parser('run', help='Sequential native batch through an addon-owned adapter')
-    p.add_argument('--job', required=True)
-    p.add_argument('--output', required=True)
+    choice = p.add_mutually_exclusive_group(required=True)
+    choice.add_argument('--job')
+    choice.add_argument('--binding')
+    p.add_argument('--registry', type=Path, default=REGISTRY)
+    p.add_argument('--output')
     p.add_argument('--execute', action='store_true')
     p.add_argument('--stop-file')
     p.add_argument('--case', action='append')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     try:
         if args.command == 'templates':
             result = read_json(TEMPLATES)
+        elif args.command == 'bindings':
+            result = bindings(args.registry)
         elif args.command == 'init':
             template = read_json(TEMPLATES)[args.template]
             script = Path(args.adapter).resolve()
@@ -453,9 +490,13 @@ def main():
                       'notes': 'Review adapter capabilities, requiredFiles, case parameters and recommended assertions before execution.'}
             save(args.output, result)
         elif args.command == 'plan':
-            result = plan(args.job)
+            job, _ = selected_job(args)
+            result = plan(job)
         else:
-            result = run(args.job, args.output, args.execute, args.stop_file, args.case)
+            job, output_root = selected_job(args)
+            require(args.output or output_root, '--job requires --output; a local binding may declare outputRoot')
+            output = args.output or Path(output_root) / args.binding / (dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex)
+            result = run(job, output, args.execute, args.stop_file, args.case)
         print(json.dumps(result, indent=2, allow_nan=False))
         return 1 if result.get('status') == 'FAIL' else 2 if args.command == 'run' and args.execute and result.get('status') == 'NOT_TESTED' else 0
     except (OSError, ValueError) as error:
