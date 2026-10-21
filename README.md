@@ -1,6 +1,6 @@
 # Reforger agent harness
 
-Reusable local tools and operating notes for Arma Reforger and Enfusion Workbench. This repository contains **no addon source, packaged game data, voice assets, or game recordings**. The first addon developed with it lives separately in [Reforger Convoy Follower](https://github.com/MarcoBetti1/reforger-convoy-follower).
+Reusable local tools and operating notes for Arma Reforger and Enfusion Workbench. This repository contains **no addon source, packaged game data, voice assets, or game recordings**. The first addon developed with it lives separately in [Reforger Convoy Follower](https://github.com/mortal414/reforger-convoy-follower).
 
 The harness opens Workbench directly on a chosen project and world, validates and packs addons, launches isolated clients or private local servers, inspects logs and packages, and records evidence from a Windows display. Commands that start or change a game process dry-run until `--execute` is supplied.
 
@@ -79,6 +79,6 @@ The covered generic harness material in this repository is licensed under [Apach
 
 Credit in the description or documentation of an independent mod built with these tools is appreciated, **not required**. Suggested wording:
 
-> Built with Reforger Agent Harness: https://github.com/MarcoBetti1/reforger-agent-harness
+> Built with Reforger Agent Harness: https://github.com/mortal414/reforger-agent-harness
 
 Independent output mods do not automatically inherit this license merely because the tools were used. Redistribution of harness code or derivatives remains subject to the applicable Apache-2.0 license and notice obligations; the voluntary credit suggestion adds no condition to LICENSE. Vehicle/addon assets require their own rights and licensing decisions.
