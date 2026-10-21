@@ -21,6 +21,42 @@ Templates define minimum assertions and recommended additions, not complete acce
 
 Qualify native input on a healthy control before attributing a damaged-function failure. A clean free-camera fixture can have inactive ordinary ADS/input context even with a controlled seated actor. Use the ordinary player camera for input stages, require actual readiness and physical direction/ammunition changes, then restore the clean camera for photographs. Never use an angle/pose setter as powered-traverse evidence. See the [measured comparison](workflow-audit.md#representative-validation).
 
+## Research and reuse before implementation
+
+Before writing a new subsystem, answer **what already implements this, and what
+is the smallest supported change?** Keep a short research/decision note in the
+addon's existing research or handoff record; do not create another harness or
+copy private evidence into this repository.
+
+1. Read applicable `AGENTS.md` and `.agents/skills` where present, the addon's saved
+   lessons/failed attempts, this [recipe index](feature-recipes.md) and the relevant
+   [playbook](operations-playbook.md) section. Find existing jobs with `bindings`.
+2. Consult installed API/base-game source, current official docs and official
+   examples, then inspect an existing working mod and accessible community
+   documentation for the feature. Use the [source tools](knowledge-sources.md#feature-research)
+   and bounded reads. A description or resource name is a lead, not behavior proof.
+   Record unavailable sources and use supported alternatives; never invent private
+   Discord access, an API, a resource GUID or a successful test.
+3. Compare stock/configuration reuse, a maintained dependency, minimal licensed
+   adaptation and custom implementation. Dependencies are encouraged when they
+   fit: check supported extension points, actual version/dependency graph,
+   maintenance/compatibility, license/permission and packaging impact. Installation
+   alone grants no copying/adaptation rights. Explain the choice and remaining
+   gap before custom code; avoid rebuilding a proven subsystem by default.
+4. Define the smallest discriminating test with the selected template.
+   Reuse a proven fixture/control before changing its geometry or observer. Keep
+   authority, input, visible behavior, audio, MP/JIP and lifecycle claims separate.
+
+The same addon-owned note should retain: source URL or exact local resource plus
+version/commit/hash and access date; license/permission assumptions and unknowns;
+options and chosen reuse boundary; failed approach, evidence and reason for the
+next changed attempt; repeatable commands and expected measurements; actual
+PASS/FAIL/NOT_TESTED results; and the **exact runnable artifact** (current project,
+world, adapter/job or binding, source/build manifest, dependency identities and
+launch/test command with working directory). A proposal, inert graph contract or
+dry run must say what is missing before it can run. Update the existing record
+after testing, and add only a reusable lesson/link to the index when warranted.
+
 ## Create and parameterize one job
 
 First check for an existing qualified local adapter:

@@ -41,6 +41,27 @@ The `prepare-knowledge` command snapshots these pages into `.cache/knowledge/off
 - Weapon Optic Creation
 - Resource Manager: Batch Texture Processor Plugin
 
+## Feature research
+
+Follow the [research/reuse decision](workflows.md#research-and-reuse-before-implementation)
+before implementation. Start with the [feature recipes](feature-recipes.md) and
+the addon's existing records. `npm run knowledge:prepare` discovers installed
+docs and reuses cached official pages; check snapshot age/version before relying
+on them and use `--force` only when a refresh is useful. A failed web fetch does
+not invalidate available installed docs or saved source evidence.
+
+Use `npm run cli -- search-text '<query>' --rootType all --limit 20` for configured source roots and
+`npm run pak:source -- --help` with the [selective reader](selective-pak-source.md)
+for exact installed text resources. Inspect only needed paths; retain package and
+resource identities in the addon record, without redistributing reference caches.
+Start official examples at [Bohemia's samples](https://github.com/BohemiaInteractive/Arma-Reforger-Samples)
+and pin a commit for the example actually used. Consult the mod author's public
+Workshop/wiki/repository and relevant accessible community discussions too;
+distinguish author documentation, observed working behavior and untested advice.
+Record failed/unavailable lookups and the next useful source instead of stopping
+at a single fetch failure. Check the actual source's license; the samples'
+terms do not cover unrelated Workshop mods.
+
 ## Why this matters
 
 - Offline API docs cover classes and engine behavior.

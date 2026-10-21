@@ -1,5 +1,32 @@
 # Recovery and manual handoff
 
+## Repair recoverable failures before handoff
+
+An ordinary command, shell, reader or session failure starts diagnosis, not a
+terminal blocker. Read the exact error and inspect whether the action actually
+ran. Check cwd, executable path/version, arguments, source/build identity and
+current output/process/session state. Use the existing playbook and supported
+alternative, apply a bounded correction and verify it; continue diagnosis when
+needed. Retain the
+failed attempt and what changed; avoid identical blind retries or weakening
+acceptance gates. A later repair does not erase an earlier FAIL/NOT_TESTED result.
+
+Examples already recorded in the [playbook](operations-playbook.md): resolve the
+running PowerShell path instead of assuming one; replace an exclusive live-log
+reader with the sharing-compatible snapshot tool; poll the same bounded recorder
+after closed stdin instead of starting a duplicate; inspect the first addon
+compiler error before chasing cascading base-game errors. Recover using owned
+files/processes only. A stale tool handle can be rebound; an uncertain action
+must be checked before any repeat.
+
+Permission denials, security/integrity restrictions, unknown process ownership,
+STOP/cancellation and a human-owned native session require their existing gates.
+Do not bypass them, clear a lease from age alone or retry a denied operation
+without materially new authorization/evidence. Report the exact boundary promptly
+while continuing independent source/research work. If supported recovery is
+exhausted, report attempts, retained evidence and the smallest concrete next step
+using the handoff format below; never imply an unavailable query returned empty.
+
 | Boundary | Meaning | Next action |
 |---|---|---|
 | Project/base dependency missing | Fixture setup error | Supply explicit installed addon roots; rerun plan before launching |
