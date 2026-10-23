@@ -105,5 +105,83 @@ class RecipeTests(unittest.TestCase):
         detail=w.read_json(self.root/'evidence'/result['cases'][0]['result'])
         self.assertEqual(detail['infrastructure']['status'],'NOT_TESTED')
 
+    def recipe_init(self,*options):
+        target=self.root/'recipe-job.json'
+        args=['init','--project',str(self.root/'addon.gproj'),'--world','QA.ent',
+              '--adapter',str(self.adapter),'--executable',sys.executable,'--addons-root',str(self.root),
+              '--output',str(target),*options]
+        with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):code=w.main(args)
+        return code,target
+
+    def test_asset_recipe_copies_case_parameters_and_additional_gates_without_manual_lists(self):
+        code,file=self.recipe_init('--recipe','asset-preparation')
+        self.assertEqual(code,0);job=w.read_json(file)
+        self.assertEqual(job['template'],'visual');self.assertEqual(len(job['cases']),4)
+        self.assertIn('purpose',job['cases'][1]['parameters'])
+        self.assertIn('asset.native-coordinate-parity',job['cases'][1]['assertions'])
+        self.assertIn('asset.motion-ownership',job['cases'][-1]['assertions'])
+        self.assertEqual(job['requiredFiles'][0]['sha256'],w.sha(w.RECIPES['asset-preparation']))
+        w.plan(file)
+
+    def test_terrain_stage_copies_all_promotion_gates_and_matrix_cases(self):
+        code,file=self.recipe_init('--recipe','terrain','--stage','playable-reference-block')
+        self.assertEqual(code,0);job=w.read_json(file)
+        self.assertEqual(job['template'],'terrain');self.assertEqual(len(job['cases']),3)
+        for case in job['cases']:
+            self.assertTrue({'terrain.geographic-confidence','terrain.regeneration','terrain.performance'}<=set(case['assertions']))
+        w.plan(file)
+
+    def test_recipe_case_selection_preserves_selected_assertions_and_rejects_unknowns(self):
+        code,file=self.recipe_init('--recipe','asset-preparation','--case','moving-owner-regression')
+        self.assertEqual(code,0);job=w.read_json(file)
+        self.assertEqual([case['id'] for case in job['cases']],['moving-owner-regression'])
+        self.assertIn('post-reentry.fire',job['cases'][0]['assertions'])
+        file.unlink()
+        code,file=self.recipe_init('--recipe','asset-preparation','--case','invented')
+        self.assertEqual(code,2);self.assertFalse(file.exists())
+
+    def test_ambiguous_stage_template_conflict_and_duplicate_selection_fail_before_creation(self):
+        options=[[],['--recipe','terrain'],['--template','terrain','--stage','playable-reference-block'],
+                 ['--recipe','terrain','--stage','missing'],['--recipe','asset-preparation','--stage','anything'],
+                 ['--recipe','asset-preparation','--template','startup'],
+                 ['--recipe','asset-preparation','--case','moving-owner-regression','--case','moving-owner-regression']]
+        for args in options:
+            with self.subTest(args=args):
+                code,file=self.recipe_init(*args);self.assertEqual(code,2);self.assertFalse(file.exists())
+
+    def test_recipe_drift_is_pinned_and_cannot_silently_change_a_job(self):
+        copy=self.root/'recipe.json';copy.write_bytes(w.RECIPES['asset-preparation'].read_bytes())
+        with patch.dict(w.RECIPES,{'asset-preparation':copy}):
+            code,file=self.recipe_init('--recipe','asset-preparation')
+            self.assertEqual(code,0);w.plan(file)
+            copy.write_bytes(copy.read_bytes()+b' ')
+            with self.assertRaisesRegex(w.WorkflowError,'Pinned file differs'):w.plan(file)
+
+    def test_recipe_mode_preserves_exclusive_creation(self):
+        code,file=self.recipe_init('--recipe','asset-preparation');self.assertEqual(code,0)
+        before=file.read_bytes()
+        code,_=self.recipe_init('--recipe','terrain','--stage','playable-reference-block')
+        self.assertEqual(code,2);self.assertEqual(file.read_bytes(),before)
+
+    def test_malformed_recipe_or_missing_mandatory_gate_rejects_before_creation(self):
+        copy=self.root/'recipe.json';recipe=w.read_json(w.RECIPES['asset-preparation'])
+        broken=dict(recipe);broken['requiredAssertions']=['fixture.ready']
+        for value in [[],broken]:
+            copy.write_text(json.dumps(value))
+            with patch.dict(w.RECIPES,{'asset-preparation':copy}):
+                code,file=self.recipe_init('--recipe','asset-preparation')
+                self.assertEqual(code,2);self.assertFalse(file.exists())
+
+    def test_recipe_change_during_read_cannot_pin_different_cases(self):
+        copy=self.root/'recipe.json';copy.write_bytes(w.RECIPES['asset-preparation'].read_bytes())
+        original=w.read_json
+        def changed(file):
+            value=original(file)
+            if Path(file)==copy:copy.write_bytes(copy.read_bytes()+b' ')
+            return value
+        with patch.dict(w.RECIPES,{'asset-preparation':copy}),patch.object(w,'read_json',side_effect=changed):
+            code,file=self.recipe_init('--recipe','asset-preparation')
+            self.assertEqual(code,2);self.assertFalse(file.exists())
+
 
 if __name__=='__main__':unittest.main()

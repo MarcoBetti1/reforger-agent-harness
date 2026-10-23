@@ -75,3 +75,28 @@ runner here. Further work needs actual export/native evidence or a sourced
 district decision. Current Blender policy denial remains a real boundary, and
 the Isfahan owner's native slot is untouched. Frozen releases, art approvals and
 publication remain outside this pass.
+
+## Second pass from the resulting checkout
+
+The first checkpoint's real `terrain` initialization planned successfully but
+created only a generic case with five minimum assertions. Reconstructing the
+published recipes required manual copying: four asset cases with 51 assertion
+entries, and three playable-block cases with eight assertions each. That is a
+concrete transcription/omission risk, even though the documents correctly label
+their scope. Independent review reproduced the case matrices and confirmed that
+an inert run stays NOT_TESTED rather than claiming native success.
+
+The second pass extends only the existing initializer with `--recipe`/`--stage`.
+It copies the same cases/parameters/assertions, selects known cases, infers the
+existing template and pins the recipe in the existing job schema. Negative tests
+cover missing/ambiguous stages, template conflicts, unknown/duplicate selections,
+malformed or incomplete recipes, exclusive output creation and recipe changes
+during initialization or before planning. No new runner, adapter, ownership
+system, asset reader or terrain generator was added.
+
+The [second-pass receipt](audits/asset-terrain-second-pass-2026-10.json) retains
+fresh-context execution and the actual follow-up review. Both resulting recipes
+still need qualified addon-native reporters and meaningful parameters; copied
+purpose text is not a runnable scenario or acceptance threshold. Further native
+claims remain NOT_TESTED. This is the stopping boundary for offline improvement,
+not evidence that source/export/terrain quality is finished.

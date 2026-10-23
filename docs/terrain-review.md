@@ -7,6 +7,20 @@ template for a representative playable block. Start with the
 are specifications for addon-owned generators/reporters and existing native
 fixtures, not a new terrain generator or an admitted native adapter.
 
+```powershell
+python tools/workflow.py init --recipe terrain --stage playable-reference-block --project '<QA>/addon.gproj' --world 'Worlds/Tests/Block.ent' --adapter '<addon>/qa/adapter.py' --executable '<python.exe>' --addons-root '<QA-parent>' --output '<addon>/qa/block-job.json'
+python tools/workflow.py plan --job '<addon>/qa/block-job.json'
+```
+
+Use `--stage whole-map-load` or `--stage surface-diagnostic` for the other
+separate jobs. The initializer selects their existing templates, copies cases
+and full assertion sets, and pins the recipe; it never executes the adapter.
+Review all purpose placeholders, actual block/route IDs and thresholds. A copied
+capability declaration is not native qualification. Unknown stages/cases or a
+conflicting explicit `--template` reject before creating a job.
+Declare the actual fixture classes with `--required-class` and retain fresh native
+compile/load evidence; source presence does not qualify script-module scope.
+
 ## Freeze the geographic and generation contract
 
 Record source URL/date/license and file hashes, horizontal CRS/axis order/bounds,
@@ -59,8 +73,8 @@ Keep these rows separate in the addon's existing result ledger:
 | Performance | Whole-map and reference-block load at pinned hardware/build/settings, warmup and repeated frame-time/memory samples along the same route. Compare distributions and budgets declared beforehand. One editor FPS readback or triangle count is not acceptance. |
 
 The `terrain` template requires data, visual, traversal and coverage assertions.
-For geographic/promoted-map or performance claims, copy the recipe's additional
-required assertions too. An import-only repair belongs in `startup`/`visual`,
+For geographic/promoted-map or performance claims, use the recipe's complete
+assertion set (`init --recipe` includes it). An import-only repair belongs in `startup`/`visual`,
 not a passing playable-terrain report. Each coverage cell records required views,
 routes, risk class and PASS/FAIL/NOT_TESTED with reason/evidence; report the
 untested denominator as well as the passing count. A grid is a reporting unit,
@@ -72,6 +86,10 @@ blocks, open ground and slopes deliberately; reserve held-out cells for regressi
 Reuse the small saved pavement/normal fixtures. Freeze height/material/geometry
 while varying one proposed cause. Require a visibly sensitive negative/control
 before attribution: raised geometry can hide stones without any occluder effect.
+Reuse qualified reporting-handle lifetime and the actual capture contract too:
+V23 first crashed while writing through a non-retained handle, and a later
+assertion expected five captures where its fixture produced six. These are
+instrumentation failures, not evidence that the terrain feature failed.
 Keep bare ground, unchanged repeat and A/B/A at the same location; inspect local
 regions and temporal reversal. Whole-frame differences include exposure/UI/sky.
 A local mask effect does not qualify generated roads, depth behavior or distance.

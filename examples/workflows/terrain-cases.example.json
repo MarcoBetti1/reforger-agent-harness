@@ -41,5 +41,5 @@
     "ground routes with original actor/control identity, route progress, collision/clearance and ordinary-input evidence",
     "pinned hardware/build/settings, warmup, repeated frame-time/memory samples, whole-map and block load; budgets declared before measurement"
   ],
-  "acceptance": "Create one existing workflow job per stage; copy that stage's required assertions/cases and supply an addon-owned qualified adapter. Diagnostic source/import success never becomes visual/playability/performance acceptance. No native launches, road fix, resolution fix or realistic-map claim is established by this recipe."
+  "acceptance": "Use workflow.py init --recipe terrain --stage <id> to create one existing workflow job per stage, copy all required assertions/cases and pin this recipe. Supply and qualify the addon-owned adapter and actual parameters. Diagnostic source/import success never becomes visual/playability/performance acceptance. No native launches, road fix, resolution fix or realistic-map claim is established by this recipe."
 }

@@ -21,6 +21,7 @@ import time
 import uuid
 
 TEMPLATES = Path(__file__).resolve().parents[1] / 'examples/workflows/templates.json'
+RECIPES = {name: TEMPLATES.parent / (name + '-cases.example.json') for name in ('asset-preparation', 'terrain')}
 REGISTRY = Path(__file__).resolve().parents[1] / 'reforger-workflows.local.json'
 STATUSES = {'PASS', 'FAIL', 'NOT_TESTED'}
 LABEL = re.compile(r'^[a-z0-9][a-z0-9-]{0,63}$')
@@ -440,6 +441,41 @@ def run(job, output, execute=False, stop_file=None, only=None):
     return summary
 
 
+def recipe_job(name, stage=None, template=None, selected=None):
+    """Copy a built-in recipe into the existing job schema; no adapter execution."""
+    require(name in RECIPES, 'Unknown built-in recipe')
+    file = RECIPES[name]
+    recipe_hash = sha(file)
+    recipe = read_json(file)
+    require(isinstance(recipe, dict) and type(recipe.get('schema')) is int and recipe['schema'] == 1 and recipe.get('kind') == 'recipe-only-not-an-executable-native-adapter', 'Unsupported recipe')
+    if 'stages' in recipe:
+        stages = recipe['stages']
+        require(isinstance(stages, list) and all(isinstance(row, dict) and isinstance(row.get('id'), str) for row in stages), 'Invalid recipe stages')
+        require(len({row['id'] for row in stages}) == len(stages), 'Duplicate recipe stage')
+        require(stage in {row['id'] for row in stages}, 'Select --stage from: ' + ', '.join(row['id'] for row in stages))
+        recipe = next(row for row in stages if row['id'] == stage)
+    else:
+        require(stage is None, 'This recipe has no stages')
+    require(isinstance(recipe.get('template'), str) and recipe['template'] in read_json(TEMPLATES), 'Unknown recipe template')
+    require(template is None or template == recipe['template'], '--template differs from recipe stage')
+    assertions = strings(recipe.get('requiredAssertions'), 'Recipe assertions', 1)
+    require(set(read_json(TEMPLATES)[recipe['template']]['requiredAssertions']) <= set(assertions), 'Recipe omits mandatory template assertions')
+    require(isinstance(recipe.get('cases'), list) and 1 <= len(recipe['cases']) <= 256, 'Bounded recipe cases required')
+    cases = []
+    for case in recipe['cases']:
+        exact_keys(case, ['id', 'parameters', 'additionalAssertions'], ['id', 'parameters'])
+        require(isinstance(case['id'], str) and LABEL.fullmatch(case['id']) and isinstance(case['parameters'], dict), 'Invalid recipe case')
+        additional = strings(case.get('additionalAssertions', []), 'Additional recipe assertions')
+        cases.append({'id': case['id'], 'parameters': case['parameters'], 'assertions': list(dict.fromkeys(assertions + additional))})
+    require(len({row['id'] for row in cases}) == len(cases), 'Duplicate recipe case')
+    if selected:
+        strings(selected, 'Selected recipe cases', 1)
+        require(set(selected) <= {row['id'] for row in cases}, 'Unknown recipe case')
+        cases = [row for row in cases if row['id'] in selected]
+    require(sha(file) == recipe_hash, 'Recipe changed during initialization')
+    return recipe['template'], cases, {'path': str(file.resolve()), 'sha256': recipe_hash}
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
@@ -447,7 +483,9 @@ def main(argv=None):
     p = sub.add_parser('bindings', help='Discover machine-local addon workflow bindings; never launch')
     p.add_argument('--registry', type=Path, default=REGISTRY)
     p = sub.add_parser('init', help='Create a local job; adapter remains addon-owned')
-    p.add_argument('--template', required=True, choices=list(read_json(TEMPLATES)))
+    p.add_argument('--template', choices=list(read_json(TEMPLATES)))
+    p.add_argument('--recipe', choices=list(RECIPES), help='Copy built-in cases/assertions and pin their recipe; never qualifies an adapter')
+    p.add_argument('--stage', help='Required for the staged terrain recipe')
     p.add_argument('--project', required=True)
     p.add_argument('--world', required=True)
     p.add_argument('--adapter', required=True)
@@ -477,15 +515,23 @@ def main(argv=None):
         elif args.command == 'bindings':
             result = bindings(args.registry)
         elif args.command == 'init':
-            template = read_json(TEMPLATES)[args.template]
+            require(args.template or args.recipe, 'Select --template or --recipe')
+            require(args.recipe or args.stage is None, '--stage requires --recipe')
+            if args.recipe:
+                selected_template, cases, recipe_pin = recipe_job(args.recipe, args.stage, args.template, args.case)
+            else:
+                selected_template = args.template
+                cases = [{'id': name, 'parameters': {}, 'assertions': read_json(TEMPLATES)[selected_template]['requiredAssertions']} for name in args.case or ['smoke']]
+                recipe_pin = None
+            template = read_json(TEMPLATES)[selected_template]
             script = Path(args.adapter).resolve()
             prefix = ['-NoProfile', '-NonInteractive', '-File'] if script.suffix.lower() == '.ps1' else []
-            result = {'schema': 1, 'template': args.template, 'project': str(Path(args.project).resolve()), 'world': args.world,
+            result = {'schema': 1, 'template': selected_template, 'project': str(Path(args.project).resolve()), 'world': args.world,
                       'sourceRoots': [str(Path(args.project).resolve().parent)], 'addonRoots': [str(Path(v).resolve()) for v in args.addons_root],
-                      'requiredFiles': [], 'requiredClasses': args.required_class, 'capabilities': template['capabilities'],
+                      'requiredFiles': [recipe_pin] if recipe_pin else [], 'requiredClasses': args.required_class, 'capabilities': template['capabilities'],
                       'adapter': {'executable': str(Path(args.executable).resolve()), 'script': str(script),
                                   'args': [*prefix, '{script}', '{request}', '{result}', '{cancel}']},
-                      'cases': [{'id': name, 'parameters': {}, 'assertions': template['requiredAssertions']} for name in args.case or ['smoke']],
+                      'cases': cases,
                       'timeoutSeconds': 180, 'closeGraceSeconds': 30,
                       'notes': 'Review adapter capabilities, requiredFiles, case parameters and recommended assertions before execution.'}
             save(args.output, result)

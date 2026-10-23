@@ -58,6 +58,26 @@ launch/test command with working directory). A proposal, inert graph contract or
 dry run must say what is missing before it can run. Update the existing record
 after testing, and add only a reusable lesson/link to the index when warranted.
 
+## Initialize a saved asset or terrain recipe
+
+Use `init --recipe asset-preparation` for the visual asset matrix, or
+`init --recipe terrain --stage whole-map-load`, `surface-diagnostic` or
+`playable-reference-block` for separate terrain jobs. Supply the same explicit
+project/world/adapter/executable/addons-root/output flags shown below; full
+commands are in [asset preparation](asset-preparation.md) and
+[terrain review](terrain-review.md). The template is inferred. An explicit
+conflicting template, missing stage, unknown/duplicate case or malformed recipe
+fails before creating a job.
+
+The initializer copies all cases, purpose parameters and full required/additional
+assertions into the existing job schema. `--case` selects known recipe cases;
+it cannot invent a case while silently dropping its extra gates. The recipe is
+hash-pinned in `requiredFiles`; edits during initialization or before planning
+reject. Initialize a fresh job after reviewing a changed recipe. Existing
+`--template` jobs still work. Planning and the inert scaffold do not qualify a
+native adapter; replace purpose placeholders with real measurements/thresholds
+and follow normal source/capability/lifecycle admission before execution.
+
 ## Create and parameterize one job
 
 First check for an existing qualified local adapter:

@@ -1,0 +1,199 @@
+{
+  "schema": 1,
+  "stage": 2,
+  "utc": "2026-10-23T17:54:11.776130+00:00",
+  "status": "PASS",
+  "firstStageCommit": "fd0a051fbb71e1ea5c04ca83f872e99654ff0cb1",
+  "reviewMethod": "Read resulting checkout, execute fresh-context commands, compare copied matrices and inject recipe/acceptance failures",
+  "observedFriction": "First-stage generic init made one terrain smoke case with five assertions; recipes still required manual case/extra-gate transcription",
+  "implementation": "Small extension to existing workflow.py init; no new runner, job schema, adapter, native reporter or ownership mechanism",
+  "entrypoint": [
+    "workflow.py init --recipe asset-preparation ...",
+    "workflow.py init --recipe terrain --stage playable-reference-block ..."
+  ],
+  "benchmark": {
+    "firstStageJob": {
+      "cases": 1,
+      "assertionsPerCase": [
+        5
+      ]
+    },
+    "recipeJobs": {
+      "asset": {
+        "template": "visual",
+        "cases": [
+          "unchanged-native-control",
+          "asymmetric-import-sentinel",
+          "selected-regional-candidate",
+          "moving-owner-regression"
+        ],
+        "assertionsPerCase": [
+          12,
+          11,
+          13,
+          15
+        ],
+        "inertStatus": "NOT_TESTED",
+        "notStarted": [
+          "asymmetric-import-sentinel",
+          "moving-owner-regression",
+          "selected-regional-candidate"
+        ]
+      },
+      "terrain-block": {
+        "template": "terrain",
+        "cases": [
+          "sourced-connected-block",
+          "road-river-crossing",
+          "held-out-coverage-cell"
+        ],
+        "assertionsPerCase": [
+          8,
+          8,
+          8
+        ],
+        "inertStatus": "NOT_TESTED",
+        "notStarted": [
+          "held-out-coverage-cell",
+          "road-river-crossing"
+        ]
+      },
+      "terrain-load": {
+        "template": "startup",
+        "cases": [
+          "rough-map-cold-load"
+        ],
+        "assertionsPerCase": [
+          6
+        ]
+      },
+      "terrain-diagnostic": {
+        "template": "visual",
+        "cases": [
+          "bare-unchanged-control",
+          "local-surface-aba",
+          "native-road-versus-overlay",
+          "bounded-resolution-control"
+        ],
+        "assertionsPerCase": [
+          6,
+          6,
+          6,
+          6
+        ]
+      }
+    },
+    "commands": {
+      "asset-init": {
+        "exitCode": 0,
+        "seconds": 0.0775
+      },
+      "asset-plan": {
+        "exitCode": 0,
+        "seconds": 0.0819
+      },
+      "asset-inert": {
+        "exitCode": 2,
+        "seconds": 0.1986
+      },
+      "terrain-block-init": {
+        "exitCode": 0,
+        "seconds": 0.0788
+      },
+      "terrain-block-plan": {
+        "exitCode": 0,
+        "seconds": 0.0818
+      },
+      "terrain-block-inert": {
+        "exitCode": 2,
+        "seconds": 0.1948
+      },
+      "terrain-load-init": {
+        "exitCode": 0,
+        "seconds": 0.0772
+      },
+      "terrain-load-plan": {
+        "exitCode": 0,
+        "seconds": 0.0802
+      },
+      "terrain-diagnostic-init": {
+        "exitCode": 0,
+        "seconds": 0.0774
+      },
+      "terrain-diagnostic-plan": {
+        "exitCode": 0,
+        "seconds": 0.0823
+      }
+    },
+    "manualMatrixTranscriptions": 0,
+    "automaticRetries": 0,
+    "limit": "Counts verify case/assertion transfer, not native speed, token saving or scenario readiness"
+  },
+  "tests": {
+    "fullPython": {
+      "count": 88,
+      "seconds": 8.81,
+      "status": "PASS"
+    },
+    "focusedRecipe": {
+      "count": 16,
+      "status": "PASS"
+    },
+    "optimizedRecipe": {
+      "count": 16,
+      "seconds": 0.267,
+      "status": "PASS"
+    },
+    "independentNarrowReview": {
+      "count": 45,
+      "seconds": 8.862,
+      "status": "PASS",
+      "scope": "Coordinator and recipe suite from another authorized cwd; no source edits/native actions"
+    },
+    "coordinatorSecondReviewer": "Reviewing first checkpoint independently; final-delta review pending coordinator"
+  },
+  "negativeCoverage": [
+    "Malformed recipe roots and missing mandatory gates",
+    "Missing/ambiguous stages and template conflict",
+    "Unknown/duplicate case selection",
+    "Exclusive creation preserves existing jobs",
+    "Recipe drift during initialization and before planning",
+    "Import PASS cannot hide visible FAIL",
+    "Missing ground routes/coverage and Blender-only evidence remain NOT_TESTED",
+    "Insensitive controls do not establish causation"
+  ],
+  "sourceEvidence": {
+    "namedFiles": 18,
+    "filesChangedSinceFirstPass": [],
+    "sourceWritesByThisAudit": 0
+  },
+  "qualification": {
+    "nativeLaunches": 0,
+    "nativeProcessOrLeaseQueries": 0,
+    "BlenderOrPluginExecution": 0,
+    "newExportNativeTerrainAcceptance": "NOT_TESTED",
+    "promotionOrPublication": false
+  },
+  "remainingLimits": [
+    "Existing Blender Smart App Control DLL denial was not retried or bypassed",
+    "Actual native parity/motion/LOD, whole-map/block performance and player ground traversal require qualified addon fixtures and a separately granted native window",
+    "Geographic/district assumptions and local-vs-map effect limits stay explicit; no resolution or overlay fix is claimed"
+  ],
+  "privateLogHashes": {
+    "fullPython": "7abd40cccb04b2188cb2ea5cebabbd1d38260e63dd1b8aedf0f5f95f4ea0d389",
+    "optimizedRecipe": "469669dcbd4d6c87a3f10c165c0d776fdfc45881fdb22c09a2e1273e375528d5"
+  },
+  "files": {
+    "tools/workflow.py": "763a83000e69a8f82cf19936824c993bbcb69fb48266eda7382e529042bda5e7",
+    "tools/test_workflow_recipes.py": "b7a78e8db27cc796287124b66b9d9580c9a096fbf1294aa56f4821ec45ac8405",
+    "examples/workflows/templates.json": "d26b14d52ff2c2735ae78e9ff6087fe80996290bf5a5f1f6572995e062fb9b0f",
+    "examples/workflows/asset-preparation-cases.example.json": "8682bbe8bde71b59b3fc2999c85a1c915564551d163a597ed5799971fd8fd7d8",
+    "examples/workflows/terrain-cases.example.json": "92674c45a7763fe69fdf80393b47ed8f9bfae073c1c007bef3f9d1be0b513623",
+    "docs/asset-preparation.md": "34b36dd084302ca8f9ecc0d761ae23c812db47c2faa5d89e99476727e5cb20a0",
+    "docs/terrain-review.md": "e8a1b884cf0593ec7097dc8a902664f524bb991e1dde5a25d08567d420fa1d75",
+    "docs/asset-terrain-retrospective.md": "a0dfc456ea79912336fc80e7c80cead7f43030e5ef224c3579b80a638b5262e7",
+    "docs/workflows.md": "5fb3266fcdfae1a3e2725cd457eb56251807101580e1aa3a471a431e4debf0ba"
+  },
+  "published": false,
+  "remoteCI": "Not run; no push authorized for this pass"
+}

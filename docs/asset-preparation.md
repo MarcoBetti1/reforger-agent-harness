@@ -3,9 +3,21 @@
 Use the existing `visual` workflow, [semantic gates](asset-review.md),
 [clean camera fixture](clean-visual-review.md) and
 [asset case recipe](../examples/workflows/asset-preparation-cases.example.json).
-Copy selected cases/assertions into an addon-owned job; the recipe is not an
-exporter or native adapter. Keep the current functional candidate separate from
+Initialize an addon-owned job with `--recipe asset-preparation`; it copies all
+cases, parameters and required/additional assertions and pins the recipe. Use
+`--case` only to select named recipe cases. The recipe is not an exporter or
+native adapter. Keep the current functional candidate separate from
 art proposals. A Blender render is useful design evidence, not imported parity.
+
+```powershell
+python tools/workflow.py init --recipe asset-preparation --project '<QA>/addon.gproj' --world 'Worlds/Tests/Asset.ent' --adapter '<addon>/qa/adapter.py' --executable '<python.exe>' --addons-root '<QA-parent>' --output '<addon>/qa/asset-job.json'
+python tools/workflow.py plan --job '<addon>/qa/asset-job.json'
+```
+
+Review the copied purpose/subject placeholders, thresholds and adapter capability
+before execution. Declare actual native fixture classes with `--required-class`;
+static class presence still needs fresh native compile/load in the correct script
+module. Initializing or planning starts no application.
 
 ## One source contract before modeling
 
