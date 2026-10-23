@@ -131,26 +131,32 @@
   },
   "tests": {
     "fullPython": {
-      "count": 88,
-      "seconds": 8.81,
+      "count": 89,
+      "seconds": 8.889,
       "status": "PASS"
     },
     "focusedRecipe": {
-      "count": 16,
+      "count": 17,
       "status": "PASS"
     },
     "optimizedRecipe": {
-      "count": 16,
-      "seconds": 0.267,
-      "status": "PASS"
+      "count": 17,
+      "status": "PASS",
+      "scope": "Included in the optimized full89 suite"
     },
     "independentNarrowReview": {
       "count": 45,
       "seconds": 8.862,
       "status": "PASS",
-      "scope": "Coordinator and recipe suite from another authorized cwd; no source edits/native actions"
+      "scope": "Coordinator and recipe suite from another authorized cwd; no source edits/native actions",
+      "revision": "3080db7 (before regression-only follow-up)"
     },
-    "coordinatorSecondReviewer": "Reviewing first checkpoint independently; final-delta review pending coordinator"
+    "coordinatorSecondReviewer": "Confirmed3080db7 and all88tests; P2 masked-gate test gap fixed in follow-up, independent recheck pending",
+    "optimizedFullPython": {
+      "count": 89,
+      "seconds": 9.017,
+      "status": "PASS"
+    }
   },
   "negativeCoverage": [
     "Malformed recipe roots and missing mandatory gates",
@@ -180,12 +186,12 @@
     "Geographic/district assumptions and local-vs-map effect limits stay explicit; no resolution or overlay fix is claimed"
   ],
   "privateLogHashes": {
-    "fullPython": "7abd40cccb04b2188cb2ea5cebabbd1d38260e63dd1b8aedf0f5f95f4ea0d389",
-    "optimizedRecipe": "469669dcbd4d6c87a3f10c165c0d776fdfc45881fdb22c09a2e1273e375528d5"
+    "fullPython": "de15f67784d5a887dbbdf6d552a138e21a88e56220d2f377f8a549f65af39e6d",
+    "optimizedFullPython": "7f90f72fda0271b3a8ca9481e76cfa7eab63c96c28ca26fedf02e423ecd94ccf"
   },
   "files": {
     "tools/workflow.py": "763a83000e69a8f82cf19936824c993bbcb69fb48266eda7382e529042bda5e7",
-    "tools/test_workflow_recipes.py": "b7a78e8db27cc796287124b66b9d9580c9a096fbf1294aa56f4821ec45ac8405",
+    "tools/test_workflow_recipes.py": "9a7df87cf4d2ac9d29b3a95e203bf03552141a898d4a0bb03843155e1e1451a8",
     "examples/workflows/templates.json": "d26b14d52ff2c2735ae78e9ff6087fe80996290bf5a5f1f6572995e062fb9b0f",
     "examples/workflows/asset-preparation-cases.example.json": "8682bbe8bde71b59b3fc2999c85a1c915564551d163a597ed5799971fd8fd7d8",
     "examples/workflows/terrain-cases.example.json": "92674c45a7763fe69fdf80393b47ed8f9bfae073c1c007bef3f9d1be0b513623",
@@ -195,5 +201,32 @@
     "docs/workflows.md": "5fb3266fcdfae1a3e2725cd457eb56251807101580e1aa3a471a431e4debf0ba"
   },
   "published": false,
-  "remoteCI": "Not run; no push authorized for this pass"
+  "remoteCI": "Not run; no push authorized for this pass",
+  "reviewFollowup": {
+    "utc": "2026-10-23T18:07:02.700024+00:00",
+    "baseRevision": "3080db7f7f92d7511621df031831f6c6be3414a7",
+    "finding": "P2 regression-test gap: simultaneous unqualified assertions masked loss of control-sensitivity requirement; current runtime behavior was correct",
+    "change": "52 isolated missing/NOT_TESTED negative checks across26 expected gates; every other assertion and infrastructure passes. Explicit control-sensitivity/surface-parity membership in all4 initialized diagnostic cases.",
+    "mutation": "Remove terrain.control-sensitive from in-memory surface-diagnostic requiredAssertions; no tracked recipe or runtime mutation",
+    "proof": {
+      "baseline3080db7": {
+        "tests": 16,
+        "status": "PASS despite mutation"
+      },
+      "fixedTests": {
+        "tests": 17,
+        "expectedResult": "FAIL",
+        "assertionFailures": 6,
+        "errors": 0
+      },
+      "normalAndOptimizedMutationDetected": true,
+      "runtimeAndRecipesUnchanged": true
+    },
+    "mutationLogHashes": {
+      "normal": "8e2fc7e33934227e2aaab9630a05d4de8e6ba8e708c51a6fd8184995fb48186b",
+      "optimized": "14b512038090c5c9e7f6bf5e3c8b8d9143a91a99a3f8afc58810103e860da9d5"
+    },
+    "nativeActions": 0,
+    "scope": "Regression tests and this evidence receipt only; no runtime or recipe changes"
+  }
 }

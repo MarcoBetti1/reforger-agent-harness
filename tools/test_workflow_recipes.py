@@ -42,6 +42,22 @@ class RecipeTests(unittest.TestCase):
         request={'runId':'replay','caseId':'recorded','attemptDir':str(self.root),'assertions':required}
         return w.validate_result(result,request)
 
+    def assert_each_gate_is_required(self,required,expected):
+        passing={name:'PASS' for name in required}
+        self.assertEqual(w.verdict(self.normalize(self.result(passing),required),required),'PASS')
+        for gate in expected:
+            for mode in ['missing','NOT_TESTED']:
+                with self.subTest(gate=gate,mode=mode):
+                    self.assertIn(gate,required)
+                    values=dict(passing)
+                    if mode=='missing':values.pop(gate)
+                    else:values[gate]='NOT_TESTED'
+                    result=self.normalize(self.result(values),required)
+                    self.assertEqual(result['assertions'][gate]['status'],'NOT_TESTED')
+                    self.assertTrue(all(row['status']=='PASS' for name,row in result['assertions'].items() if name!=gate))
+                    self.assertEqual(w.verdict(result,required),'NOT_TESTED')
+                    self.assertEqual(result['infrastructure']['status'],'PASS')
+
     def test_terrain_init_uses_real_entrypoint_and_plans_from_unrelated_cwd(self):
         job=self.init();previous=os.getcwd()
         try:
@@ -70,23 +86,20 @@ class RecipeTests(unittest.TestCase):
 
     def test_untested_ground_routes_and_coverage_never_pass_from_data_flags(self):
         required=w.read_json(w.TEMPLATES)['terrain']['requiredAssertions']
-        values={name:'PASS' for name in required if name not in {'terrain.traversal','terrain.coverage'}}
-        result=self.normalize(self.result(values),required)
-        self.assertEqual(w.verdict(result,required),'NOT_TESTED')
+        self.assert_each_gate_is_required(required,['fixture.ready','terrain.data-integrity','terrain.visual-review',
+                                                   'terrain.traversal','terrain.coverage'])
 
     def test_blender_render_and_static_fit_cannot_replace_native_or_motion(self):
         recipe=w.read_json(ROOT/'examples/workflows/asset-preparation-cases.example.json')
         required=recipe['requiredAssertions']+recipe['cases'][-1]['additionalAssertions']
-        values={name:'PASS' for name in required if name not in {'image.native','asset.motion-ownership'}}
-        self.assertEqual(w.verdict(self.normalize(self.result(values),required),required),'NOT_TESTED')
+        self.assert_each_gate_is_required(required,['fixture.ready','camera.readback','image.native','reference.attribution',
+            'asset.source-contract','export.deterministic','geometry.semantic-preserved','geometry.native-topology',
+            'materials.binding-scope','uv.valid','asset.motion-ownership','input.positive-control','crew.exit','crew.reentry','post-reentry.fire'])
 
     def test_insensitive_control_censors_attribution_and_keeps_infrastructure_distinct(self):
         stage=w.read_json(ROOT/'examples/workflows/terrain-cases.example.json')['stages'][1]
-        values={name:'PASS' for name in stage['requiredAssertions']}
-        values['terrain.control-sensitive']='NOT_TESTED';values['terrain.surface-parity']='NOT_TESTED'
-        result=self.normalize(self.result(values),stage['requiredAssertions'])
-        self.assertEqual(w.verdict(result,stage['requiredAssertions']),'NOT_TESTED')
-        self.assertEqual(result['infrastructure']['status'],'PASS')
+        self.assert_each_gate_is_required(stage['requiredAssertions'],['fixture.ready','camera.readback','image.native',
+            'terrain.data-integrity','terrain.control-sensitive','terrain.surface-parity'])
 
     def test_examples_cover_template_minimums_with_unique_safe_case_ids(self):
         templates=w.read_json(w.TEMPLATES)
@@ -129,6 +142,16 @@ class RecipeTests(unittest.TestCase):
         self.assertEqual(job['template'],'terrain');self.assertEqual(len(job['cases']),3)
         for case in job['cases']:
             self.assertTrue({'terrain.geographic-confidence','terrain.regeneration','terrain.performance'}<=set(case['assertions']))
+        w.plan(file)
+
+    def test_initialized_diagnostic_cases_require_control_sensitivity(self):
+        code,file=self.recipe_init('--recipe','terrain','--stage','surface-diagnostic')
+        self.assertEqual(code,0);job=w.read_json(file)
+        self.assertEqual(len(job['cases']),4)
+        for case in job['cases']:
+            with self.subTest(case=case['id']):
+                self.assertIn('terrain.control-sensitive',case['assertions'])
+                self.assertIn('terrain.surface-parity',case['assertions'])
         w.plan(file)
 
     def test_recipe_case_selection_preserves_selected_assertions_and_rejects_unknowns(self):
