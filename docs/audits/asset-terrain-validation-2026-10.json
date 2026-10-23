@@ -1,0 +1,177 @@
+{
+  "schema": 1,
+  "stage": 1,
+  "utc": "2026-10-23T17:43:05.117672+00:00",
+  "status": "PASS",
+  "scope": "Offline documentation/template integration and reporting tests; no new native qualification",
+  "baseRevision": "9c2a1783901bcc5a97e1aed0ab594d08ab6f568e",
+  "fullPythonTests": {
+    "count": 80,
+    "seconds": 8.596,
+    "status": "PASS"
+  },
+  "newRecipeTests": {
+    "count": 8,
+    "status": "PASS"
+  },
+  "entrypointBenchmark": {
+    "baselineInitTerrain": {
+      "exitCode": 2,
+      "seconds": 0.0756
+    },
+    "improvedInitTerrain": {
+      "exitCode": 0,
+      "seconds": 0.0777
+    },
+    "improvedPlan": {
+      "exitCode": 0,
+      "seconds": 0.0828
+    },
+    "improvedInertRun": {
+      "exitCode": 2,
+      "seconds": 0.195
+    },
+    "inertOverall": "NOT_TESTED",
+    "manualInterventions": 0,
+    "automaticRetries": 0,
+    "claimLimit": "No native speedup or token saving inferred; baseline lacked the terrain init option, while the improved real command initializes/plans from another cwd and inert execution stays censored."
+  },
+  "historicalInterpretation": {
+    "v26-resource-repair-overlay-failure": "FAIL",
+    "v23-local-not-map": "NOT_TESTED",
+    "v35-static-not-native": "NOT_TESTED"
+  },
+  "sourceFingerprints": [
+    {
+      "label": "source-native-collider-failure",
+      "file": "RESULT587.md",
+      "bytes": 6220,
+      "sha256": "b34de00a9e1e0134d3586995e3da6f0db6d14e58962057586ec693729cf741e5"
+    },
+    {
+      "label": "art-options-gates",
+      "file": "REVIEW_AND_SELECTIVE_INTEGRATION_GATES.txt",
+      "bytes": 5819,
+      "sha256": "fda1357fd8785a69020069603806e4ac29736969af417e7d988e9b16a36530ee"
+    },
+    {
+      "label": "art-options-inputs",
+      "file": "INPUT_INVENTORY.json",
+      "bytes": 32842,
+      "sha256": "16329486c0233a79da8113bac9252c9f151fc2b4396b3211849de36b4ff8e4c0"
+    },
+    {
+      "label": "art-options-preservation",
+      "file": "FINAL_PRESERVATION.json",
+      "bytes": 574,
+      "sha256": "3a6e75214b8ef2f8ee6d485ad607ba9fbc214ce4cba54b59eec640624dbc17d5"
+    },
+    {
+      "label": "art-reopen-diagnostic",
+      "file": "REOPEN_CONTRACT_DIAGNOSTIC_Camo.json",
+      "bytes": 4186,
+      "sha256": "3af440e13e3a1022585f990a0333f8d0210d331bf2ec9bad136eb73f8b5ffe06"
+    },
+    {
+      "label": "art-reference-correction",
+      "file": "REFERENCE_CORRECTION_HISTORY.json",
+      "bytes": 3264,
+      "sha256": "936cb6ad4668cbfb6ae7494d876ab6ace2d753a46533e7b988c0a866c4dcf91b"
+    },
+    {
+      "label": "art-reference-resume",
+      "file": "V36_FINDINGS_AND_RESUME_GATE.txt",
+      "bytes": 3841,
+      "sha256": "42ff596336c14eed19c7fd09cf4573f0acf05864961ef4ff0d1f3d863409bc87"
+    },
+    {
+      "label": "functional-handoff",
+      "file": "EVIDENCE-INDEX.md",
+      "bytes": 1597,
+      "sha256": "952598c9921019dde0b2467a74f717b8c64ddf499abd2802bf27e88c6dde8a86"
+    },
+    {
+      "label": "architecture-v24",
+      "file": "REVIEW.md",
+      "bytes": 7381,
+      "sha256": "cc76cfc308b6277e728df509e1ef4bdc8e88541e2ba0eea64c99f228623fa20e"
+    },
+    {
+      "label": "architecture-v25",
+      "file": "REVIEW.md",
+      "bytes": 5039,
+      "sha256": "dda285c03f996efb4edc67729a09c5ada553456ab09b4a617c09cc904ed70e90"
+    },
+    {
+      "label": "clutter-source-null-failure",
+      "file": "SOURCE_FINDINGS.md",
+      "bytes": 5041,
+      "sha256": "871730fd6514c791fdb6b04eab119ee34ce08c2b5e5b58cbae66402dc80bb875"
+    },
+    {
+      "label": "clutter-current-report",
+      "file": "REPORT.md",
+      "bytes": 8707,
+      "sha256": "612c286af3cc76c923c266fc36eedc082ab201419f9fe4d05137acd97b3d11a6"
+    },
+    {
+      "label": "clutter-current-result",
+      "file": "CONTROL_RESULT.json",
+      "bytes": 11943,
+      "sha256": "c822753f2049f7ad3f21241cd61ec6b91408c26c83df163f549b187048968c90"
+    },
+    {
+      "label": "normal-report",
+      "file": "REPORT.md",
+      "bytes": 8678,
+      "sha256": "2938d4b6cd8075172ec3f4f9fc6fa8dda7018755eb6d22190cec0c2a711fce83"
+    },
+    {
+      "label": "normal-result",
+      "file": "NORMAL_CONTROL_RESULT.json",
+      "bytes": 3518,
+      "sha256": "3a34074a17838c2b60fa7bbe90a8e12b4ed6053c75d911bfb03a0274b10e6a8c"
+    },
+    {
+      "label": "normal-failed-first-attempt",
+      "file": "summary.json",
+      "bytes": 1264,
+      "sha256": "dfa48d914022196240b15a121588b3e02db522a7210f136be80675b677dcee7d"
+    },
+    {
+      "label": "normal-matched-native-board",
+      "file": "Isfahan-V26-native-normal-control.png",
+      "bytes": 2399444,
+      "sha256": "6903bece02009e0081bceff009d3b5061cdeacda5665a221630eaa983b19b19f"
+    }
+  ],
+  "historyScope": {
+    "supportedTaskSummaries": true,
+    "priorSupportedIndexReused": true,
+    "rawSessionArchivesRead": false,
+    "memoryDirectoryFiles": 0,
+    "applicableProjectSkillsFoundAtInspectedRoots": 0,
+    "allHistoryClaimed": false
+  },
+  "qualification": {
+    "nativeLaunches": 0,
+    "nativeProcessOrLeaseQueries": 0,
+    "BlenderOrPluginExecution": 0,
+    "newNativeAcceptance": "NOT_TESTED",
+    "fullMapOrVehiclePromotion": false
+  },
+  "preservation": {
+    "namedEvidenceUnchangedAcrossReplay": true,
+    "frozenFunctionalCandidate": "5430462e96caf9d126863c0dc7f0410e3176f67e",
+    "candidateWorkingTreeClean": true,
+    "productionHarnessChanged": false
+  },
+  "sourceLimits": [
+    "Wiki direct retrieval returned403; no alternate retrieval around denial",
+    "BK source findings supplied by parent; plugin/release archive not executed or installed",
+    "Public primary-source research is a lead for local tests, not acceptance of suggested fixes"
+  ],
+  "secondPass": "Required: review resulting checkout and fresh-context commands; independent coordinator review pending",
+  "published": false,
+  "remoteCI": "Not run; isolated local branch only"
+}

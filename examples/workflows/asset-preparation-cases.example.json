@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "kind": "recipe-only-not-an-executable-native-adapter",
+  "template": "visual",
+  "fixture": "Addon-owned asymmetric export sentinel and current functional subject, isolated native visual world, frozen source/export/native manifests",
+  "sourceContract": [
+    "current functional revision and regional allowed/protected change set",
+    "reference variant, correct side, pose/camera and measured/inferred confidence",
+    "units, physical bounds, source-export-native axes/handedness and pivots",
+    "object-bone-component-slot-compartment hierarchy, bind/evaluated transforms and actual animation/controller",
+    "expected visual/LOD/collider name-owner-metadata sets and semantic tolerances",
+    "material consumers, UVs, texture import/channel/color-space conventions and variants",
+    "Blender/official exporter/native versions, settings, hierarchy closure and animation policy"
+  ],
+  "beforeNative": [
+    "fresh saved-source reopen; preserve raw cache diagnostics separately from evaluated transforms",
+    "two fresh exports compared against each other AND the source set; explain byte-only metadata differences",
+    "challenge nested-only collections, name collisions, hidden references, non-convex faces, thin colliders, bone weights and missing animation",
+    "optional tool preparation never replaces official import/native acceptance"
+  ],
+  "requiredAssertions": ["fixture.ready", "camera.readback", "image.native", "reference.attribution", "asset.source-contract", "export.deterministic", "geometry.semantic-preserved", "geometry.native-topology", "materials.binding-scope", "uv.valid"],
+  "cases": [
+    {"id": "unchanged-native-control", "parameters": {"subject": "current-functional-baseline", "purpose": "prove observer/exporter sensitivity before a candidate"}, "additionalAssertions": ["materials.channels", "light.readback"]},
+    {"id": "asymmetric-import-sentinel", "parameters": {"subject": "small-export-fixture", "purpose": "measure actual axes, scale, pivots, hierarchy, named collider/LOD sets and material slots"}, "additionalAssertions": ["asset.native-coordinate-parity"]},
+    {"id": "selected-regional-candidate", "parameters": {"subject": "approved-regional-delta-only", "purpose": "compare both skins at matched near/medium/outdoor/grazing views"}, "additionalAssertions": ["geometry.clearance", "composition.reviewed", "lod.native-transition"]},
+    {"id": "moving-owner-regression", "parameters": {"subject": "current-functional-candidate", "purpose": "actual powered articulation, crew access, lights/windows, optics and firing; no pose-setter substitute"}, "additionalAssertions": ["asset.motion-ownership", "input.positive-control", "crew.exit", "crew.reentry", "post-reentry.fire"]}
+  ],
+  "acceptance": "Copy requiredAssertions plus each case's additionalAssertions into an existing visual job. Add addon-owned measurements and declared tolerances. A matched Blender review or raw FBX PASS cannot satisfy image.native, native topology, motion or performance. All suggested new native tests remain NOT_TESTED until executed."
+}

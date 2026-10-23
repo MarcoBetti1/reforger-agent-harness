@@ -31,7 +31,7 @@
     "task": "Native clean-camera/reference, geometry/material and lighting review",
     "capabilities": ["isolated-reset", "owned-lifecycle", "native-camera"],
     "requiredAssertions": ["fixture.ready", "camera.readback", "image.native"],
-    "recommendedAssertions": ["ui.clean", "light.readback", "geometry.clearance", "materials.channels", "composition.reviewed", "geometry.semantic-preserved", "uv.valid", "materials.binding-scope", "geometry.native-topology", "lod.native-transition"],
+    "recommendedAssertions": ["ui.clean", "light.readback", "geometry.clearance", "materials.channels", "composition.reviewed", "geometry.semantic-preserved", "uv.valid", "materials.binding-scope", "geometry.native-topology", "lod.native-transition", "reference.attribution", "asset.source-contract", "export.deterministic", "asset.native-coordinate-parity", "asset.motion-ownership"],
     "limits": "Use visual:capture and tools/native_capture_review.py for existing adapters. Record map/world IDs, pose, camera, weather/time and actual exposure; inspect full images for stale/loading frames, clipping and occlusion. Pixel samples are not lux."
   },
   "audio": {
@@ -54,5 +54,28 @@
     "requiredAssertions": ["fixture.ready", "drive.powered", "drive.signed-progress", "cargo.conserved"],
     "recommendedAssertions": ["convoy.spacing", "arrival.dwell", "hold.stationary", "resume.fresh-progress", "cargo.native-transfer", "input.restored"],
     "limits": "Retain original driver/truck/container identities and failed attempt history. Require per-link gaps, stable world-time dwell, actual native quantity changes and fresh powered departure. A useful delivery can coexist with a strict scenario FAIL."
+  },
+  "terrain": {
+    "task": "Representative terrain blocks: data integrity, native visual review, ground traversal and coverage",
+    "capabilities": [
+      "isolated-reset",
+      "owned-lifecycle",
+      "native-terrain"
+    ],
+    "requiredAssertions": [
+      "fixture.ready",
+      "terrain.data-integrity",
+      "terrain.visual-review",
+      "terrain.traversal",
+      "terrain.coverage"
+    ],
+    "recommendedAssertions": [
+      "terrain.geographic-confidence",
+      "terrain.regeneration",
+      "terrain.performance",
+      "terrain.control-sensitive",
+      "terrain.surface-parity"
+    ],
+    "limits": "Use startup for import/load and visual for causal surface controls. Data/flag PASS cannot replace visible quality, ground routes or coverage. Require geographic-confidence, regeneration and performance too for promotion; report untested cells and source uncertainty. Editor-only captures do not prove GAME/player traversal. See docs/terrain-review.md."
   }
 }

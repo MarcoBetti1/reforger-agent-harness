@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "kind": "recipe-only-not-an-executable-native-adapter",
+  "fixture": "Reuse addon-owned saved terrain, pavement controls and one sourced connected block; keep source DEM, masks, roads, architecture and QA layers independently regenerable",
+  "geodataContract": [
+    "source URLs/dates/licenses/hashes, horizontal CRS and axis order/bounds",
+    "vertical datum/units/range/offset, source DEM resolution versus authored lattice spacing",
+    "sample dimensions and vertex/face convention, physical extents, world origin and tile seams",
+    "imagery/mask resolution and rights, stable source IDs and inferred/creative/HOLD fields",
+    "three independent native landmarks/separations, layer generator versions/config/seeds and invalidation dependencies"
+  ],
+  "coverageCellFields": ["cell-id", "bounds", "risk-class", "source-confidence", "required-views", "required-ground-routes", "data-status", "visual-status", "traversal-status", "performance-status", "evidence-and-reason"],
+  "stages": [
+    {
+      "id": "whole-map-load", "template": "startup",
+      "requiredAssertions": ["fixture.ready", "world.loaded", "terrain.data-integrity", "terrain.geographic-confidence", "terrain.regeneration", "terrain.performance"],
+      "cases": [{"id": "rough-map-cold-load", "parameters": {"purpose": "actual whole-map extents/resources/seams and representative load; not a polished-district-only test"}}]
+    },
+    {
+      "id": "surface-diagnostic", "template": "visual",
+      "requiredAssertions": ["fixture.ready", "camera.readback", "image.native", "terrain.data-integrity", "terrain.control-sensitive", "terrain.surface-parity"],
+      "cases": [
+        {"id": "bare-unchanged-control", "parameters": {"purpose": "prove visible stones/surface and camera/exposure repeatability before attribution"}},
+        {"id": "local-surface-aba", "parameters": {"purpose": "single intervention, same-location reversal and preserved heights/materials; stop if controls are insensitive"}},
+        {"id": "native-road-versus-overlay", "parameters": {"purpose": "small matched surface/road versus overlay, unchanged footprint/cameras; no full-map fix claim"}},
+        {"id": "bounded-resolution-control", "parameters": {"purpose": "future matched 2m/6m representative lattice comparison only if warranted; source accuracy unchanged; LOD causation unproven"}}
+      ]
+    },
+    {
+      "id": "playable-reference-block", "template": "terrain",
+      "requiredAssertions": ["fixture.ready", "terrain.data-integrity", "terrain.visual-review", "terrain.traversal", "terrain.coverage", "terrain.geographic-confidence", "terrain.regeneration", "terrain.performance"],
+      "cases": [
+        {"id": "sourced-connected-block", "parameters": {"purpose": "credible court/wall/setback/entrance/roof/street relationships, eye-level pedestrian/vehicle route and facade scale"}},
+        {"id": "road-river-crossing", "parameters": {"purpose": "complete road-to-bridge-to-bank pedestrian/vehicle traversal; source topology and landmark exceptions separate"}},
+        {"id": "held-out-coverage-cell", "parameters": {"purpose": "risk-stratified tile-edge/slope/dense/open regression; report all required and untested cells"}}
+      ]
+    }
+  ],
+  "captureAndPerformance": [
+    "raw native pixels, actual camera/FOV/viewport/world/environment/exposure and supported LOD readbacks; editor/GAME distinguished",
+    "ground routes with original actor/control identity, route progress, collision/clearance and ordinary-input evidence",
+    "pinned hardware/build/settings, warmup, repeated frame-time/memory samples, whole-map and block load; budgets declared before measurement"
+  ],
+  "acceptance": "Create one existing workflow job per stage; copy that stage's required assertions/cases and supply an addon-owned qualified adapter. Diagnostic source/import success never becomes visual/playability/performance acceptance. No native launches, road fix, resolution fix or realistic-map claim is established by this recipe."
+}

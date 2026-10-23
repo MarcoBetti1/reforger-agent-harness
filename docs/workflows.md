@@ -12,7 +12,8 @@ python tools/workflow.py templates
 | Projectile/fragment/component/crew damage | `damage` | Fresh subject, authored native stimulus, contacts/callbacks, before/after zones |
 | Tracked handling/reverse/slope/traction | `mobility` | Powered signed progress, actual speed, gear/RPM and contact surface |
 | Crew/hatch/optics/input | `crew-input` | Original occupied seat, completed transition, restored controls |
-| Model/material/lighting/reference | `visual` | Native pixels and camera/time/weather/exposure readbacks |
+| Model/export/material/lighting/reference | `visual` | [Source/export contract](asset-preparation.md), native parity and matched pixels |
+| Terrain/reference district/roads/crossings | `terrain` | [Data, visible quality, ground routes and coverage](terrain-review.md); `startup`/`visual` for repairs/controls |
 | Cannon/engine audio | `audio` | Provenance, one-shot event ledger, native cadence/distance and human audition |
 | Supply/following/Hold/Resume | `convoy` | Original actors, conserved native quantities, per-link gaps, dwell and fresh departure |
 | Release preparation | `release` | Frozen trio, notices/dependencies/images, Git/CI and manual handoff |
@@ -139,3 +140,12 @@ The default strict ceiling is 4,800,000 decimal bytes. It searches JPEG quality 
 ## Fresh task handoff
 
 Record one current entrypoint, job path/hash, exact fixture/package identity, selected cases/assertions, evidence index, measured verdicts and missing measurements. Include the current owner/lease and whether a human window is open. Link old attempts as history instead of stacking contradictory “current” paragraphs. Use milestone updates for new findings, changed plans or blockers; avoid per-poll narration. See [audit and validation](workflow-audit.md) for the observed reasons behind these gates.
+
+## Asset preparation and terrain work
+
+Use [asset preparation](asset-preparation.md) before modeling/export, and
+[terrain build/evaluation](terrain-review.md) before map generation or repair.
+Both reuse this entrypoint, addon-owned jobs, existing semantic/camera tools and
+separate domain verdicts. Their case recipes are specifications, not executable
+adapters or qualified fixes. The [retrospective](asset-terrain-retrospective.md)
+links the observed failures and the non-native validation boundary.

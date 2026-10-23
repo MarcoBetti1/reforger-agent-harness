@@ -13,6 +13,13 @@ binding against a new candidate or copy private caches into this repository.
 | Driving | Use the existing [native course](driving-review.md), [mobility cases](../examples/workflows/mobility-cases.example.json) and `tools/driving_review.py`. | Existing measured recipe requires powered signed progress, actual action/contact overlap and grounded final dwell. **UNRESOLVED** slope/slip/solver semantics, ordinary keyboard, post-hit and MP are separate domains; do not tune physics to an unqualified getter. |
 | HUD/optics | Inspect installed `SCR_WeaponInfoVehicle`, `SCR_2DOpticsDisplay` and `SCR_2DOpticsComponent` lifecycle before replacing the native display. GEP HUD shared fixes are recorded at `631f887` + `b18b319`. | Source review found cabin/ADS visibility scope mismatch and partial-widget retry/cleanup gaps. **UNRESOLVED** native acceptance in that handoff; schematic previews are not captures. Test cabin/ADS, firing/range miss, menu/seat/exit/death/control loss and stock restoration. Ballistics/stabilization need separate evidence. |
 
+## Assets and terrain
+
+| Feature | Reuse first | Acceptance boundary |
+| --- | --- | --- |
+| Blender/source/export integration | [Asset preparation](asset-preparation.md), [semantic gates](asset-review.md), [asset cases](../examples/workflows/asset-preparation-cases.example.json), official importer/sample metadata | Compare the same source/export/native contract; check current motion/crew owners and actual material/LOD behavior. Static proposals and optional plugin QA remain separate from native acceptance. |
+| Terrain and reference districts | [Terrain review](terrain-review.md), [terrain cases](../examples/workflows/terrain-cases.example.json), existing startup/visual/mobility fixtures | Keep imported data, source confidence, visual fidelity, ground traversal, coverage and performance separate. A local occluder effect or repaired normal resources do not fix distance-dependent overlay breakup or qualify a realistic map. |
+
 ## Smoke: preserve both investigations
 
 The addon records `SMOKE015-HANDOFF.md`, `STOCK-FIRST-ASSESSMENT.md` and the

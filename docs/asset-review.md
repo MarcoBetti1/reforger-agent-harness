@@ -64,3 +64,8 @@ cost, full suspension and all extreme poses stay NOT_TESTED unless measured.
 The repository supplies recipe/capture/comparison tools. Asset-format semantic
 readers and native geometry reporters stay with the addon: an invented universal
 mesh schema would not qualify those engine-specific facts.
+
+Before authoring or export, use the [source/export preparation contract](asset-preparation.md)
+and its [case recipe](../examples/workflows/asset-preparation-cases.example.json).
+They connect these semantic gates to current functional ownership, reference
+attribution, deterministic export and a small native parity fixture.
