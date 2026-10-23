@@ -171,7 +171,7 @@
     "BK source findings supplied by parent; plugin/release archive not executed or installed",
     "Public primary-source research is a lead for local tests, not acceptance of suggested fixes"
   ],
-  "secondPass": "Required: review resulting checkout and fresh-context commands; independent coordinator review pending",
+  "secondPass": "Completed with regression fix cfb286011638ab05cb0d7b66ca035e0263209f33; independent final recheck PASS with 89 tests normally and under -O, P2 closed. See asset-terrain-second-pass-2026-10.json for the exact result.",
   "published": false,
   "remoteCI": "Not run; isolated local branch only"
 }

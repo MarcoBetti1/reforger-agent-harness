@@ -151,7 +151,7 @@
       "scope": "Coordinator and recipe suite from another authorized cwd; no source edits/native actions",
       "revision": "3080db7 (before regression-only follow-up)"
     },
-    "coordinatorSecondReviewer": "Confirmed3080db7 and all88tests; P2 masked-gate test gap fixed in follow-up, independent recheck pending",
+    "coordinatorSecondReviewer": "Independent final recheck PASS on cfb286011638ab05cb0d7b66ca035e0263209f33: 89 tests normally and under -O; mutation detected by six assertions; 52 isolated checks across 26 gates; all 18 source/index fingerprints unchanged; P2 closed.",
     "optimizedFullPython": {
       "count": 89,
       "seconds": 9.017,
